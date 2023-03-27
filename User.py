@@ -1,0 +1,45 @@
+
+
+
+
+class User:
+    def __init__(self, username, email, fullname, passwd):
+        if self.check_exists(username, email):
+            raise UserExistsException()
+        self.username = username
+        self.email = email
+        self.fullname = fullname
+        self.passwd = passwd
+        #TODO register user
+    def __str__(self):
+        return str({
+            "username": self.username,
+            "email": self.email,
+            "fullname": self.fullname,
+            "passwd": self.passwd,
+        })
+    def get(self):
+        return self.__str__()
+    def update(self):
+        pass    #TODO
+    def delete(self):
+        pass    #TODO
+    def check_exists(self,username,email):
+        return False    #TODO
+    def auth(self,plainpass):
+        pass    #TODO
+    def login(self):
+        pass #TODO
+    def checksession(token):
+        pass #TODO
+    def logout(self):
+        pass #TODO
+
+class UserExistsException():
+    pass
+
+
+
+x=User(3,5,7,9)
+print(x)
+x.delete()
