@@ -1,6 +1,6 @@
 import json
 import copy
-
+from User import User
 
 class Board:
 
@@ -60,8 +60,14 @@ class Board:
     def turn(self, user, command):
         pass  # TODO
     def getuserstate(self, user):
-        for i in self.
-        return {k: {'money': v['money'], 'properties': v['properties']} for k, v in self.user_dict.items()}
+        print({k.username: {'money': v['money'], 'properties': v['properties']} for k, v in self.user_dict.items()})
+        '''for k, v in self.user_dict.items():
+            print({
+                "username": k.username,
+                "money": v["money"],
+                "properties": v["properties"],
+
+            })'''
     def getboardstate(self):
         for property in self.properties:
             print(property)
@@ -93,13 +99,3 @@ class Property:
 
 
 
-
-
-
-
-
-
-
-file=open("board_in","r")
-monopoly=Board(file)
-monopoly.getboardstate()
