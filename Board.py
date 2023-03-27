@@ -36,7 +36,7 @@ class Board:
             if cell['type']=='property':
                 self.properties.append(Property(cell))
 
-    def attach(self, user, callback):
+    def attach(self, user, callback,turncb):
         self.user_dict[user]={"user":user,
                               "money":self.startup,
                               "position":0,
