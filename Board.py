@@ -7,6 +7,7 @@ class Board:
     def __init__(self,file):
         data=json.loads(file.read())
 
+        # file variables
         self.cells=data["cells"]
         self.upgrade = data["upgrade"]
         self.teleport = data["teleport"]
@@ -16,20 +17,24 @@ class Board:
         self.startup = data["startup"]
         self.chance_card_list=data["chances"]
 
+        # property user containers
         self.properties=[]
+        self.user_dict={}
         self.get_properties()
 
-        self.user_dict={}
+        # state variables
         self.unready_count=0
+        self.WaitingState=True
+
+        #
+        self.order=[]
+        self.current_player_index=0
+
 
     def get_properties(self):
         for cell in self.cells:
             if cell['type']=='property':
-                cellV2=copy.deepcopy(cell)
-                cellV2['owner']=None
-                cellV2['level']=0
-                del cellV2['type']
-                self.properties.append(cellV2)
+                self.properties.append(Property(cell))
 
     def attach(self, user, callback):
         self.user_dict[user]={"user":user,
@@ -38,45 +43,63 @@ class Board:
                               "properties":[],
                               "ready":False}
         self.unready_count+=1
+        self.order.append(user)
         # TODO whatever callback is
     def detach(self, user):
         if user in self.user_dict:
             del self.user_dict[user]
+            self.order.remove(user)
     def ready(self, user):
         if self.user_dict[user]["ready"]==False:
             self.user_dict[user]["ready"]=True
             self.unready_count-=1
             if (self.unready_count==0 and len(self.user_dict)>=2):
-
-
-        pass  # TODO
+                self.initiate_game()
+    def initiate_game(self):
+        self.WaitingState=False
     def turn(self, user, command):
         pass  # TODO
     def getuserstate(self, user):
-        return {k: {'money': v['money'], 'properties': v['properties']} for k, v in self.user_dict.items()} #TODO might need to add levels
+        for i in self.
+        return {k: {'money': v['money'], 'properties': v['properties']} for k, v in self.user_dict.items()}
     def getboardstate(self):
-        return self.properties
+        for property in self.properties:
+            print(property)
 
 
-'''
-attach(user, callback,
-turncb)
-User attaches to an existing board. Board events are sent to
-callback function
-detach(user) User detaches from the board. If game is started, all properties
-and money is returned as initialized
-ready(user) The attached user mark himself/herself as ready. When the all
-attached users mark the game ready, game starts.
-turn(user, command) When users turn, user gives the command/choice for his/her
-turn
-getuserstate(user) Generate a report for each user, money and properties with
-their levels
-getboardstate() Generates a report for the board, properties, their level and
-owner
-'''
+
+class Property:
+    def __init__(self,prop_dict):
+        self.name = prop_dict["name"]
+        self.cell = prop_dict["cell"]
+        self.color = prop_dict["color"]
+        self.price = prop_dict["price"]
+        self.rents = prop_dict["rents"]
+
+        self.owner = None
+        self.level = 0
+    def __str__(self):
+        return str({
+            "name": self.name,
+            "cell": self.cell,
+            "color": self.color,
+            "price": self.price,
+            "rents": self.rents,
+            "owner": self.owner,
+            "level": self.level,
+        })
+
+
+
+
+
+
+
+
 
 
 
 
 file=open("board_in","r")
-Board(file)
+monopoly=Board(file)
+monopoly.getboardstate()
