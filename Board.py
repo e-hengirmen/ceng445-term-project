@@ -8,6 +8,8 @@ from enum import Enum
 
 def roll_a_dice():
     return random.randint(1, 6)
+def take_chance_card():
+    return random.randint(0,8)
 
 class Board:
 
@@ -28,6 +30,7 @@ class Board:
         # property user containers
         self.properties=[]
         self.user_dict={}
+        self.color_list=[]
         self.get_properties()
 
         # state variables
@@ -42,6 +45,15 @@ class Board:
         # TODO  non-given
         self.lapping_salary=500
 
+        # properties group by color
+        self.properties_by_color = {}
+        self.get_colors()
+
+    def get_colors(self):
+        for color in self.color_list:
+            self.properties_by_color[color] = []
+        for prop in self.properties:
+            self.properties_by_color[prop.color].append(prop)
 
     def get_properties(self):
         for cell in self.cells:
@@ -49,7 +61,8 @@ class Board:
                 current_property=Property(cell)
                 cell['property']=current_property
                 self.properties.append(current_property)
-
+                if cell['color'] not in self.color_list:
+                    self.color_list.append(cell['color'])
 
     def attach(self, user, callback,turncb):
         self.user_dict[user]={"user":user,
@@ -138,7 +151,7 @@ class Board:
 
             self.next_user()
         elif command == "Upgrade":
-            if self.active_user_state!=TURN_STATE.buy_wait:
+            if self.active_user_state==TURN_STATE.buy_wait:
                 raise WrongStateException()
             if self.cells[self.user_dict[user]["position"]]["type"] != "property":
                 raise NotPropertyException()
@@ -154,11 +167,12 @@ class Board:
             current_user_dict["money"] -= current_property.price
             current_property.upgrade()
             self.next_user()
-        elif command.startswith("Pick"):#"Pick(property)" #TODO add next state or change user in execute chance card
-            picked_cell_index = int(command[5:-1])
-            execute_chance_card(self.chosen_chance_card,picked_cell_index)
+        elif command.startswith("Pick"):  # e.g., "Pick50-9" #TODO
+            picked_cell_index = int(command.split('-')[0][4:])
+            number = int(command.split('-')[1])
+            self.execute_chance_card(number, picked_cell_index, user)
         elif command.startswith("Teleport"):#"Teleport(Newcell)":
-            next_cell_index = int(command[9:-1])
+            next_cell_index = int(command[8:])
             if self.cells[next_cell_index]["type"]!="property":
                 raise NotPropertyException()
 
@@ -167,10 +181,12 @@ class Board:
             current_property = self.cells[next_cell_index]["property"]
             if current_property.owner == None:
                 self.active_user_state = TURN_STATE.buy_wait
-            elif current_property.owner != current_user_dict["user"]:
-                current_user_dict["money"] -= current_property.get_current_rent()
+            elif current_property.owner != user:
+                self.user_dict[user]["money"] -= current_property.get_current_rent()
                 self.next_user()
         elif command == "EndTurn":
+            if self.active_user_state != TURN_STATE.buy_wait:
+                raise WrongStateException()
             self.next_user()
         else:
             raise WrongCommandException("you're in jail, your command was \{{}\} it should either be Roll or Bail".format(command))
@@ -224,10 +240,95 @@ class Board:
                 current_user_dict["money"]-=current_property.get_current_rent()
                 self.next_user()
 
-        #elif property["type"]=="chance":   #TODO
+        elif cell["type"]=="chance":   #TODO
+            card_number = take_chance_card()
+            card = self.chance_card_list[card_number]
+            if card == 'upgrade':
+                selected_cell = int(input('select a cell to upgrade'))
+                self.turn(current_user_dict['user'], f'Pick{selected_cell}-{card_number}')
 
-    def execute_chance_card(self,card,cell_index):
-        pass    # TODO
+            elif card == 'downgrade':
+                selected_cell = int(input('select a cell to downgrade'))
+                self.turn(current_user_dict['user'], f'Pick{selected_cell}-{card_number}')
+
+            elif card == 'color_upgrade':
+                selected_color = input('select a color')
+                if selected_color not in self.color_list:
+                    raise WrongColorException()
+                flag=False
+                for prop in self.properties_by_color[selected_color]:
+                    if prop.owner==current_user_dict["user"]:
+                        flag=True
+                        break
+                if flag==False:
+                    raise NotOwnedException()
+                for prop in self.properties_by_color[selected_color]:
+                    prop.upgrade()
+
+            elif card == 'color_downgrade':
+                selected_color = input('select a color')
+                if selected_color not in self.color_list:
+                    raise WrongColorException()
+                flag = False
+                for prop in self.properties_by_color[selected_color]:
+                    if prop.owner == current_user_dict["user"]:
+                        flag = True
+                        break
+                if flag == False:
+                    raise NotOwnedException()
+                for prop in self.properties_by_color[selected_color]:
+                    prop.downgrade()
+
+            elif card == 'gotojail':
+                mypos = current_user_dict["position"]
+                for addition in range(self.N):
+                    if self.cells[(mypos + addition) % self.N]["type"] == "jail":
+                        j_hi = addition
+                        break
+                for addition in range(self.N):
+                    if self.cells[(mypos - addition + self.N) % self.N]["type"] == "jail":
+                        j_lo = addition
+                        break
+                if j_hi < j_lo:
+                    jail_pos = (mypos + j_hi) % self.N
+                else:
+                    jail_pos = (mypos - j_lo + self.N) % self.N
+                current_user_dict["position"] = jail_pos
+                current_user_dict["guilty"] = True
+                self.next_user()
+
+            elif card == 'jail_free':   #TODO take color off the list delayed PUSH
+                current_user_dict['jailFree'] += 1
+
+            elif card == 'teleport':
+                selected_cell = int(input('select a cell to teleport'))
+                self.turn(current_user_dict['user'], f'Teleport{selected_cell}')
+
+            elif card == 'lottery':
+                current_user_dict['money'] += self.lottery
+            elif card == 'tax':
+                current_user_dict["money"] -= self.tax * len(current_user_dict["properties"])
+                self.next_user()
+
+
+    def execute_chance_card(self, card_number, cell_index, user):
+        if self.chance_card_list[card_number]['type'] == 'upgrade':
+            if self.cells[cell_index]["type"] != "property":
+                raise NotPropertyException()
+            current_user_dict = self.user_dict[user]
+            current_property = self.cells[cell_index]["property"]
+            if current_property.owner != user:
+                raise NotOwnedException()
+            current_property.upgrade()
+
+        elif self.chance_card_list[card_number]['type'] == 'downgrade':
+            if self.cells[cell_index]["type"] != "property":
+                raise NotPropertyException()
+            current_user_dict = self.user_dict[user]
+            current_property = self.cells[cell_index]["property"]
+            if current_property.owner!=user:
+                raise NotOwnedException()
+            current_property.downgrade()
     def getuserstate(self, user):
         #print({k.username: {'money': v['money'], 'properties': [str(prop) for prop in v['properties']]} for k, v in self.user_dict.items()})
         for k, v in self.user_dict.items():
@@ -268,6 +369,8 @@ class Property:
         return self.rents[self.level-1]
     def at_max_level(self):
         return (self.level<self.max_level)
+    def at_min_level(self):
+        return (self.level==1)
 
     '''def __repr__(self):             #TODO using like this might create problems
         return self.__str__()'''
@@ -295,6 +398,8 @@ class NotYourTurnException(BaseException):
     pass
 
 class MaxLevelException(BaseException):
+    pass
+class WrongColorException(BaseException):
     pass
 
 
