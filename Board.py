@@ -78,6 +78,11 @@ class Board:
     def initiate_game(self):
         self.WaitingState=False
     def turn(self, user, command):
+        if self.WaitingState==True:
+            raise WaitingForReadyException()
+        if self.order[self.active_user_index]!=user:
+            print(self.active_user_index,user)
+            raise NotYourTurnException()
         # jail case
         if self.user_dict[user]["guilty"]==True:
             if command == "Roll":
@@ -104,10 +109,10 @@ class Board:
             dice2=roll_a_dice()
             #show_dice_roll(dice1,dice2)
             roll_res=dice1+dice2
+            print("rolled",roll_res)
             self.user_dict[user]["position"]=(self.user_dict[user]["position"]+roll_res)
-            if self.user_dict[user]["position"]>=self.N:
-                self.user_dict[user]["position"]-=self.N
-                self.user_dict[user]["money"]+=self.lapping_salary
+            self.user_dict[user]["money"]+=self.lapping_salary*(self.user_dict[user]["position"]//self.N)
+            self.user_dict[user]["position"]%=self.N
             #self.execute_cell(self.user_dict[user]["position"])
             self.execute_cell(self.user_dict[user],self.cells[self.user_dict[user]["position"]])
         elif command == "Buy":
@@ -175,13 +180,19 @@ class Board:
         if self.user_dict[user]["money"]<0:
             self.detach(user)
 
+        print("END:",user.username,"position",self.user_dict[user]["position"],"cell:",self.cells[self.user_dict[user]["position"]])
+        print("turn on:",self.order[self.active_user_index].username,
+              "position",self.user_dict[self.order[self.active_user_index]]["position"],
+              "cell:",self.cells[self.user_dict[self.order[self.active_user_index]]["position"]])
+        return self.order[self.active_user_index]
+
     def execute_cell(self,current_user_dict,cell):
         if cell["type"]=="start":
             self.next_user()
         elif cell["type"]=="jail":
             self.next_user()
         elif cell["type"]=="tax":
-            current_user_dict["money"]-=self.tax*len(current_user_dict["money"])
+            current_user_dict["money"]-=self.tax*len(current_user_dict["properties"])
             self.next_user()
         elif cell["type"]=="gotojail":
             mypos=current_user_dict["position"]
@@ -197,12 +208,13 @@ class Board:
                 jail_pos=(mypos+j_hi)%self.N
             else:
                 jail_pos=(mypos-j_lo+self.N)%self.N
-            self.user_dict[user]["position"]=jail_pos
-            self.user_dict[user]["guilty"]=True
+            current_user_dict["position"]=jail_pos
+            current_user_dict["guilty"]=True
             self.next_user()
         elif cell["type"]=="teleport":
             #implementation at turn
-            self.user_dict[user]["money"]-=self.teleport
+            current_user_dict["money"]-=self.teleport
+
             self.active_user_state=TURN_STATE.teleport_wait
         elif cell["type"]=="property":
             current_property=cell["property"]
@@ -217,7 +229,11 @@ class Board:
     def execute_chance_card(self,card,cell_index):
         pass    # TODO
     def getuserstate(self, user):
-        print({k.username: {'money': v['money'], 'properties': [str(prop) for prop in v['properties']]} for k, v in self.user_dict.items()})
+        #print({k.username: {'money': v['money'], 'properties': [str(prop) for prop in v['properties']]} for k, v in self.user_dict.items()})
+        for k, v in self.user_dict.items():
+            print({k.username: {'money': v['money']}})
+            for prop in v['properties']:
+                print("\t",prop)
     def getboardstate(self):
         for property in self.properties:
             print(property)
@@ -273,7 +289,10 @@ class UPoorException(BaseException):
     pass
 class WrongStateException(BaseException):
     pass
-
+class WaitingForReadyException(BaseException):
+    pass
+class NotYourTurnException(BaseException):
+    pass
 
 class MaxLevelException(BaseException):
     pass
