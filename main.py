@@ -42,3 +42,5 @@ monopoly.turn(user1,"Buy")
 monopoly.getboardstate()
 print("")
 monopoly.getuserstate(user1)
+str="ersel"
+print(str[:-1])
