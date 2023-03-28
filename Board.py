@@ -36,6 +36,9 @@ class Board:
         self.order=[]
         self.active_user_index=0
 
+        # TODO  non-given
+        self.lapping_salary=500
+
 
     def get_properties(self):
         for cell in self.cells:
@@ -72,9 +75,12 @@ class Board:
             dice2=roll_a_dice()
             #show_dice_roll(dice1,dice2)
             roll_res=dice1+dice2
-            self.user_dict[user]["position"]=(self.user_dict[user]["position"]+roll_res)%self.N
-            self.execute_cell(self.user_dict[user]["position"])
-            self.active_user_state = 1
+            self.user_dict[user]["position"]=(self.user_dict[user]["position"]+roll_res)
+            if self.user_dict[user]["position"]>=self.N:
+                self.user_dict[user]["position"]-=self.N
+                self.user_dict[user]["money"]+=self.lapping_salary
+            #self.execute_cell(self.user_dict[user]["position"])
+            self.execute_cell(user,self.cells[self.user_dict[user]["position"]])
         elif command == "Buy":
             if self.cells[self.user_dict[user]["position"]]["type"]!="property":
                 raise NotPropertyException()
@@ -115,7 +121,21 @@ class Board:
         #elif command == "EndTurn":# TODO
 
         #pass    # TODO
-    def execute_cell(self,pos):
+    def execute_cell(self,user,cell):
+        if cell["type"]=="start":
+            return
+        #elif property["type"]=="property":
+        #elif property["type"]=="teleport":
+        #elif property["type"]=="tax":
+        #elif property["type"]=="jail":
+        #elif property["type"]=="gotojail":
+        #elif property["type"]=="chance":
+        '''
+        { "type": "start"},
+          { "type": "property", "name": "bostanci", "cell": 2, "color": "red",
+            "price":120, "rents": [50,150,400,600,900]},
+          { "type": "teleport"}, {"type": "tax"}, {"type": "jail"}],
+        '''
         pass    # TODO
     def getuserstate(self, user):
         print({k.username: {'money': v['money'], 'properties': v['properties']} for k, v in self.user_dict.items()})
