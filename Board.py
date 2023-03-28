@@ -57,7 +57,8 @@ class Board:
                               "position":0,
                               "properties":[],
                               "ready":False,
-                              "guilty":False}
+                              "guilty":False,
+                              "jailFree":0,}
         self.unready_count+=1
         self.order.append(user)
         # TODO whatever callback is
@@ -121,13 +122,18 @@ class Board:
             current_property.upgrade()
         elif command.startswith("Pick"):#"Pick(property)" #TODO
             picked_cell_index = int(command[5:-1])
+            execute_chance_card(self.chosen_chance_card,picked_cell_index)
         elif command.startswith("Teleport"):#"Teleport(Newcell)":
-            next_cell_index = int(command[5:-1])
+            next_cell_index = int(command[9:-1])
             self.user_dict[user]["position"] = next_cell_index
-        #elif command == "Bail":# TODO
-        #elif command == "EndTurn":# TODO
+        elif command == "Bail":
+            if self.user_dict[user]["jailFree"]>=0:
+                self.user_dict[user]["jailFree"]-=1
+                self.user_dict[user]["money"]-=self.jailbail
+        elif command == "EndTurn":
+            self.active_user_index=(self.active_user_index+len(self.order))%len(self.order)
+            self.active_user_state=TURN_STATE.turn_start
 
-        #pass    # TODO
     def execute_cell(self,current_user_dict,cell):
         if cell["type"]=="start":
             return
@@ -153,7 +159,7 @@ class Board:
             self.user_dict[user]["guilty"]=True
         elif cell["type"]=="teleport":
             #implementation at turn
-            self.user_dict[user]["money"]-=self.jailbail
+            self.user_dict[user]["money"]-=self.teleport
             self.active_user_state=TURN_STATE.teleport_wait
         elif cell["type"]=="property":
             current_property=cell["property"]
@@ -169,7 +175,8 @@ class Board:
             "price":120, "rents": [50,150,400,600,900]},
           { "type": "teleport"}, {"type": "tax"}, {"type": "jail"}],
         '''
-        #pass    # TODO
+    def execute_chance_card(self,card,cell_index):
+        pass    # TODO
     def getuserstate(self, user):
         print({k.username: {'money': v['money'], 'properties': [str(prop) for prop in v['properties']]} for k, v in
                self.user_dict.items()})
@@ -240,7 +247,7 @@ class MaxLevelException(BaseException):
 class TURN_STATE(Enum):
     turn_start = 1
     teleport_wait = 2
-
+    buy_wait =3
 
 
 #raise UPoorException()
