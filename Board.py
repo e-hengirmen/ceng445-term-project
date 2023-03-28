@@ -66,6 +66,9 @@ class Board:
         if user in self.user_dict:
             del self.user_dict[user]
             self.order.remove(user)
+            for prop in self.user_dict[user]["properties"]:
+                prop.owner=None
+            self.next_user()
     def ready(self, user):
         if self.user_dict[user]["ready"]==False:
             self.user_dict[user]["ready"]=True
@@ -75,7 +78,28 @@ class Board:
     def initiate_game(self):
         self.WaitingState=False
     def turn(self, user, command):
-        if command == "Roll":
+        # jail case
+        if self.user_dict[user]["guilty"]==True:
+            if command == "Roll":
+                dice1 = roll_a_dice()
+                dice2 = roll_a_dice()
+                # show_dice_roll(dice1,dice2)
+                if(dice1==dice2):
+                    self.user_dict[user]["guilty"]=False
+            elif command == "Bail":
+                if self.user_dict[user]["jailFree"] >= 0:
+                    self.user_dict[user]["jailFree"] -= 1
+                else:
+                    self.user_dict[user]["money"] -= self.jailbail
+                self.user_dict[user]["guilty"] = False
+            else:
+                raise WrongCommandException("you're in jail, your command was \{{}\} it should either be Roll or Bail".format(command))
+            self.next_user()
+
+        #normal roll
+        elif command == "Roll":
+            if self.active_user_state!=TURN_STATE.turn_start:
+                raise WrongStateException()
             dice1=roll_a_dice()
             dice2=roll_a_dice()
             #show_dice_roll(dice1,dice2)
@@ -87,6 +111,8 @@ class Board:
             #self.execute_cell(self.user_dict[user]["position"])
             self.execute_cell(self.user_dict[user],self.cells[self.user_dict[user]["position"]])
         elif command == "Buy":
+            if self.active_user_state!=TURN_STATE.buy_wait:
+                raise WrongStateException()
             if self.cells[self.user_dict[user]["position"]]["type"]!="property":
                 raise NotPropertyException()
 
@@ -105,8 +131,10 @@ class Board:
             current_user_dict["properties"].append(current_property)
             current_property.owner=user
 
-
+            self.next_user()
         elif command == "Upgrade":
+            if self.active_user_state!=TURN_STATE.buy_wait:
+                raise WrongStateException()
             if self.cells[self.user_dict[user]["position"]]["type"] != "property":
                 raise NotPropertyException()
             current_user_dict = self.user_dict[user]
@@ -120,27 +148,41 @@ class Board:
                 raise UPoorException()
             current_user_dict["money"] -= current_property.price
             current_property.upgrade()
-        elif command.startswith("Pick"):#"Pick(property)" #TODO
+            self.next_user()
+        elif command.startswith("Pick"):#"Pick(property)" #TODO add next state or change user in execute chance card
             picked_cell_index = int(command[5:-1])
             execute_chance_card(self.chosen_chance_card,picked_cell_index)
         elif command.startswith("Teleport"):#"Teleport(Newcell)":
             next_cell_index = int(command[9:-1])
+            if self.cells[next_cell_index]["type"]!="property":
+                raise NotPropertyException()
+
             self.user_dict[user]["position"] = next_cell_index
-        elif command == "Bail":
-            if self.user_dict[user]["jailFree"]>=0:
-                self.user_dict[user]["jailFree"]-=1
-                self.user_dict[user]["money"]-=self.jailbail
+
+            current_property = self.cells[next_cell_index]["property"]
+            if current_property.owner == None:
+                self.active_user_state = TURN_STATE.buy_wait
+            elif current_property.owner != current_user_dict["user"]:
+                current_user_dict["money"] -= current_property.get_current_rent()
+                self.next_user()
         elif command == "EndTurn":
-            self.active_user_index=(self.active_user_index+len(self.order))%len(self.order)
-            self.active_user_state=TURN_STATE.turn_start
+            self.next_user()
+        else:
+            raise WrongCommandException("you're in jail, your command was \{{}\} it should either be Roll or Bail".format(command))
+
+
+        # Goes bankrupt if no money is left
+        if self.user_dict[user]["money"]<0:
+            self.detach(user)
 
     def execute_cell(self,current_user_dict,cell):
         if cell["type"]=="start":
-            return
+            self.next_user()
         elif cell["type"]=="jail":
-            return
+            self.next_user()
         elif cell["type"]=="tax":
-            current_user_dict["money"]-=self.tax
+            current_user_dict["money"]-=self.tax*len(current_user_dict["money"])
+            self.next_user()
         elif cell["type"]=="gotojail":
             mypos=current_user_dict["position"]
             for addition in range(self.N):
@@ -157,6 +199,7 @@ class Board:
                 jail_pos=(mypos-j_lo+self.N)%self.N
             self.user_dict[user]["position"]=jail_pos
             self.user_dict[user]["guilty"]=True
+            self.next_user()
         elif cell["type"]=="teleport":
             #implementation at turn
             self.user_dict[user]["money"]-=self.teleport
@@ -167,34 +210,25 @@ class Board:
                 self.active_user_state = TURN_STATE.buy_wait
             elif current_property.owner!=current_user_dict["user"]:
                 current_user_dict["money"]-=current_property.get_current_rent()
+                self.next_user()
 
         #elif property["type"]=="chance":   #TODO
-        '''
-        { "type": "start"},
-          { "type": "property", "name": "bostanci", "cell": 2, "color": "red",
-            "price":120, "rents": [50,150,400,600,900]},
-          { "type": "teleport"}, {"type": "tax"}, {"type": "jail"}],
-        '''
+
     def execute_chance_card(self,card,cell_index):
         pass    # TODO
     def getuserstate(self, user):
-        print({k.username: {'money': v['money'], 'properties': [str(prop) for prop in v['properties']]} for k, v in
-               self.user_dict.items()})
-        '''for k, v in self.user_dict.items():
-            print({
-                "username": k.username,
-                "money": v["money"],
-                "properties": v["properties"],
-
-            })'''
+        print({k.username: {'money': v['money'], 'properties': [str(prop) for prop in v['properties']]} for k, v in self.user_dict.items()})
     def getboardstate(self):
         for property in self.properties:
             print(property)
-
+    def next_user(self):
+        n=len(self.order)
+        self.active_user_index=(self.active_user_index+1)%n
+        self.active_user_state = TURN_STATE.turn_start
 
 
 class Property:
-    max_level=4
+    max_level=5
     def __init__(self,prop_dict):
         self.name = prop_dict["name"]
         self.cell = prop_dict["cell"]
@@ -205,7 +239,6 @@ class Property:
         self.owner = None
         self.level = 1
     def __str__(self):
-        max_level=5
         return str({
             "name": self.name,
             "cell": self.cell,
@@ -237,6 +270,8 @@ class AlreadyOwnedException(BaseException):
 class NotPropertyException(BaseException):
     pass
 class UPoorException(BaseException):
+    pass
+class WrongStateException(BaseException):
     pass
 
 
