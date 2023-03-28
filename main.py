@@ -1,13 +1,20 @@
 from Board import Board
 from User import User
 
+#-------------------------------------------------------------------------------------
+'''
 
+In class library phase you should implement your basic classes and write a command
+line test application demonstrating all features of your library.
 
+'''
+#-------------------------------------------------------------------------------------
 
 
 
 
 file=open("board_in","r")
+file=open("deneme_in","r")
 monopoly=Board(file)
 
 print("--------------------User print control--------------------")
@@ -27,3 +34,11 @@ print("")
 monopoly.getuserstate(user1)
 print("------------------------------------------------------------------------------------")
 print("")
+
+monopoly.ready(user1)
+monopoly.ready(user2)
+monopoly.turn(user1,"Buy")
+
+monopoly.getboardstate()
+print("")
+monopoly.getuserstate(user1)
