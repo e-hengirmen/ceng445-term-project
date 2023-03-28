@@ -14,7 +14,6 @@ line test application demonstrating all features of your library.
 
 
 file=open("board_in","r")
-file=open("deneme_in","r")
 monopoly=Board(file)
 
 print("--------------------User print control--------------------")
@@ -37,10 +36,15 @@ print("")
 
 monopoly.ready(user1)
 monopoly.ready(user2)
-monopoly.turn(user1,"Buy")
 
 monopoly.getboardstate()
 print("")
 monopoly.getuserstate(user1)
-str="ersel"
-print(str[:-1])
+
+current_user=user1
+print("------------------------------------------------------------------------------------")
+while True:
+    monopoly.getboardstate()
+    monopoly.getuserstate(user1)
+    current_user=monopoly.turn(current_user, input())
+
