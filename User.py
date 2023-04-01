@@ -20,8 +20,19 @@ class User:
         })
     def get(self):
         return self.__str__()
-    def update(self):
-        pass    #TODO
+    def update(self, username=None, email=None, fullname=None, passwd=None):
+        if username!=None:
+            if self.check_exists(username, None):
+                raise UserExistsException()
+            self.username = username
+        if email!=None:
+            if self.check_exists(None, email):
+                raise UserExistsException()
+            self.email = email
+        if fullname != None:
+            self.fullname = fullname
+        if username != None:
+            self.passwd = passwd
     def delete(self):
         pass    #TODO
     def check_exists(self,username,email):
