@@ -24,27 +24,20 @@ print(user2)
 print("----------------------------------------------------------")
 print("")
 
-print("--------------------board initial getboardstate and getuserstate--------------------")
 monopoly.attach(user1,0,0)
 monopoly.attach(user2,0,0)
-monopoly.getboardstate()
-print("")
 
-monopoly.getuserstate(user1)
+
 print("------------------------------------------------------------------------------------")
-print("")
-
 monopoly.ready(user1)
 monopoly.ready(user2)
 
-monopoly.getboardstate()
 print("")
+monopoly.getboardstate()
 monopoly.getuserstate(user1)
 
 current_user=user1
-print("------------------------------------------------------------------------------------")
 while True:
-    monopoly.getboardstate()
-    monopoly.getuserstate(user1)
+    print("------------------------------------------------------------------------------------")
     current_user=monopoly.turn(current_user, input())
 

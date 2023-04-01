@@ -2,7 +2,7 @@ import json
 from User import User
 import random
 from enum import Enum
-
+from queue import Queue
 
 
 
@@ -25,7 +25,13 @@ class Board:
         self.tax = data["tax"]
         self.lottery = data["lottery"]
         self.startup = data["startup"]
-        self.chance_card_list=data["chances"]   #used as chance card list which it is
+        #self.chance_card_list=data["chances"]   #used as chance card list which it is
+
+        self.chance_card_list=Queue()
+        for card in data["chances"]:
+            self.chance_card_list.put(card["type"])
+
+
 
         # property user containers
         self.properties=[]
@@ -64,7 +70,7 @@ class Board:
                 if cell['color'] not in self.color_list:
                     self.color_list.append(cell['color'])
 
-    def attach(self, user, callback,turncb):
+    def attach(self, user, callback,turncb):    # controlled
         self.user_dict[user]={"user":user,
                               "money":self.startup,
                               "position":0,
@@ -75,26 +81,30 @@ class Board:
         self.unready_count+=1
         self.order.append(user)
         # TODO whatever callback is
-    def detach(self, user):
+    def detach(self, user):             # controlled
+        #only call for a user on their turn
         if user in self.user_dict:
             del self.user_dict[user]
             self.order.remove(user)
             for prop in self.user_dict[user]["properties"]:
                 prop.owner=None
-            self.next_user()
-    def ready(self, user):
+            # self.next_user()
+            n = len(self.order)
+            self.active_user_index = (self.active_user_index) % n
+            self.active_user_state = TURN_STATE.turn_start
+    def ready(self, user):              # controlled
         if self.user_dict[user]["ready"]==False:
             self.user_dict[user]["ready"]=True
             self.unready_count-=1
             if (self.unready_count==0 and len(self.user_dict)>=2):
                 self.initiate_game()
-    def initiate_game(self):
+    def initiate_game(self):    #since there might be more things we need to add
         self.WaitingState=False
     def turn(self, user, command):
         if self.WaitingState==True:
             raise WaitingForReadyException()
         if self.order[self.active_user_index]!=user:
-            print(self.active_user_index,user)
+            print("The turn belongs to",user.username)
             raise NotYourTurnException()
         # jail case
         if self.user_dict[user]["guilty"]==True:
@@ -107,6 +117,7 @@ class Board:
             elif command == "Bail":
                 if self.user_dict[user]["jailFree"] >= 0:
                     self.user_dict[user]["jailFree"] -= 1
+                    self.chance_card_list.put("jail_free")
                 else:
                     self.user_dict[user]["money"] -= self.jailbail
                 self.user_dict[user]["guilty"] = False
@@ -115,7 +126,11 @@ class Board:
             self.next_user()
 
         #normal roll
-        elif command == "Roll":
+        elif command == "Roll":     # controlled
+            '''
+            u can roll:
+                if u haven't rolled this turn
+            '''
             if self.active_user_state!=TURN_STATE.turn_start:
                 raise WrongStateException()
             dice1=roll_a_dice()
@@ -128,7 +143,14 @@ class Board:
             self.user_dict[user]["position"]%=self.N
             #self.execute_cell(self.user_dict[user]["position"])
             self.execute_cell(self.user_dict[user],self.cells[self.user_dict[user]["position"]])
-        elif command == "Buy":
+        elif command == "Buy":      # controlled
+            '''
+            you can buy it if:
+                u have rolled 
+                the place u are on is a property
+                Nobody owns it
+                u have money
+            '''
             if self.active_user_state!=TURN_STATE.buy_wait:
                 raise WrongStateException()
             if self.cells[self.user_dict[user]["position"]]["type"]!="property":
@@ -150,8 +172,16 @@ class Board:
             current_property.owner=user
 
             self.next_user()
-        elif command == "Upgrade":
-            if self.active_user_state==TURN_STATE.buy_wait:
+        elif command == "Upgrade":      # controlled
+            '''
+            you can upgrade it if:
+                u have rolled 
+                the place u are on is a property
+                u own it
+                its not at max level
+                u have money
+            '''
+            if self.active_user_state!=TURN_STATE.buy_wait:
                 raise WrongStateException()
             if self.cells[self.user_dict[user]["position"]]["type"] != "property":
                 raise NotPropertyException()
@@ -164,14 +194,17 @@ class Board:
                 raise MaxLevelException()
             if self.upgrade>current_user_dict["money"]:
                 raise UPoorException()
-            current_user_dict["money"] -= current_property.price
+            current_user_dict["money"] -= self.upgrade
             current_property.upgrade()
             self.next_user()
-        elif command.startswith("Pick"):  # e.g., "Pick50-9" #TODO
-            picked_cell_index = int(command.split('-')[0][4:])
-            number = int(command.split('-')[1])
-            self.execute_chance_card(number, picked_cell_index, user)
-        elif command.startswith("Teleport"):#"Teleport(Newcell)":
+        elif command.startswith("Teleport"):     # controlled       #"Teleport(Newcell)":
+            '''
+            teleport if:
+                U are on teleport or u have taken teleport card
+                the place u are teleporting is a property
+            '''
+            if self.active_user_state!=TURN_STATE.teleport_wait:
+                raise WrongStateException()
             next_cell_index = int(command[8:])
             if self.cells[next_cell_index]["type"]!="property":
                 raise NotPropertyException()
@@ -182,18 +215,22 @@ class Board:
             if current_property.owner == None:
                 self.active_user_state = TURN_STATE.buy_wait
             elif current_property.owner != user:
-                self.user_dict[user]["money"] -= current_property.get_current_rent()
+                current_property.pay_current_rent(self.user_dict[user],self.user_dict[current_property.owner])
                 self.next_user()
-        elif command == "EndTurn":
+        elif command == "EndTurn":              # controlled
+            # end turn if rolled
             if self.active_user_state != TURN_STATE.buy_wait:
                 raise WrongStateException()
             self.next_user()
+        elif command == "List":
+            self.getboardstate()
+            self.getuserstate(user)
         else:
-            raise WrongCommandException("you're in jail, your command was \{{}\} it should either be Roll or Bail".format(command))
+            raise WrongCommandException("Your command was \{{}\}".format(command))
 
 
         # Goes bankrupt if no money is left
-        if self.user_dict[user]["money"]<0:
+        if self.user_dict[user]["money"]<0: # controlled
             self.detach(user)
 
         print("END:",user.username,"position",self.user_dict[user]["position"],"cell:",self.cells[self.user_dict[user]["position"]])
@@ -202,15 +239,16 @@ class Board:
               "cell:",self.cells[self.user_dict[self.order[self.active_user_index]]["position"]])
         return self.order[self.active_user_index]
 
-    def execute_cell(self,current_user_dict,cell):
-        if cell["type"]=="start":
+    def execute_cell(self,current_user_dict,cell):      # controlled
+        if cell["type"]=="start":       # controlled
             self.next_user()
-        elif cell["type"]=="jail":
+        elif cell["type"]=="jail":      # controlled
             self.next_user()
-        elif cell["type"]=="tax":
+        elif cell["type"]=="tax":       # controlled
             current_user_dict["money"]-=self.tax*len(current_user_dict["properties"])
             self.next_user()
-        elif cell["type"]=="gotojail":
+        elif cell["type"]=="gotojail":  # controlled
+            # find nearest jail cell then go(it goes on your record ) )
             mypos=current_user_dict["position"]
             for addition in range(self.N):
                 if self.cells[(mypos+addition)%self.N]["type"]=="jail":
@@ -227,59 +265,68 @@ class Board:
             current_user_dict["position"]=jail_pos
             current_user_dict["guilty"]=True
             self.next_user()
-        elif cell["type"]=="teleport":
+        elif cell["type"]=="teleport":  # controlled
             #implementation at turn
             current_user_dict["money"]-=self.teleport
 
             self.active_user_state=TURN_STATE.teleport_wait
-        elif cell["type"]=="property":
+        elif cell["type"]=="property":  # controlled
             current_property=cell["property"]
             if current_property.owner==None:
                 self.active_user_state = TURN_STATE.buy_wait
             elif current_property.owner!=current_user_dict["user"]:
-                current_user_dict["money"]-=current_property.get_current_rent()
+                current_property.pay_current_rent(current_user_dict, self.user_dict[current_property.owner])
                 self.next_user()
 
-        elif cell["type"]=="chance":   #TODO
+        elif cell["type"]=="chance":
             card_number = take_chance_card()
-            card = self.chance_card_list[card_number]
-            if card == 'upgrade':
-                selected_cell = int(input('select a cell to upgrade'))
-                self.turn(current_user_dict['user'], f'Pick{selected_cell}-{card_number}')
+            card = self.chance_card_list.get()
+            NEXT_USER_FLAG=True
+            PUT_CARD_BACK_FLAG=True
 
-            elif card == 'downgrade':
-                selected_cell = int(input('select a cell to downgrade'))
-                self.turn(current_user_dict['user'], f'Pick{selected_cell}-{card_number}')
+            if card == 'upgrade' or card == 'downgrade':    # controlled
+                '''selected_cell = int(input('select a cell to upgrade'))
+                self.turn(current_user_dict['user'], f'Pick{selected_cell}-{card_number}')'''
+                owns_property = len(current_user_dict["user"]["properties"])
+                while owns_property:
+                    response_string = input('select a cell you own to'+ card+'(in the form Pick(cell number)):')
+                    if not (response_string.startswith("Pick(") and
+                            response_string.endswith(")") and
+                            response_string[5:-1].isnumeric()):
+                        continue
+                    cell_index=int(response_string[5:-1])
+                    if self.cells[cell_index]["type"] != "property":
+                        continue
 
-            elif card == 'color_upgrade':
-                selected_color = input('select a color')
-                if selected_color not in self.color_list:
-                    raise WrongColorException()
-                flag=False
-                for prop in self.properties_by_color[selected_color]:
-                    if prop.owner==current_user_dict["user"]:
-                        flag=True
-                        break
-                if flag==False:
-                    raise NotOwnedException()
-                for prop in self.properties_by_color[selected_color]:
-                    prop.upgrade()
+                    current_property = self.cells[cell_index]["property"]
+                    if current_property.owner != user:
+                        continue
+                    if card == 'upgrade':
+                        current_property.upgrade()
+                    elif card == 'downgrade':
+                        current_property.downgrade()
+                    break
 
-            elif card == 'color_downgrade':
-                selected_color = input('select a color')
-                if selected_color not in self.color_list:
-                    raise WrongColorException()
-                flag = False
-                for prop in self.properties_by_color[selected_color]:
-                    if prop.owner == current_user_dict["user"]:
-                        flag = True
-                        break
-                if flag == False:
-                    raise NotOwnedException()
-                for prop in self.properties_by_color[selected_color]:
-                    prop.downgrade()
+            elif card == 'color_upgrade' or card == 'color_downgrade':  # controlled
+                owns_property=len(current_user_dict["user"]["properties"])
+                while owns_property:
+                    selected_color = input('select a color to'+ card[6:] +'that you have at least one property:')
+                    if selected_color not in self.color_list:
+                        continue
+                    flag=False
+                    for prop in self.properties_by_color[selected_color]:
+                        if prop.owner==current_user_dict["user"]:
+                            flag=True
+                            break
+                    if flag==False:
+                        continue
+                    for prop in self.properties_by_color[selected_color]:
+                        if card == 'color_upgrade':
+                            prop.upgrade()
+                        if card == 'color_downgrade':
+                            prop.downgrade()
 
-            elif card == 'gotojail':
+            elif card == 'gotojail':            # controlled
                 mypos = current_user_dict["position"]
                 for addition in range(self.N):
                     if self.cells[(mypos + addition) % self.N]["type"] == "jail":
@@ -295,50 +342,36 @@ class Board:
                     jail_pos = (mypos - j_lo + self.N) % self.N
                 current_user_dict["position"] = jail_pos
                 current_user_dict["guilty"] = True
-                self.next_user()
 
-            elif card == 'jail_free':   #TODO take color off the list delayed PUSH
+            elif card == 'jail_free':           # controlled
                 current_user_dict['jailFree'] += 1
+                PUT_CARD_BACK_FLAG=False
 
-            elif card == 'teleport':
-                selected_cell = int(input('select a cell to teleport'))
-                self.turn(current_user_dict['user'], f'Teleport{selected_cell}')
+            elif card == 'teleport':            # controlled
+                '''selected_cell = int(input('select a cell to teleport'))
+                self.turn(current_user_dict['user'], f'Teleport{selected_cell}')'''
+                self.active_user_state = TURN_STATE.teleport_wait
+                NEXT_USER_FLAG=False
 
-            elif card == 'lottery':
+            elif card == 'lottery':             # controlled
                 current_user_dict['money'] += self.lottery
-            elif card == 'tax':
+            elif card == 'tax':                 # controlled
                 current_user_dict["money"] -= self.tax * len(current_user_dict["properties"])
+
+            if(NEXT_USER_FLAG):
                 self.next_user()
-
-
-    def execute_chance_card(self, card_number, cell_index, user):
-        if self.chance_card_list[card_number]['type'] == 'upgrade':
-            if self.cells[cell_index]["type"] != "property":
-                raise NotPropertyException()
-            current_user_dict = self.user_dict[user]
-            current_property = self.cells[cell_index]["property"]
-            if current_property.owner != user:
-                raise NotOwnedException()
-            current_property.upgrade()
-
-        elif self.chance_card_list[card_number]['type'] == 'downgrade':
-            if self.cells[cell_index]["type"] != "property":
-                raise NotPropertyException()
-            current_user_dict = self.user_dict[user]
-            current_property = self.cells[cell_index]["property"]
-            if current_property.owner!=user:
-                raise NotOwnedException()
-            current_property.downgrade()
-    def getuserstate(self, user):
+            if(PUT_CARD_BACK_FLAG):
+                self.chance_card_list.put(card)
+    def getuserstate(self, user):       # controlled
         #print({k.username: {'money': v['money'], 'properties': [str(prop) for prop in v['properties']]} for k, v in self.user_dict.items()})
         for k, v in self.user_dict.items():
             print({k.username: {'money': v['money']}})
             for prop in v['properties']:
                 print("\t",prop)
-    def getboardstate(self):
+    def getboardstate(self):            # controlled
         for property in self.properties:
             print(property)
-    def next_user(self):
+    def next_user(self):                # controlled
         n=len(self.order)
         self.active_user_index=(self.active_user_index+1)%n
         self.active_user_state = TURN_STATE.turn_start
@@ -365,8 +398,10 @@ class Property:
             "owner": self.owner.username if self.owner!=None else None,
             "level": self.level,
         })
-    def get_current_rent(self):
-        return self.rents[self.level-1]
+    def pay_current_rent(self,renter_user_dict,owner_user_dict):
+        if(owner_user_dict["guilty"]==False):
+            renter_user_dict -= self.rents[self.level-1]
+            owner_user_dict  += self.rents[self.level-1]
     def at_max_level(self):
         return (self.level<self.max_level)
     def at_min_level(self):
