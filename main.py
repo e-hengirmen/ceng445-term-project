@@ -33,11 +33,13 @@ monopoly.ready(user1)
 monopoly.ready(user2)
 
 print("")
-monopoly.getboardstate()
-monopoly.getuserstate(user1)
+#monopoly.getboardstate()
+#monopoly.getuserstate(user1)
 
 current_user=user1
+monopoly.print_report(current_user)
 while True:
+    monopoly.ListCommands(current_user)
     print("------------------------------------------------------------------------------------")
     current_user=monopoly.turn(current_user, input())
 

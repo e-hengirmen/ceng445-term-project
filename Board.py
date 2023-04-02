@@ -92,6 +92,8 @@ class Board:
             n = len(self.order)
             self.active_user_index = (self.active_user_index) % n
             self.active_user_state = TURN_STATE.turn_start
+            if(n==1):
+                print("Game has ended - {} wins!!!".format(self.order[0]))
     def ready(self, user):              # controlled
         if self.user_dict[user]["ready"]==False:
             self.user_dict[user]["ready"]=True
@@ -100,12 +102,20 @@ class Board:
                 self.initiate_game()
     def initiate_game(self):    #since there might be more things we need to add
         self.WaitingState=False
+
     def turn(self, user, command):
+        try:
+            return self.turn_helper(user,command)
+        except MonopolyException as e:
+            print("ERROR:", e)
+            return user
+
+    def turn_helper(self, user, command):
         if self.WaitingState==True:
-            raise WaitingForReadyException()
+            raise WaitingForReadyException("Not everyone is ready")
         if self.order[self.active_user_index]!=user:
             print("The turn belongs to",user.username)
-            raise NotYourTurnException()
+            raise NotYourTurnException("It is "+self.order[self.active_user_index]+"'s turn")
         # jail case
         if self.user_dict[user]["guilty"]==True:
             if command == "Roll":
@@ -132,7 +142,7 @@ class Board:
                 if u haven't rolled this turn
             '''
             if self.active_user_state!=TURN_STATE.turn_start:
-                raise WrongStateException()
+                raise WrongStateException("Already rolled")
             dice1=roll_a_dice()
             dice2=roll_a_dice()
             #show_dice_roll(dice1,dice2)
@@ -152,18 +162,18 @@ class Board:
                 u have money
             '''
             if self.active_user_state!=TURN_STATE.buy_wait:
-                raise WrongStateException()
+                raise WrongStateException("You cannot buy if you are teleporting or have not rolled")
             if self.cells[self.user_dict[user]["position"]]["type"]!="property":
-                raise NotPropertyException()
+                raise NotPropertyException("Not a property")
 
             current_user_dict = self.user_dict[user]
             position=current_user_dict["position"]
             current_property = self.cells[position]["property"]
 
             if current_property.owner != None:
-                raise AlreadyOwnedException()
+                raise AlreadyOwnedException("property owned by "+current_property.owner.username)
             if current_property.price>current_user_dict["money"]:
-                raise UPoorException()
+                raise UPoorException("Not enough money")
 
 
 
@@ -182,18 +192,18 @@ class Board:
                 u have money
             '''
             if self.active_user_state!=TURN_STATE.buy_wait:
-                raise WrongStateException()
+                raise WrongStateException("You cannot upgrade if you are teleporting or have not rolled")
             if self.cells[self.user_dict[user]["position"]]["type"] != "property":
-                raise NotPropertyException()
+                raise NotPropertyException("This cell is not a property")
             current_user_dict = self.user_dict[user]
             position = current_user_dict["position"]
             current_property = self.cells[position]["property"]
             if current_property.owner!=user:
-                raise NotOwnedException()
+                raise NotOwnedException("This property does not belong to you")
             if current_property.at_max_level():
-                raise MaxLevelException()
+                raise MaxLevelException("Already at max level")
             if self.upgrade>current_user_dict["money"]:
-                raise UPoorException()
+                raise UPoorException("Not enough Money")
             current_user_dict["money"] -= self.upgrade
             current_property.upgrade()
             self.next_user()
@@ -204,15 +214,15 @@ class Board:
                 the place u are teleporting is a property
             '''
             if self.active_user_state!=TURN_STATE.teleport_wait:
-                raise WrongStateException()
-            next_cell_index = int(command[8:])
+                raise WrongStateException("Not in teleport state")
+            next_cell_index = int(command[9:-1])
             if self.cells[next_cell_index]["type"]!="property":
-                raise NotPropertyException()
+                raise NotPropertyException("Can only teleport to properties")
 
             self.user_dict[user]["position"] = next_cell_index
 
             current_property = self.cells[next_cell_index]["property"]
-            if current_property.owner == None:
+            if current_property.owner == None or current_property.owner == user:
                 self.active_user_state = TURN_STATE.buy_wait
             elif current_property.owner != user:
                 current_property.pay_current_rent(self.user_dict[user],self.user_dict[current_property.owner])
@@ -220,25 +230,24 @@ class Board:
         elif command == "EndTurn":              # controlled
             # end turn if rolled
             if self.active_user_state != TURN_STATE.buy_wait:
-                raise WrongStateException()
+                raise WrongStateException("Can not end turn if roll or teleport is needed")
             self.next_user()
-        elif command == "List":
+            '''elif command == "List":
             self.getboardstate()
+            print("")
             self.getuserstate(user)
+            print("")'''
         else:
-            raise WrongCommandException("Your command was \{{}\}".format(command))
+            raise WrongCommandException("Your command: \""+command+"\" is not valid")
 
 
         # Goes bankrupt if no money is left
         if self.user_dict[user]["money"]<0: # controlled
             self.detach(user)
 
-        print("END:",user.username,"position",self.user_dict[user]["position"],"cell:",self.cells[self.user_dict[user]["position"]])
-        print("turn on:",self.order[self.active_user_index].username,
-              "position",self.user_dict[self.order[self.active_user_index]]["position"],
-              "cell:",self.cells[self.user_dict[self.order[self.active_user_index]]["position"]])
-        return self.order[self.active_user_index]
+        self.print_report(user)
 
+        return self.order[self.active_user_index]
     def execute_cell(self,current_user_dict,cell):      # controlled
         if cell["type"]=="start":       # controlled
             self.next_user()
@@ -277,7 +286,8 @@ class Board:
             elif current_property.owner!=current_user_dict["user"]:
                 current_property.pay_current_rent(current_user_dict, self.user_dict[current_property.owner])
                 self.next_user()
-
+            else: #if user owns it
+                self.next_user()
         elif cell["type"]=="chance":
             card_number = take_chance_card()
             card = self.chance_card_list.get()
@@ -367,10 +377,57 @@ class Board:
         for k, v in self.user_dict.items():
             print({k.username: {'money': v['money']}})
             for prop in v['properties']:
-                print("\t",prop)
+                print("\t",prop.user_visualization())
     def getboardstate(self):            # controlled
         for property in self.properties:
             print(property)
+    def print_report(self,user):
+        self.getboardstate()
+        print("")
+        self.getuserstate(user)
+        print("")
+
+        print("LAST PLAY:\t{:<{uL}} position: {:<{pL}} cell: {}".format(
+            user.username,
+            self.user_dict[user]["position"],
+            self.cells[self.user_dict[user]["position"]],
+            uL=20,
+            pL=3
+        ))
+        print("TURN ON:\t{:<{uL}} position: {:<{pL}} cell: {:<{cL}}".format(
+            self.order[self.active_user_index].username,
+            self.user_dict[self.order[self.active_user_index]]["position"],
+            str(self.cells[self.user_dict[self.order[self.active_user_index]]["position"]]),
+            uL = 20,
+            pL = 3,
+            cL = 20
+        ))
+        print("")
+    def ListCommands(self,user):
+        print(user.username,end=" ")
+        if self.user_dict[user]["guilty"]:
+            print("You are at jail")
+            print("You have "+ self.user_dict[user]["jailFree"] +" jailFree cards")
+            print("Avaliable commands to you are:")
+            print("\tRoll")
+            print("\tBail")
+        elif self.active_user_state == TURN_STATE.turn_start:
+            print("You are at start of the turn")
+            print("Avaliable commands to you are:")
+            print("\tRoll")
+        elif self.active_user_state == TURN_STATE.teleport_wait:
+            print("You are in teleportation state")
+            print("Avaliable commands to you are:")
+            print("\tTeleport(index)")
+        elif self.active_user_state == TURN_STATE.buy_wait:
+            print("You are in last state")
+            print("Avaliable commands to you are:")
+            print("\tEndTurn")
+            if (self.cells[self.user_dict[user]["position"]]["property"].owner == None):
+                print("\tBuy")
+            else:
+                print("\tUpgrade")
+        print("")
     def next_user(self):                # controlled
         n=len(self.order)
         self.active_user_index=(self.active_user_index+1)%n
@@ -398,12 +455,20 @@ class Property:
             "owner": self.owner.username if self.owner!=None else None,
             "level": self.level,
         })
+    def user_visualization(self):
+        return str({
+            "name": self.name,
+            "current rent": self.get_current_rent(),
+            "level": self.level,
+        })
+    def get_current_rent(self):
+        return self.rents[self.level-1]
     def pay_current_rent(self,renter_user_dict,owner_user_dict):
         if(owner_user_dict["guilty"]==False):
-            renter_user_dict -= self.rents[self.level-1]
-            owner_user_dict  += self.rents[self.level-1]
+            renter_user_dict["money"] -= self.rents[self.level-1]
+            owner_user_dict["money"]  += self.rents[self.level-1]
     def at_max_level(self):
-        return (self.level<self.max_level)
+        return (self.level>=self.max_level)
     def at_min_level(self):
         return (self.level==1)
 
@@ -417,24 +482,29 @@ class Property:
             self.level-=1
 
 
-class NotOwnedException(BaseException):
+class MonopolyException(Exception):
     pass
-class AlreadyOwnedException(BaseException):
+class NotOwnedException(MonopolyException):
     pass
-class NotPropertyException(BaseException):
+class AlreadyOwnedException(MonopolyException):
     pass
-class UPoorException(BaseException):
+class NotPropertyException(MonopolyException):
     pass
-class WrongStateException(BaseException):
+class UPoorException(MonopolyException):
     pass
-class WaitingForReadyException(BaseException):
+class WrongStateException(MonopolyException):
     pass
-class NotYourTurnException(BaseException):
+class WaitingForReadyException(MonopolyException):
+    pass
+class NotYourTurnException(MonopolyException):
     pass
 
-class MaxLevelException(BaseException):
+class MaxLevelException(MonopolyException):
     pass
-class WrongColorException(BaseException):
+class WrongColorException(MonopolyException):
+    pass
+
+class WrongCommandException(MonopolyException):
     pass
 
 
