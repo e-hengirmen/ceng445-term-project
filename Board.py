@@ -50,9 +50,6 @@ class Board:
         self.order=[]
         self.active_user_index=0
 
-        # TODO  non-given
-
-
         # properties group by color
         self.properties_by_color = {}
         self.get_colors()
@@ -108,30 +105,31 @@ class Board:
                 self.initiate_game()
     def initiate_game(self):    #since there might be more things we need to add
         self.WaitingState=False
+        self.CALL_THEM_BACK(self.order[0],self.get_report(self.order[0]))
 
-    def turn(self, user, command):
+    def turn(self, user):
+        command=self.TURN_TO_USER(user)
         try:
             return self.turn_helper(user,command)
         except MonopolyException as e:
-            print("ERROR:", e)
+            self.CALL_THEM_BACK(user, f"ERROR: {e}\n")
             return user
 
     def turn_helper(self, user, command):
         if self.WaitingState==True:
             raise WaitingForReadyException("Not everyone is ready")
         if self.order[self.active_user_index]!=user:
-            print("The turn belongs to",user.username)
-            raise NotYourTurnException("It is "+self.order[self.active_user_index]+"'s turn")
+            raise NotYourTurnException("It is "+self.order[self.active_user_index].username+"'s turn")
         # jail case
         if self.user_dict[user]["guilty"]==True:
             if command == "Roll":
                 dice1 = roll_a_dice()
                 dice2 = roll_a_dice()
                 # show_dice_roll(dice1,dice2)
-                print(f"You rolled {dice1} {dice2}")
+                self.CALL_THEM_BACK(user,f"{user.username} rolled {dice1} {dice2}")
                 if(dice1==dice2):
                     self.user_dict[user]["guilty"]=False
-                    print("You are now out of jail")
+                    self.CALL_THEM_BACK(user,f"{user.username} is now out of jail")
 
             elif command == "Bail":
                 if self.user_dict[user]["jailFree"] > 0:
@@ -140,7 +138,7 @@ class Board:
                 else:
                     self.user_dict[user]["money"] -= self.jailbail
                 self.user_dict[user]["guilty"] = False
-                print("You are now out of jail")
+                self.CALL_THEM_BACK(user, f"{user.username} is now out of jail")
             else:
                 raise WrongCommandException(f"you're in jail, your command was \"{command}\" it should either be Roll or Bail")
             self.next_user()
@@ -157,7 +155,6 @@ class Board:
             dice2=roll_a_dice()
             #show_dice_roll(dice1,dice2)
             roll_res=dice1+dice2
-            roll_res=3
             print("rolled",roll_res)
             self.user_dict[user]["position"]=(self.user_dict[user]["position"]+roll_res)
             self.user_dict[user]["money"]+=self.lapping_salary*(self.user_dict[user]["position"]//self.N)
@@ -226,6 +223,8 @@ class Board:
             '''
             if self.active_user_state!=TURN_STATE.teleport_wait:
                 raise WrongStateException("Not in teleport state")
+            if not command[9:-1].isnumeric():
+                raise NotPropertyException("Can only teleport to properties with given indexes")
             next_cell_index = int(command[9:-1])
             next_cell_index-=1
             if len(self.cells)<=next_cell_index or next_cell_index<0:
@@ -246,11 +245,6 @@ class Board:
             if self.active_user_state != TURN_STATE.buy_wait:
                 raise WrongStateException("Can not end turn if roll or teleport is needed")
             self.next_user()
-            '''elif command == "List":
-            self.getboardstate()
-            print("")
-            self.getuserstate(user)
-            print("")'''
         else:
             raise WrongCommandException("Your command: \""+command+"\" is not valid")
 
@@ -260,7 +254,7 @@ class Board:
             self.detach(user)
             return None
 
-        self.print_report(user)
+        self.CALL_THEM_BACK(user,self.get_report(user))
 
         return self.order[self.active_user_index]
     def execute_cell(self,current_user_dict,cell):      # controlled
@@ -302,14 +296,14 @@ class Board:
                 current_property.pay_current_rent(current_user_dict, self.user_dict[current_property.owner])
                 self.next_user()
             else: #if user owns it
-                self.next_user()
+                self.active_user_state = TURN_STATE.buy_wait
         elif cell["type"]=="chance":
             card_number = take_chance_card()
             card = self.chance_card_list.get()
             NEXT_USER_FLAG=True
             PUT_CARD_BACK_FLAG=True
 
-            print(f"You landed on a chance card {card}")
+            self.CALL_THEM_BACK(current_user_dict["user"],f"{current_user_dict['user'].username} landed on a chance card {card}")
 
             if card == 'upgrade' or card == 'downgrade':    # controlled
                 '''selected_cell = int(input('select a cell to upgrade'))
@@ -338,7 +332,7 @@ class Board:
             elif card == 'color_upgrade' or card == 'color_downgrade':  # controlled
                 owns_property=len(current_user_dict["properties"])
                 while owns_property:
-                    selected_color = input('select a color to'+ card[6:] +'that you have at least one property:')
+                    selected_color = input('select a color to '+ card[6:] +' that you have at least one property:')
                     if selected_color not in self.color_list:
                         continue
                     flag=False
@@ -393,27 +387,28 @@ class Board:
                 self.chance_card_list.put(card)
     def getuserstate(self, user):       # controlled
         #print({k.username: {'money': v['money'], 'properties': [str(prop) for prop in v['properties']]} for k, v in self.user_dict.items()})
+        str_list=[]
         for k, v in self.user_dict.items():
-            print({k.username: {'money': v['money']}})
+            str_list.append(str({k.username: {'money': v['money'],"position":1+v["position"]}}))
             for prop in v['properties']:
-                print("\t",prop.user_visualization())
+                str_list.append("\t"+prop.user_visualization())
+        return "\n".join(str_list)
     def getboardstate(self):            # controlled
-        for property in self.properties:
-            print(property)
-    def print_report(self,user):
-        self.getboardstate()
-        print("")
-        self.getuserstate(user)
-        print("")
+        return "\n".join(list(map(str,self.cells)))
+        '''for property in self.properties:
+            print(property)'''
+    def get_report(self,user):
+        bs=self.getboardstate()
+        us=self.getuserstate(user)
 
-        print("LAST PLAY:\t{:<{uL}} position: {:<{pL}} cell: {}".format(
+        lp=("LAST PLAY:\t{:<{uL}} position: {:<{pL}} cell: {}".format(
             user.username,
             self.user_dict[user]["position"]+1,
             self.cells[self.user_dict[user]["position"]],
             uL=20,
             pL=3
         ))
-        print("TURN ON:\t{:<{uL}} position: {:<{pL}} cell: {:<{cL}}".format(
+        to=("TURN ON:\t{:<{uL}} position: {:<{pL}} cell: {:<{cL}}".format(
             self.order[self.active_user_index].username,
             self.user_dict[self.order[self.active_user_index]]["position"]+1,
             str(self.cells[self.user_dict[self.order[self.active_user_index]]["position"]]),
@@ -421,32 +416,44 @@ class Board:
             pL = 3,
             cL = 20
         ))
-        print("")
+        return bs+"\n"+"\n"+us+"\n"+"\n"+lp+"\n"+to+"\n"+"\n"
     def ListCommands(self,user):
-        print(user.username,end=" ")
+        str_list=[user.username]
         if self.user_dict[user]["guilty"]:
-            print("You are at jail")
-            print("You have "+ str(self.user_dict[user]["jailFree"]) +" jailFree cards")
-            print("Avaliable commands to you are:")
-            print("\tRoll")
-            print("\tBail")
+            str_list.append("You are at jail")
+            str_list.append("You have "+ str(self.user_dict[user]["jailFree"]) +" jailFree cards")
+            str_list.append("Avaliable commands to you are:")
+            str_list.append("\tRoll")
+            str_list.append("\tBail")
         elif self.active_user_state == TURN_STATE.turn_start:
-            print("You are at start of the turn")
-            print("Avaliable commands to you are:")
-            print("\tRoll")
+            str_list.append("You are at start of the turn")
+            str_list.append("Avaliable commands to you are:")
+            str_list.append("\tRoll")
         elif self.active_user_state == TURN_STATE.teleport_wait:
-            print("You are in teleportation state")
-            print("Avaliable commands to you are:")
-            print("\tTeleport(index)")
+            str_list.append("You are in teleportation state")
+            str_list.append("Avaliable commands to you are:")
+            str_list.append("\tTeleport(index)")
         elif self.active_user_state == TURN_STATE.buy_wait:
-            print("You are in last state")
-            print("Avaliable commands to you are:")
-            print("\tEndTurn")
+            str_list.append("You are in last state")
+            str_list.append("Avaliable commands to you are:")
+            str_list.append("\tEndTurn")
             if (self.cells[self.user_dict[user]["position"]]["property"].owner == None):
-                print("\tBuy")
+                str_list.append("\tBuy")
             else:
-                print("\tUpgrade")
+                str_list.append("\tUpgrade")
+        return "\n".join(str_list)
+
+    def CALL_THEM_BACK(self,last_played_user,message):  # TODO change comments with uncommented also remove last played user
+        #for current_user_dict in self.user_dict.values():
+        #    current_user_dict["callback"](message)
+        self.user_dict[last_played_user]["callback"](message)
+
+    def TURN_TO_USER(self,user):
+        command=self.user_dict[user]["turncb"](self.ListCommands(user))
         print("")
+        print("-----------------------------------------------------")
+        return command
+
     def next_user(self):                # controlled
         n=len(self.order)
         self.active_user_index=(self.active_user_index+1)%n
@@ -479,6 +486,8 @@ class Property:
             "name": self.name,
             "current rent": self.get_current_rent(),
             "level": self.level,
+            "cell": self.cell,
+            "color": self.color,
         })
     def get_current_rent(self):
         return self.rents[self.level-1]

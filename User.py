@@ -46,6 +46,12 @@ class User:
     def logout(self):
         pass #TODO
 
+    def callback(self,message):
+        print(message)
+    def turncb(self,message):
+        print(message)
+        return input()
+
 class UserExistsException():
     pass
 
