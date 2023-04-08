@@ -13,7 +13,7 @@ line test application demonstrating all features of your library.
 
 
 
-file=open("board_in","r")
+file=open("deneme2_in","r")
 monopoly=Board(file)
 
 print("--------------------User print control--------------------")
@@ -42,4 +42,6 @@ while True:
     monopoly.ListCommands(current_user)
     print("------------------------------------------------------------------------------------")
     current_user=monopoly.turn(current_user, input())
+    if(current_user==None):
+        break
 

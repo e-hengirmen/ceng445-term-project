@@ -25,6 +25,8 @@ class Board:
         self.tax = data["tax"]
         self.lottery = data["lottery"]
         self.startup = data["startup"]
+        self.lapping_salary = data["lapping_salary"]
+
         #self.chance_card_list=data["chances"]   #used as chance card list which it is
 
         self.chance_card_list=Queue()
@@ -49,11 +51,13 @@ class Board:
         self.active_user_index=0
 
         # TODO  non-given
-        self.lapping_salary=500
+
 
         # properties group by color
         self.properties_by_color = {}
         self.get_colors()
+
+        self.callback={}
 
     def get_colors(self):
         for color in self.color_list:
@@ -77,17 +81,19 @@ class Board:
                               "properties":[],
                               "ready":False,
                               "guilty":False,
-                              "jailFree":0,}
+                              "jailFree":0,
+                              "callback":callback,
+                              "turncb":turncb}
         self.unready_count+=1
         self.order.append(user)
         # TODO whatever callback is
     def detach(self, user):             # controlled
         #only call for a user on their turn
         if user in self.user_dict:
-            del self.user_dict[user]
             self.order.remove(user)
             for prop in self.user_dict[user]["properties"]:
                 prop.owner=None
+            del self.user_dict[user]
             # self.next_user()
             n = len(self.order)
             self.active_user_index = (self.active_user_index) % n
@@ -122,17 +128,21 @@ class Board:
                 dice1 = roll_a_dice()
                 dice2 = roll_a_dice()
                 # show_dice_roll(dice1,dice2)
+                print(f"You rolled {dice1} {dice2}")
                 if(dice1==dice2):
                     self.user_dict[user]["guilty"]=False
+                    print("You are now out of jail")
+
             elif command == "Bail":
-                if self.user_dict[user]["jailFree"] >= 0:
+                if self.user_dict[user]["jailFree"] > 0:
                     self.user_dict[user]["jailFree"] -= 1
                     self.chance_card_list.put("jail_free")
                 else:
                     self.user_dict[user]["money"] -= self.jailbail
                 self.user_dict[user]["guilty"] = False
+                print("You are now out of jail")
             else:
-                raise WrongCommandException("you're in jail, your command was \{{}\} it should either be Roll or Bail".format(command))
+                raise WrongCommandException(f"you're in jail, your command was \"{command}\" it should either be Roll or Bail")
             self.next_user()
 
         #normal roll
@@ -147,6 +157,7 @@ class Board:
             dice2=roll_a_dice()
             #show_dice_roll(dice1,dice2)
             roll_res=dice1+dice2
+            roll_res=3
             print("rolled",roll_res)
             self.user_dict[user]["position"]=(self.user_dict[user]["position"]+roll_res)
             self.user_dict[user]["money"]+=self.lapping_salary*(self.user_dict[user]["position"]//self.N)
@@ -216,6 +227,9 @@ class Board:
             if self.active_user_state!=TURN_STATE.teleport_wait:
                 raise WrongStateException("Not in teleport state")
             next_cell_index = int(command[9:-1])
+            next_cell_index-=1
+            if len(self.cells)<=next_cell_index or next_cell_index<0:
+                raise OutOfRangeException(f"give the index of the property you want to teleport\n You gave {next_cell_index + 1} it should be in the range [1,{len(self.cells)}]")
             if self.cells[next_cell_index]["type"]!="property":
                 raise NotPropertyException("Can only teleport to properties")
 
@@ -244,6 +258,7 @@ class Board:
         # Goes bankrupt if no money is left
         if self.user_dict[user]["money"]<0: # controlled
             self.detach(user)
+            return None
 
         self.print_report(user)
 
@@ -294,10 +309,12 @@ class Board:
             NEXT_USER_FLAG=True
             PUT_CARD_BACK_FLAG=True
 
+            print(f"You landed on a chance card {card}")
+
             if card == 'upgrade' or card == 'downgrade':    # controlled
                 '''selected_cell = int(input('select a cell to upgrade'))
                 self.turn(current_user_dict['user'], f'Pick{selected_cell}-{card_number}')'''
-                owns_property = len(current_user_dict["user"]["properties"])
+                owns_property = len(current_user_dict["properties"])
                 while owns_property:
                     response_string = input('select a cell you own to'+ card+'(in the form Pick(cell number)):')
                     if not (response_string.startswith("Pick(") and
@@ -305,11 +322,12 @@ class Board:
                             response_string[5:-1].isnumeric()):
                         continue
                     cell_index=int(response_string[5:-1])
+                    cell_index-=1
                     if self.cells[cell_index]["type"] != "property":
                         continue
 
                     current_property = self.cells[cell_index]["property"]
-                    if current_property.owner != user:
+                    if current_property.owner != current_user_dict["user"]:
                         continue
                     if card == 'upgrade':
                         current_property.upgrade()
@@ -318,7 +336,7 @@ class Board:
                     break
 
             elif card == 'color_upgrade' or card == 'color_downgrade':  # controlled
-                owns_property=len(current_user_dict["user"]["properties"])
+                owns_property=len(current_user_dict["properties"])
                 while owns_property:
                     selected_color = input('select a color to'+ card[6:] +'that you have at least one property:')
                     if selected_color not in self.color_list:
@@ -335,6 +353,7 @@ class Board:
                             prop.upgrade()
                         if card == 'color_downgrade':
                             prop.downgrade()
+                    break
 
             elif card == 'gotojail':            # controlled
                 mypos = current_user_dict["position"]
@@ -389,14 +408,14 @@ class Board:
 
         print("LAST PLAY:\t{:<{uL}} position: {:<{pL}} cell: {}".format(
             user.username,
-            self.user_dict[user]["position"],
+            self.user_dict[user]["position"]+1,
             self.cells[self.user_dict[user]["position"]],
             uL=20,
             pL=3
         ))
         print("TURN ON:\t{:<{uL}} position: {:<{pL}} cell: {:<{cL}}".format(
             self.order[self.active_user_index].username,
-            self.user_dict[self.order[self.active_user_index]]["position"],
+            self.user_dict[self.order[self.active_user_index]]["position"]+1,
             str(self.cells[self.user_dict[self.order[self.active_user_index]]["position"]]),
             uL = 20,
             pL = 3,
@@ -407,7 +426,7 @@ class Board:
         print(user.username,end=" ")
         if self.user_dict[user]["guilty"]:
             print("You are at jail")
-            print("You have "+ self.user_dict[user]["jailFree"] +" jailFree cards")
+            print("You have "+ str(self.user_dict[user]["jailFree"]) +" jailFree cards")
             print("Avaliable commands to you are:")
             print("\tRoll")
             print("\tBail")
@@ -506,7 +525,8 @@ class WrongColorException(MonopolyException):
 
 class WrongCommandException(MonopolyException):
     pass
-
+class OutOfRangeException(MonopolyException):
+    pass
 
 class TURN_STATE(Enum):
     turn_start = 1
