@@ -1,5 +1,6 @@
 from Board import Board
 from User import User
+import sys
 
 #-------------------------------------------------------------------------------------
 '''
@@ -10,10 +11,10 @@ line test application demonstrating all features of your library.
 '''
 #-------------------------------------------------------------------------------------
 
-
-
-
-file=open("deneme_in","r")
+if(len(sys.argv)<1):
+    print("use this program in the form:")
+    print("python3 demo.py {input_fie_name}")
+file=open(sys.argv[1],"r")
 monopoly=Board(file)
 
 print("--------------------User print control--------------------")
