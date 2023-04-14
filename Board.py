@@ -18,7 +18,9 @@ class Board:
 
         # file variables
         self.cells=data["cells"]            #used as map to play the game
-        self.N=len(data["cells"])
+        self.N=len(data["cells"])           #number of cells
+
+        # costs or prizes
         self.upgrade = data["upgrade"]
         self.teleport = data["teleport"]
         self.jailbail = data["jailbail"]
