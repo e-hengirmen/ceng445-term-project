@@ -10,7 +10,7 @@ We have 3 python files:
 We also added 3 monopoly board files:
 * `deneme_in` board file with 4 properties and every cell type included 
 * `deneme2_in` board file with lots of chance cards
-* `input.json` a bigger board
+* `input.json` a bigger board(unchecked)
 
 # How to play
 to play the game do:
