@@ -36,8 +36,8 @@ monopoly.attach(user2,user2.callback,user2.turncb2)
 6-ROlled 6 6 out of jail
 7-take a lap, went to Vermont, upgrade
 8-take a lap, went to Vermont, upgrade
-9-take a lap, went to Vermont, upgrade
-10-take a lap, went to Vermont, EndTurn
+9-take a lap, went to Vermont, EndTurn
+10-take a lap, went to Vermont, upgrade
 11-take a lap, went to Vermont, EndTurn
 12-Chance(Teleport),Teleport to Vermont, try upgrade, max level fail,EndTurn
 13-Chance(lottery)
@@ -53,8 +53,8 @@ user1.setCommandList(["Roll(2)","Buy",
                       "DoubleDice",
                       "Roll(9)","Upgrade",
                       "Roll(10)","Upgrade",
-                      "Roll(10)","Upgrade",
                       "Roll(10)","EndTurn",
+                      "Roll(10)","Upgrade",
                       "Roll(10)","EndTurn",
                       "Roll(5)","Teleport(5)","Upgrade","EndTurn",
                       "Roll(5)",
@@ -107,8 +107,10 @@ print("")
 #monopoly.getuserstate(user1)
 
 current_user=user1
+i=0
 while True:
     current_user=monopoly.turn(current_user)
     if(current_user==None):
         break
+    i+=1
 

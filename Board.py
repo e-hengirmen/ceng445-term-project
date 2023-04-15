@@ -216,12 +216,12 @@ class Board:
                     self.CALL_THEM_BACK(user, f"{user.username} is now out of jail")
 
             # Below 2 cases were only added for testing TODO delete later
-            if command == "DoubleDice":
+            elif command == "DoubleDice":
                 # show_dice_roll(dice1,dice2)
                 self.CALL_THEM_BACK(user, f"{user.username} rolled 6 6")
                 self.user_dict[user]["guilty"] = False
                 self.CALL_THEM_BACK(user, f"{user.username} is now out of jail")
-            if command == "NotDoubleDice":
+            elif command == "NotDoubleDice":
                 # show_dice_roll(dice1,dice2)
                 self.CALL_THEM_BACK(user, f"{user.username} rolled 3 5")
 
