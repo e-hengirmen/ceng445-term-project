@@ -37,10 +37,7 @@ class User:
         which includes the username, email, fullname, and hashed password in a dictionary format.
         """
         return str({
-            "username": self.username,
-            "email": self.email,
-            "fullname": self.fullname,
-            "passwd": self.passwd,
+            "username": self.username
         })
     def get(self):
         """
@@ -145,6 +142,8 @@ class User:
         print(message)
         if self.Command_list:
             return self.Command_list.pop(0)
+        else:
+            return input()
 
 class UserExistsException(BaseException):
     pass
