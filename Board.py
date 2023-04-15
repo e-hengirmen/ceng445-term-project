@@ -58,18 +58,23 @@ class Board:
 
         self.callback = {}
 
-    # below function groups properties by color
-        # This color groups were added to be used in color_upgrade and downgrade
     def get_colors(self):
+        """
+            Groups properties by their color,
+            This color groups were added to be used in color_upgrade and downgrade
+        """
         for color in self.color_list:
             self.properties_by_color[color] = []
         for prop in self.properties:
             self.properties_by_color[prop.color].append(prop)
 
-    # puts properties in property list
-        # get_properties is used to create property objects from cells
-        # this way the properties can be bought and be associated to the user later on
+
     def get_properties(self):
+        """
+            Manages property ownership and color sets.
+            get_properties is used to create property objects from cells
+            this way the properties can be bought and be associated to the user later on
+        """
         for cell in self.cells:
             if cell['type'] == 'property':
                 current_property = Property(cell)
@@ -78,9 +83,12 @@ class Board:
                 if cell['color'] not in self.color_list:
                     self.color_list.append(cell['color'])
 
-    # creates a user dictionary(accessed by user object also adds user to the current game)
-    # order of play is depended on the order of connection
     def attach(self, user, callback, turncb):  # controlled
+        """
+            creates a user dictionary(accessed by user object also adds user to the current game)
+            Manages player participation in the game.
+            order of play is depended on the order of connection
+        """
         if user in self.user_dict.keys():
             return
         self.user_dict[user] = {"user": user,
@@ -95,9 +103,16 @@ class Board:
         self.unready_count += 1
         self.order.append(user)
 
-    # detaches user from the game//called when the user is bankrupt
     def detach(self, user):  # controlled
-        # only call for a user on their turn
+        """
+            Handles players leaving the game.
+            Removes a user from the game by removing them from the player order and resetting the ownership of their properties
+
+            called when the user is bankrupt
+
+            only call for a user on their turn
+        """
+        #
         if user in self.user_dict:
             self.order.remove(user)
             for prop in self.user_dict[user]["properties"]:
@@ -110,8 +125,11 @@ class Board:
             if (n == 1):
                 print("Game has ended - {} wins!!!".format(self.order[0]))
 
-    # used when user says they are ready to make sure the game is played when everyuser is ready
     def ready(self, user):  # controlled
+        """
+            Marks a user as ready and starts the game if all users are ready and there are at least two players.
+            This is necessary for synchronizing player readiness before starting the game.
+        """
         if self.user_dict[user]["ready"] == False:
             self.user_dict[user]["ready"] = True
             self.unready_count -= 1
@@ -119,11 +137,17 @@ class Board:
                 self.initiate_game()
 
     def initiate_game(self):  # since there might be more things we need to add
+        """
+            Transitioning from the waiting state to the active game state.
+        """
         self.WaitingState = False
         self.CALL_THEM_BACK(self.order[0], self.get_report(self.order[0]))
 
     # for exception handling real turn function is below called: turn_helper
     def turn(self, user):
+        """
+            for exception handling real turn function is below called: turn_helper
+        """
         command = self.TURN_TO_USER(user)
         try:
             return self.turn_helper(user, command)
@@ -132,6 +156,44 @@ class Board:
             return user
 
     def turn_helper(self, user, command):
+        """
+            Processes a user's command during their turn, based on the current state of the game and the user's turn.
+
+            Jail case: If the user is in jail and tries to roll doubles to get out, roll the dice, and check the result.
+            If they roll doubles, set the user as not guilty
+            If the user wants to bail out of jail, decrease their jail-free cards or money, set the user as not guilty
+            If the user tries any other command, raise an exception informing them that they should either roll or bail.
+            Move on to the next user.
+
+            Normal roll case:
+                If the user rolls the dice, calculate their new position, update their money if they pass the start, and execute the cell's action.
+
+            Buy case: If the user wants to buy a property, check if they can buy it.
+            If they meet the conditions, decrease their money, add the property to their ownership, and set them as the owner of the property.
+            Move on to the next user.
+
+            Upgrade case:
+                If the user wants to upgrade a property, check if they can upgrade it
+                (they have rolled, the cell is a property, they own it, it's not at the max level, and they have enough money).
+                If they meet the conditions, update their money and upgrade the property.
+                Move on to the next user.
+
+            Teleport case:
+                If the user wants to teleport, check if they can teleport (they are in the teleport state and the target cell is a property).
+                If they meet the conditions, update their position and execute the cell's action based on property ownership.
+
+            End turn case:
+                If the user wants to end their turn, check if they can end it (they have rolled or teleported).
+                If they meet the conditions, move on to the next user.
+
+            Invalid command case:
+                If the user enters an invalid command, raise an exception informing them about the invalid command.
+
+            Bankruptcy case:
+                If the user has negative money, remove them from the game.
+
+            Call the user's callback with their updated game report and return the active user's username.
+        """
         if self.WaitingState == True:
             raise WaitingForReadyException("Not everyone is ready")
         if self.order[self.active_user_index] != user:
@@ -307,8 +369,19 @@ class Board:
 
         return self.order[self.active_user_index]
 
-    # Executes the function of the cell
     def execute_cell(self, current_user_dict, cell):  # controlled
+        """
+            This function handles the user interaction with the cell they land on after a dice roll or teleport.
+            It defines the consequences based on the cell type and updates the user's status accordingly.
+
+            - start: If the cell type is "start", the function proceeds to the next user's turn.
+            - jail: If the cell type is "jail", the function proceeds to the next user's turn.
+            - tax: If the cell type is "tax", the user's money is decreased by the tax amount multiplied by the number of properties they own.
+            - gotojail: If the cell type is "gotojail", the user is moved to the nearest jail cell, and their "guilty" status is set to True.
+            - teleport: If the cell type is "teleport", the user's money is decreased by the teleport cost, and the user's state is set to "teleport_wait".
+            - property: If the cell type is "property", the function checks if the property is unowned or if it is owned by the current user or another user. If unowned, the user's state is set to "buy_wait". If owned by another user, the current user pays rent to the property owner.
+            - chance: If the cell type is "chance", the function retrieves a chance card and applies the card's effect. The effects vary depending on the card (e.g., upgrade, downgrade, gotojail, jail_free, teleport, lottery, tax).
+        """
         if cell["type"] == "start":  # controlled
             self.next_user()
         elif cell["type"] == "jail":  # controlled
@@ -466,10 +539,11 @@ class Board:
         """for property in self.properties:
             print(property)"""
 
-    # creates a report including boardstate and userstate
-        # it also contains last play and current play information
-        # it returns a string so that whe can use it on callback function
     def get_report(self, user):
+        """
+            This function generates a report, combining the board state, current user state, last play, and turn details.
+            It returns a string so that whe can use it on callback function
+        """
         bs = self.getboardstate()
         us = self.getuserstate(user)
 
@@ -490,9 +564,11 @@ class Board:
         ))
         return bs + "\n" + "\n" + us + "\n" + "\n" + lp + "\n" + to + "\n" + "\n"
 
-    # returns avaliable command list for the user
-        # it returns a string so that whe can use it on turncb function
     def ListCommands(self, user):
+        """
+            Returns avaliable command list for the user
+            It returns a string so that whe can use it on turncb function
+        """
         str_list = [user.username]
         if self.user_dict[user]["guilty"]:
             str_list.append("You are at jail")
@@ -523,8 +599,10 @@ class Board:
         #    current_user_dict["callback"](message)
         self.user_dict[last_played_user]["callback"](message)
 
-    # gets command from the current user
     def TURN_TO_USER(self, user):
+        """
+            gets command from the current user
+        """
         command = self.user_dict[user]["turncb"](self.ListCommands(user))
         print("")
         print("-----------------------------------------------------")
@@ -532,6 +610,9 @@ class Board:
 
     # ends turn
     def next_user(self):  # controlled
+        """
+            Ends Turn and starts next user's turn
+        """
         n = len(self.order)
         self.active_user_index = (self.active_user_index + 1) % n
         self.active_user_state = TURN_STATE.turn_start
@@ -561,8 +642,10 @@ class Property:
             "level": self.level,
         })
 
-    # Added so a property can be visualized inside a list of properties
     def user_visualization(self):
+        """
+             Added so a property can be visualized inside a list of properties
+        """
         return str({
             "name": self.name,
             "current rent": self.get_current_rent(),
