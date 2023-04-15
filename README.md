@@ -14,7 +14,11 @@ We also added 3 monopoly board files:
 * `input.json` a bigger board(unchecked)
 
 # How to play
-to play the game:
+to play the preplayed demo game:
 ```bash
 python3 demo.py <{board_file}
+```
+to play the the game turn by turn:
+```bash
+python3 main.py <{board_file}
 ```
