@@ -3,6 +3,7 @@ import uuid
 import hashlib
 
 class User:
+    Command_list= None
     username_list = []
     email_list = []
     fullname = []
@@ -132,6 +133,18 @@ class User:
         """
         print(message)
         return input()
+
+
+    # Below 2 functions are only for testing phase 1 rolls and actions are predetermined for deneme_in
+    def setCommandList(self,rl):
+        self.Command_list=rl
+    def turncb2(self, message):
+        """
+        Prints the provided message and returns the user input obtained using the input() function.
+        """
+        print(message)
+        if self.Command_list:
+            return self.Command_list.pop(0)
 
 class UserExistsException(BaseException):
     pass

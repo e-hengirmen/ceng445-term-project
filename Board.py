@@ -89,6 +89,8 @@ class Board:
             Manages player participation in the game.
             order of play is depended on the order of connection
         """
+        if (self.WaitingState == False):
+            return
         if user in self.user_dict.keys():
             return
         self.user_dict[user] = {"user": user,
@@ -130,6 +132,8 @@ class Board:
             Marks a user as ready and starts the game if all users are ready and there are at least two players.
             This is necessary for synchronizing player readiness before starting the game.
         """
+        if(self.WaitingState==False):
+            return
         if self.user_dict[user]["ready"] == False:
             self.user_dict[user]["ready"] = True
             self.unready_count -= 1
@@ -210,6 +214,16 @@ class Board:
                 if (dice1 == dice2):
                     self.user_dict[user]["guilty"] = False
                     self.CALL_THEM_BACK(user, f"{user.username} is now out of jail")
+
+            # Below 2 cases were only added for testing TODO delete later
+            if command == "DoubleDice":
+                # show_dice_roll(dice1,dice2)
+                self.CALL_THEM_BACK(user, f"{user.username} rolled 6 6")
+                self.user_dict[user]["guilty"] = False
+                self.CALL_THEM_BACK(user, f"{user.username} is now out of jail")
+            if command == "NotDoubleDice":
+                # show_dice_roll(dice1,dice2)
+                self.CALL_THEM_BACK(user, f"{user.username} rolled 3 5")
 
             elif command == "Bail":
                 if self.user_dict[user]["jailFree"] > 0:
@@ -390,6 +404,7 @@ class Board:
             current_user_dict["money"] -= self.tax * len(current_user_dict["properties"])
             self.next_user()
         elif cell["type"] == "gotojail":  # controlled
+            self.CALL_THEM_BACK(current_user_dict["user"], f"{current_user_dict['user'].username} was sent to prison")
             # find nearest jail cell then go(it goes on your record ) )
             mypos = current_user_dict["position"]
 
@@ -484,6 +499,7 @@ class Board:
                     break
 
             elif card == 'gotojail':  # controlled
+                self.CALL_THEM_BACK(current_user_dict["user"],f"{current_user_dict['user'].username} was sent to prison")
                 mypos = current_user_dict["position"]
 
                 # Finding the nearest jail cell by comparing left nearest and right nearest

@@ -1,10 +1,10 @@
 {
 "cells": [
 {"type": "start"},
-{"type": "property", "name": "bostanci", "cell": 2, "color": "red", "price": 120, "rents": [50,150,400,600,900]},
-{"type": "property", "name": "mahmutcu", "cell": 3, "color": "red", "price": 150, "rents": [55,170,450,750,1100]},
-{"type": "property", "name": "Ankara", "cell": 4, "color": "blue", "price": 750, "rents": [200,450,1100,1600,2400]},
-{"type": "property", "name": "Bankara", "cell": 5, "color": "blue", "price": 1000, "rents": [250,600,1300,1800,2700]},
+{"type": "property", "name": "Indiana", "cell": 2, "color": "red", "price": 120, "rents": [50,150,400,600,900]},
+{"type": "property", "name": "Illinois", "cell": 3, "color": "red", "price": 150, "rents": [55,170,450,750,1100]},
+{"type": "property", "name": "Atlantic", "cell": 4, "color": "blue", "price": 750, "rents": [200,450,1100,1600,2400]},
+{"type": "property", "name": "Vermont", "cell": 5, "color": "blue", "price": 1000, "rents": [250,600,1300,1800,2700]},
 {"type": "jail"},
 {"type": "gotojail"},
 {"type": "tax"},
@@ -23,8 +23,8 @@
 {"type": "downgrade"},
 {"type": "color_upgrade"},
 {"type": "color_downgrade"},
-{"type": "gotojail"},
 {"type": "jail_free"},
+{"type": "gotojail"},
 {"type": "teleport"},
 {"type": "lottery"},
 {"type": "tax"}
