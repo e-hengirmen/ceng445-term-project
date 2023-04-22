@@ -154,7 +154,7 @@ class Board:
         for user in self.order:
             if user!=me:
                 user.mutex.release()
-        self.CALL_THEM_BACK(self.order[0], self.get_report(self.order[0]))
+        self.CALL_THEM_BACK(self.get_report(self.order[0]))
 
     # for exception handling real turn function is below called: turn_helper
     def turn(self, user):
@@ -165,7 +165,7 @@ class Board:
         try:
             return self.turn_helper(user, command)
         except MonopolyException as e:
-            self.CALL_THEM_BACK(user, f"ERROR: {e}\n")
+            self.CALL_THEM_BACK(f"ERROR: {e}\n",user)
             return user
 
     def turn_helper(self, user, command):
@@ -219,17 +219,17 @@ class Board:
                 dice1 = roll_a_dice()
                 dice2 = roll_a_dice()
                 # show_dice_roll(dice1,dice2)
-                self.CALL_THEM_BACK(user, f"{user.username} rolled {dice1} {dice2}")
+                self.CALL_THEM_BACK(f"{user.username} rolled {dice1} {dice2}")
                 if (dice1 == dice2):
                     self.user_dict[user]["guilty"] = False
-                    self.CALL_THEM_BACK(user, f"{user.username} is now out of jail")
+                    self.CALL_THEM_BACK(f"{user.username} is now out of jail")
 
             # Below 2 cases were only added for testing TODO delete later
             elif command == "DoubleDice":
                 # show_dice_roll(dice1,dice2)
-                self.CALL_THEM_BACK(user, f"{user.username} rolled 6 6")
+                self.CALL_THEM_BACK(f"{user.username} rolled 6 6")
                 self.user_dict[user]["guilty"] = False
-                self.CALL_THEM_BACK(user, f"{user.username} is now out of jail")
+                self.CALL_THEM_BACK(f"{user.username} is now out of jail")
             elif command == "NotDoubleDice":
                 # show_dice_roll(dice1,dice2)
                 self.CALL_THEM_BACK(user, f"{user.username} rolled 3 5")
@@ -241,7 +241,7 @@ class Board:
                 else:
                     self.user_dict[user]["money"] -= self.jailbail
                 self.user_dict[user]["guilty"] = False
-                self.CALL_THEM_BACK(user, f"{user.username} is now out of jail")
+                self.CALL_THEM_BACK(f"{user.username} is now out of jail")
             else:
                 raise WrongCommandException(
                     f"you're in jail, your command was \"{command}\" it should either be Roll or Bail")
@@ -388,7 +388,7 @@ class Board:
             self.detach(user)
             return None
 
-        self.CALL_THEM_BACK(user, self.get_report(user))
+        self.CALL_THEM_BACK(self.get_report(user))
 
         return self.order[self.active_user_index]
 
@@ -413,7 +413,7 @@ class Board:
             current_user_dict["money"] -= self.tax * len(current_user_dict["properties"])
             self.next_user()
         elif cell["type"] == "gotojail":  # controlled
-            self.CALL_THEM_BACK(current_user_dict["user"], f"{current_user_dict['user'].username} was sent to prison")
+            self.CALL_THEM_BACK(f"{current_user_dict['user'].username} was sent to prison")
             # find nearest jail cell then go(it goes on your record ) )
             mypos = current_user_dict["position"]
 
@@ -454,8 +454,7 @@ class Board:
             PUT_CARD_BACK_FLAG = True
 
             # informing users of the card
-            self.CALL_THEM_BACK(current_user_dict["user"],
-                                f"{current_user_dict['user'].username} landed on a chance card {card}")
+            self.CALL_THEM_BACK(f"{current_user_dict['user'].username} landed on a chance card {card}")
 
             if card == 'upgrade' or card == 'downgrade':  # controlled
                 """selected_cell = int(input('select a cell to upgrade'))
@@ -508,7 +507,7 @@ class Board:
                     break
 
             elif card == 'gotojail':  # controlled
-                self.CALL_THEM_BACK(current_user_dict["user"],f"{current_user_dict['user'].username} was sent to prison")
+                self.CALL_THEM_BACK(f"{current_user_dict['user'].username} was sent to prison")
                 mypos = current_user_dict["position"]
 
                 # Finding the nearest jail cell by comparing left nearest and right nearest
@@ -587,7 +586,8 @@ class Board:
             pL=3,
             cL=20
         ))
-        return bs + "\n" + "\n" + us + "\n" + "\n" + lp + "\n" + to + "\n" + "\n"
+        return bs + "\n" + "\n" + us + "\n" + "\n" + lp + "\n" + to + "\n" + "\n"\
+            +"---------------------------------------------------------------------------------------------\n\n"
 
     def ListCommands(self, user):
         """
@@ -619,10 +619,12 @@ class Board:
                 str_list.append("\tUpgrade")
         return "\n".join(str_list)
 
-    def CALL_THEM_BACK(self,last_played_user,message):  # TODO change comments with uncommented also remove last played user
-         for current_user_dict in self.user_dict.values():
-            current_user_dict["callback"](message)
-        #self.user_dict[last_played_user]["callback"](message)
+    def CALL_THEM_BACK(self,message,last_played_user=None):  # TODO change comments with uncommented also remove last played user
+         if(last_played_user==None):
+             for current_user_dict in self.user_dict.values():
+                current_user_dict["callback"](message)
+         else:
+             self.user_dict[last_played_user]["callback"](message)
 
     def TURN_TO_USER(self, user):
         """
