@@ -15,8 +15,9 @@ def take_chance_card():
 
 class Board:
 
-    def __init__(self, file):
+    def __init__(self, file,number_of_users=4):
         data = json.loads(file.read())
+        self.number_of_users=number_of_users
 
         # file variables
         self.cells = data["cells"]  # used as map to play the game
@@ -89,6 +90,11 @@ class Board:
             Manages player participation in the game.
             order of play is depended on the order of connection
         """
+        if(self.unready_count==self.number_of_users):       # for first attaching then starting readies
+            return
+
+
+
         if (self.WaitingState == False):
             return
         if user in self.user_dict.keys():
@@ -138,13 +144,16 @@ class Board:
             self.user_dict[user]["ready"] = True
             self.unready_count -= 1
             if (self.unready_count == 0 and len(self.user_dict) >= 2):
-                self.initiate_game()
+                self.initiate_game(user)
 
-    def initiate_game(self):  # since there might be more things we need to add
+    def initiate_game(self,me):  # since there might be more things we need to add
         """
             Transitioning from the waiting state to the active game state.
         """
         self.WaitingState = False
+        for user in self.order:
+            if user!=me:
+                user.mutex.release()
         self.CALL_THEM_BACK(self.order[0], self.get_report(self.order[0]))
 
     # for exception handling real turn function is below called: turn_helper
@@ -611,9 +620,9 @@ class Board:
         return "\n".join(str_list)
 
     def CALL_THEM_BACK(self,last_played_user,message):  # TODO change comments with uncommented also remove last played user
-        # for current_user_dict in self.user_dict.values():
-        #    current_user_dict["callback"](message)
-        self.user_dict[last_played_user]["callback"](message)
+         for current_user_dict in self.user_dict.values():
+            current_user_dict["callback"](message)
+        #self.user_dict[last_played_user]["callback"](message)
 
     def TURN_TO_USER(self, user):
         """

@@ -1,6 +1,10 @@
 from Board import Board
 from User import User
 import sys
+import os
+import socket
+
+import threading as th
 
 #-------------------------------------------------------------------------------------
 '''
@@ -13,31 +17,87 @@ line test application demonstrating all features of your library.
 
 if(len(sys.argv)<1):
     print("use this program in the form:")
-    print("python3 demo.py {input_fie_name}")
-file=open(sys.argv[1],"r")
-monopoly=Board(file)
-
-print("--------------------User print control--------------------")
-user1=User("ehengirmen","ehengirmen@hotmail.com","Ersel","ABCDEF")
-user2=User("mert","mert@hotmail.com","Mert","zzzzzz")
-print(user1)
-print(user2)
-print("----------------------------------------------------------")
-print("")
-
-monopoly.attach(user1,user1.callback,user1.turncb)
-monopoly.attach(user2,user2.callback,user2.turncb)
+    print("python3 demo.py {port number}")
+    exit()
+PORT=int(sys.argv[1])
+number_of_users=2
+if(2>number_of_users or number_of_users>4):
+    print("number of users should be between 2 and 4")
+    exit()
+file=open("../gameBoards/deneme_in","r")
+monopoly=Board(file,number_of_users)
 
 
-print("------------------------------------------------------------------------------------")
-monopoly.ready(user1)
-monopoly.ready(user2)
 
-print("")
-#monopoly.getboardstate()
-#monopoly.getuserstate(user1)
+'''# Server start
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-current_user=user1
+# bind socket to a specific address and port
+server_socket.bind(('', PORT))'''
+
+#-----------------------------------------------------
+# Server start
+server_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+# bind socket to a specific address and port
+os.remove("/tmp/mysocket")
+server_socket.bind("/tmp/mysocket")
+#-----------------------------------------------------
+
+
+
+
+# listen for incoming connections
+server_socket.listen(10)
+print(f"Server listening on port {PORT}")
+
+
+#-----------------------------user thread function--------------------------------------------
+def user_thread_func(client_socket, address, monopoly):
+
+    # create new thread to handle client request    # TODO for failed user initiation try except with number of users unchanigng
+    user = User(client_socket, address)
+
+    # attaching user
+    monopoly.attach(user, user.callback, user.turncb)
+
+    # wait for user to respond with ready
+    user.client_socket.send("write \"ready\" when you are\n".encode('utf-8'))
+    ready_msg = user.client_socket.recv(1024).decode('utf-8').strip()
+    while ready_msg!="ready":
+        user.client_socket.send(f"Invalid message {ready_msg}. say \"ready\" when you are ready\n".encode('utf-8'))
+        ready_msg = user.client_socket.recv(1024).decode('utf-8').strip()
+    monopoly.ready(user)
+
+    # barrier waiting it will be opened by the last user in board
+    if monopoly.WaitingState==True:
+        user.mutex.acquire()
+
+
+
+
+#---------------------------------------------------------------------------------------------
+
+
+
+user_threads=[]
+for i in range(number_of_users):
+    # accept incoming connection
+    client_socket, address = server_socket.accept()
+    print(f"Accepted connection from {address}")
+
+    user_thread=th.Thread(target=user_thread_func,args=(client_socket, address, monopoly))
+    user_threads.append(user_thread)
+    user_thread.start()
+# close socket
+server_socket.close()
+
+for user_thread in user_threads:
+    user_thread.join()
+
+
+
+
+current_user=monopoly.order[0]
 while True:
     current_user=monopoly.turn(current_user)
     if(current_user==None):

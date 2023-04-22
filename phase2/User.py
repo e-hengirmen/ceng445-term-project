@@ -1,6 +1,6 @@
-import Board
 import uuid
 import hashlib
+from threading import Lock
 
 class User:
     Command_list= None
@@ -10,12 +10,27 @@ class User:
     passwd = []
     session_dict = {}
     salt = '456'
-    def __init__(self, username, email, fullname, passwd):
+
+    # def __init__(self, username, email, fullname, passwd):
+    def __init__(self, client_socket, address):
         """
         Initializes a new user object.
         Checks if the provided username and email are unique, and if not, raises a UserExistsException.
         Stores the hashed password (created by combining the provided password with the salt) in the user object.
         """
+        #super().__init__(self)
+
+        self.mutex=Lock()
+        self.mutex.acquire()
+
+        self.address=address
+        self.client_socket=client_socket
+        #self.monopoly=monopoly
+
+        # get username from client
+        self.client_socket.send("enter your username, email, fullname, passwd in this order with space between them\n".encode('utf-8'))
+        username, email, fullname, passwd = self.client_socket.recv(1024).decode('utf-8').split()
+
         if username in User.username_list:
             raise UserExistsException('Username exists')
         if email in User.email_list:
@@ -30,7 +45,29 @@ class User:
         User.email_list.append(email)
         User.fullname.append(fullname)
         User.passwd.append(passwd)
+    '''def run(self):
+        print(f"User {self.username} connected from {self.address[0]}:{self.address[1]}")
 
+        # attaching user
+        monopoly.attach(self, self.callback, self.turncb)
+
+        # wait for user to respond with ready
+        self.client_socket.send("write \"ready\" when you are".encode('utf-8'))
+        ready_msg = self.client_socket.recv(1024).decode('utf-8').strip()
+        while ready_msg != "ready":
+            self.client_socket.send(f"Invalid message {ready_msg}. say \"ready\" when you are ready".encode('utf-8'))
+            ready_msg = self.client_socket.recv(1024).decode('utf-8').strip()
+        monopoly.ready(self)
+
+        # barrier waiting it will be opened by the last user in board
+        if monopoly.WaitingState == True:
+            self.mutex.acquire()
+
+        # waiting for our turns
+        # callback is done in monopoly here we only do turncb
+        while True:  # TODO change this to end when user detaches
+            with self.mutex:
+                # TODO'''
     def __str__(self):
         """
         Returns a string representation of the user object,
@@ -122,14 +159,14 @@ class User:
         """
         Prints the provided message.
         """
-        print(message)
+        self.client_socket.send((message+"\n").encode('utf-8'))
 
     def turncb(self, message):
         """
         Prints the provided message and returns the user input obtained using the input() function.
         """
-        print(message)
-        return input()
+        self.client_socket.send((message+"\n").encode('utf-8'))
+        return self.client_socket.recv(1024).decode('utf-8').strip()
 
 
     # Below 2 functions are only for testing phase 1 rolls and actions are predetermined for deneme_in
