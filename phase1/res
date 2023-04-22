@@ -1,16 +1,16 @@
 --------------------User print control--------------------
 0879faffa992c5f5a5a41863c81d663b8cdd04e7d6a49402893977cf96e0aad6
 4e3536e7c41dd85cb4f9b4b5f672de9928cab2817eb1591f06d8144d9f1da21a
-{'username': 'ehengirmen', 'email': 'ehengirmen@hotmail.com', 'fullname': 'Ersel', 'passwd': '0879faffa992c5f5a5a41863c81d663b8cdd04e7d6a49402893977cf96e0aad6'}
-{'username': 'mert', 'email': 'mert@hotmail.com', 'fullname': 'Mert', 'passwd': '4e3536e7c41dd85cb4f9b4b5f672de9928cab2817eb1591f06d8144d9f1da21a'}
+{'username': 'ehengirmen'}
+{'username': 'mert'}
 ----------------------------------------------------------
 
 ------------------------------------------------------------------------------------
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -33,10 +33,10 @@ Avaliable commands to you are:
 -----------------------------------------------------
 rolled 2
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -46,8 +46,8 @@ rolled 2
 {'ehengirmen': {'money': 1500, 'position': 3}}
 {'mert': {'money': 1500, 'position': 1}}
 
-LAST PLAY:	ehengirmen           position: 3   cell: {'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-TURN ON:	ehengirmen           position: 3   cell: {'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
+LAST PLAY:	ehengirmen           position: 3   cell: {'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+TURN ON:	ehengirmen           position: 3   cell: {'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
 
 
 ehengirmen
@@ -58,10 +58,10 @@ Avaliable commands to you are:
 
 -----------------------------------------------------
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -72,7 +72,7 @@ Avaliable commands to you are:
 	{'name': 'Illinois', 'current rent': 55, 'level': 1, 'cell': 3, 'color': 'red'}
 {'mert': {'money': 1500, 'position': 1}}
 
-LAST PLAY:	ehengirmen           position: 3   cell: {'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
+LAST PLAY:	ehengirmen           position: 3   cell: {'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
 TURN ON:	mert                 position: 1   cell: {'type': 'start'}   
 
 
@@ -84,10 +84,10 @@ Avaliable commands to you are:
 -----------------------------------------------------
 rolled 3
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -98,8 +98,8 @@ rolled 3
 	{'name': 'Illinois', 'current rent': 55, 'level': 1, 'cell': 3, 'color': 'red'}
 {'mert': {'money': 1500, 'position': 4}}
 
-LAST PLAY:	mert                 position: 4   cell: {'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-TURN ON:	mert                 position: 4   cell: {'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
+LAST PLAY:	mert                 position: 4   cell: {'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+TURN ON:	mert                 position: 4   cell: {'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
 
 
 mert
@@ -110,10 +110,10 @@ Avaliable commands to you are:
 
 -----------------------------------------------------
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -125,8 +125,8 @@ Avaliable commands to you are:
 {'mert': {'money': 750, 'position': 4}}
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	mert                 position: 4   cell: {'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-TURN ON:	ehengirmen           position: 3   cell: {'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
+LAST PLAY:	mert                 position: 4   cell: {'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+TURN ON:	ehengirmen           position: 3   cell: {'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
 
 
 ehengirmen
@@ -137,10 +137,10 @@ Avaliable commands to you are:
 -----------------------------------------------------
 rolled 2
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -152,8 +152,8 @@ rolled 2
 {'mert': {'money': 750, 'position': 4}}
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
-TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
+TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 ehengirmen
@@ -164,10 +164,10 @@ Avaliable commands to you are:
 
 -----------------------------------------------------
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -180,8 +180,8 @@ Avaliable commands to you are:
 {'mert': {'money': 750, 'position': 4}}
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
-TURN ON:	mert                 position: 4   cell: {'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
+LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
+TURN ON:	mert                 position: 4   cell: {'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
 
 
 mert
@@ -201,10 +201,10 @@ Avaliable commands to you are:
 rolled 3
 mert was sent to prison
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -218,7 +218,7 @@ mert was sent to prison
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
 LAST PLAY:	mert                 position: 6   cell: {'type': 'jail'}
-TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 ehengirmen
@@ -229,10 +229,10 @@ Avaliable commands to you are:
 -----------------------------------------------------
 rolled 3
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -259,10 +259,10 @@ Avaliable commands to you are:
 -----------------------------------------------------
 mert rolled 3 5
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -287,10 +287,10 @@ Avaliable commands to you are:
 -----------------------------------------------------
 rolled 11
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -314,10 +314,10 @@ Avaliable commands to you are:
 
 -----------------------------------------------------
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -330,8 +330,8 @@ Avaliable commands to you are:
 {'mert': {'money': 750, 'position': 6}}
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
-TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
+TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 ehengirmen
@@ -342,10 +342,10 @@ Avaliable commands to you are:
 
 -----------------------------------------------------
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -358,7 +358,7 @@ Avaliable commands to you are:
 {'mert': {'money': 750, 'position': 6}}
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 TURN ON:	mert                 position: 6   cell: {'type': 'jail'}    
 
 
@@ -372,10 +372,10 @@ Avaliable commands to you are:
 -----------------------------------------------------
 mert is now out of jail
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -389,7 +389,7 @@ mert is now out of jail
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
 LAST PLAY:	mert                 position: 6   cell: {'type': 'jail'}
-TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 ehengirmen
@@ -401,10 +401,10 @@ Avaliable commands to you are:
 rolled 2
 ehengirmen was sent to prison
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -429,10 +429,10 @@ Avaliable commands to you are:
 -----------------------------------------------------
 rolled 9
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -445,7 +445,7 @@ rolled 9
 {'mert': {'money': 1150, 'position': 5}}
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	mert                 position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+LAST PLAY:	mert                 position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 TURN ON:	ehengirmen           position: 6   cell: {'type': 'jail'}    
 
 
@@ -460,10 +460,10 @@ Avaliable commands to you are:
 ehengirmen rolled 6 6
 ehengirmen is now out of jail
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -477,7 +477,7 @@ ehengirmen is now out of jail
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
 LAST PLAY:	ehengirmen           position: 6   cell: {'type': 'jail'}
-TURN ON:	mert                 position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+TURN ON:	mert                 position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 mert
@@ -490,10 +490,10 @@ rolled 5
 mert landed on a chance card upgrade
 select a cell you own toupgrade(in the form Pick(cell number)):
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -518,10 +518,10 @@ Avaliable commands to you are:
 -----------------------------------------------------
 rolled 9
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -534,8 +534,8 @@ rolled 9
 {'mert': {'money': 1150, 'position': 10}}
 	{'name': 'Atlantic', 'current rent': 450, 'level': 2, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
-TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
+TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 ehengirmen
@@ -546,10 +546,10 @@ Avaliable commands to you are:
 
 -----------------------------------------------------
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -562,7 +562,7 @@ Avaliable commands to you are:
 {'mert': {'money': 1150, 'position': 10}}
 	{'name': 'Atlantic', 'current rent': 450, 'level': 2, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 TURN ON:	mert                 position: 10  cell: {'type': 'chance'}  
 
 
@@ -576,10 +576,10 @@ rolled 10
 mert landed on a chance card downgrade
 select a cell you own todowngrade(in the form Pick(cell number)):
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -593,7 +593,7 @@ select a cell you own todowngrade(in the form Pick(cell number)):
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
 LAST PLAY:	mert                 position: 10  cell: {'type': 'chance'}
-TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 ehengirmen
@@ -604,10 +604,10 @@ Avaliable commands to you are:
 -----------------------------------------------------
 rolled 10
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -620,8 +620,8 @@ rolled 10
 {'mert': {'money': 1650, 'position': 10}}
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
-TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
+TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 ehengirmen
@@ -632,10 +632,10 @@ Avaliable commands to you are:
 
 -----------------------------------------------------
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -648,7 +648,7 @@ Avaliable commands to you are:
 {'mert': {'money': 1650, 'position': 10}}
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 TURN ON:	mert                 position: 10  cell: {'type': 'chance'}  
 
 
@@ -663,10 +663,10 @@ mert landed on a chance card color_upgrade
 select a color to upgrade that you have at least one property:
 select a color to upgrade that you have at least one property:
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -680,7 +680,7 @@ select a color to upgrade that you have at least one property:
 	{'name': 'Atlantic', 'current rent': 450, 'level': 2, 'cell': 4, 'color': 'blue'}
 
 LAST PLAY:	mert                 position: 10  cell: {'type': 'chance'}
-TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 ehengirmen
@@ -691,10 +691,10 @@ Avaliable commands to you are:
 -----------------------------------------------------
 rolled 10
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -707,8 +707,8 @@ rolled 10
 {'mert': {'money': 2150, 'position': 10}}
 	{'name': 'Atlantic', 'current rent': 450, 'level': 2, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
-TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
+TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 ehengirmen
@@ -719,10 +719,10 @@ Avaliable commands to you are:
 
 -----------------------------------------------------
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -735,7 +735,7 @@ Avaliable commands to you are:
 {'mert': {'money': 2150, 'position': 10}}
 	{'name': 'Atlantic', 'current rent': 450, 'level': 2, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 TURN ON:	mert                 position: 10  cell: {'type': 'chance'}  
 
 
@@ -749,10 +749,10 @@ rolled 10
 mert landed on a chance card color_downgrade
 select a color to downgrade that you have at least one property:
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -766,7 +766,7 @@ select a color to downgrade that you have at least one property:
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
 LAST PLAY:	mert                 position: 10  cell: {'type': 'chance'}
-TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 ehengirmen
@@ -777,10 +777,10 @@ Avaliable commands to you are:
 -----------------------------------------------------
 rolled 10
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -793,8 +793,8 @@ rolled 10
 {'mert': {'money': 2650, 'position': 10}}
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
-TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
+TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 ehengirmen
@@ -805,10 +805,10 @@ Avaliable commands to you are:
 
 -----------------------------------------------------
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -821,7 +821,7 @@ Avaliable commands to you are:
 {'mert': {'money': 2650, 'position': 10}}
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 TURN ON:	mert                 position: 10  cell: {'type': 'chance'}  
 
 
@@ -834,10 +834,10 @@ Avaliable commands to you are:
 rolled 10
 mert landed on a chance card jail_free
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -851,7 +851,7 @@ mert landed on a chance card jail_free
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
 LAST PLAY:	mert                 position: 10  cell: {'type': 'chance'}
-TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 ehengirmen
@@ -862,10 +862,10 @@ Avaliable commands to you are:
 -----------------------------------------------------
 rolled 10
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -878,8 +878,8 @@ rolled 10
 {'mert': {'money': 3150, 'position': 10}}
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
-TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
+TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 ehengirmen
@@ -890,10 +890,10 @@ Avaliable commands to you are:
 
 -----------------------------------------------------
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -906,7 +906,7 @@ Avaliable commands to you are:
 {'mert': {'money': 3150, 'position': 10}}
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 TURN ON:	mert                 position: 10  cell: {'type': 'chance'}  
 
 
@@ -920,10 +920,10 @@ rolled 10
 mert landed on a chance card gotojail
 mert was sent to prison
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -937,7 +937,7 @@ mert was sent to prison
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
 LAST PLAY:	mert                 position: 6   cell: {'type': 'jail'}
-TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 ehengirmen
@@ -949,10 +949,10 @@ Avaliable commands to you are:
 rolled 5
 ehengirmen landed on a chance card teleport
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -976,10 +976,10 @@ Avaliable commands to you are:
 
 -----------------------------------------------------
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -992,8 +992,8 @@ Avaliable commands to you are:
 {'mert': {'money': 3650, 'position': 6}}
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
-TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
+TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 ehengirmen
@@ -1013,10 +1013,10 @@ Avaliable commands to you are:
 
 -----------------------------------------------------
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -1029,7 +1029,7 @@ Avaliable commands to you are:
 {'mert': {'money': 3650, 'position': 6}}
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+LAST PLAY:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 TURN ON:	mert                 position: 6   cell: {'type': 'jail'}    
 
 
@@ -1043,10 +1043,10 @@ Avaliable commands to you are:
 -----------------------------------------------------
 mert is now out of jail
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -1060,7 +1060,7 @@ mert is now out of jail
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
 LAST PLAY:	mert                 position: 6   cell: {'type': 'jail'}
-TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+TURN ON:	ehengirmen           position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 ehengirmen
@@ -1072,10 +1072,10 @@ Avaliable commands to you are:
 rolled 5
 ehengirmen landed on a chance card lottery
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -1100,10 +1100,10 @@ Avaliable commands to you are:
 -----------------------------------------------------
 rolled 3
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -1127,10 +1127,10 @@ Avaliable commands to you are:
 
 -----------------------------------------------------
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -1143,7 +1143,7 @@ Avaliable commands to you are:
 {'mert': {'money': 850, 'position': 5}}
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
-LAST PLAY:	mert                 position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+LAST PLAY:	mert                 position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 TURN ON:	ehengirmen           position: 10  cell: {'type': 'chance'}  
 
 
@@ -1156,10 +1156,10 @@ Avaliable commands to you are:
 rolled 10
 ehengirmen landed on a chance card tax
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -1173,7 +1173,7 @@ ehengirmen landed on a chance card tax
 	{'name': 'Atlantic', 'current rent': 200, 'level': 1, 'cell': 4, 'color': 'blue'}
 
 LAST PLAY:	ehengirmen           position: 10  cell: {'type': 'chance'}
-TURN ON:	mert                 position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+TURN ON:	mert                 position: 5   cell: {'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 
 
 mert
@@ -1184,10 +1184,10 @@ Avaliable commands to you are:
 -----------------------------------------------------
 rolled 4
 {'type': 'start'}
-{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f713e0b9e10>}
-{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f713e0b9e40>}
-{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f713e0b9e70>}
-{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f713e0b9ea0>}
+{'type': 'property', 'name': 'Indiana', 'cell': 2, 'color': 'red', 'price': 120, 'rents': [50, 150, 400, 600, 900], 'property': <Board.Property object at 0x7f979b5e1e40>}
+{'type': 'property', 'name': 'Illinois', 'cell': 3, 'color': 'red', 'price': 150, 'rents': [55, 170, 450, 750, 1100], 'property': <Board.Property object at 0x7f979b5e1e70>}
+{'type': 'property', 'name': 'Atlantic', 'cell': 4, 'color': 'blue', 'price': 750, 'rents': [200, 450, 1100, 1600, 2400], 'property': <Board.Property object at 0x7f979b5e1ea0>}
+{'type': 'property', 'name': 'Vermont', 'cell': 5, 'color': 'blue', 'price': 1000, 'rents': [250, 600, 1300, 1800, 2700], 'property': <Board.Property object at 0x7f979b5e1ed0>}
 {'type': 'jail'}
 {'type': 'gotojail'}
 {'type': 'tax'}
@@ -1210,4 +1210,4 @@ Avaliable commands to you are:
 	Teleport(index)
 
 -----------------------------------------------------
-Game has ended - {'username': 'ehengirmen', 'email': 'ehengirmen@hotmail.com', 'fullname': 'Ersel', 'passwd': '0879faffa992c5f5a5a41863c81d663b8cdd04e7d6a49402893977cf96e0aad6'} wins!!!
+Game has ended - {'username': 'ehengirmen'} wins!!!

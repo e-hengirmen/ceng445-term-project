@@ -16,9 +16,9 @@ We also added 3 monopoly board files:
 # How to play
 to play the preplayed demo game:
 ```bash
-python3 demo.py <{board_file}
+python3 demo.py {board_file}
 ```
 to play the the game turn by turn:
 ```bash
-python3 main.py <{board_file}
+python3 main.py {board_file}
 ```
