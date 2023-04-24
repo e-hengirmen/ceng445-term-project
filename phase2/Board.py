@@ -131,7 +131,7 @@ class Board:
             self.active_user_index = (self.active_user_index) % n
             self.active_user_state = TURN_STATE.turn_start
             if (n == 1):
-                print("Game has ended - {} wins!!!".format(self.order[0]))
+                self.CALL_THEM_BACK(f"Game has ended - {self.order[0]} wins!!!")
 
     def ready(self, user):  # controlled
         """
@@ -259,7 +259,7 @@ class Board:
             dice2 = roll_a_dice()
             # show_dice_roll(dice1,dice2)
             roll_res = dice1 + dice2
-            print("rolled", roll_res)
+            self.CALL_THEM_BACK(f"rolled {dice1} {dice2}")
 
             # below 3 lines calculate your new position after roll and adds lapping salary if u have passed the starting line
             self.user_dict[user]["position"] = (self.user_dict[user]["position"] + roll_res)
@@ -277,7 +277,7 @@ class Board:
             if self.active_user_state != TURN_STATE.turn_start:
                 raise WrongStateException("Already rolled")
             roll_res = int(command[5:-1])
-            print("rolled", roll_res)
+            self.CALL_THEM_BACK(f"rolled {roll_res}")
 
             # below 3 lines calculate your new position after roll and adds lapping salary if u have passed the starting line
             self.user_dict[user]["position"] = (self.user_dict[user]["position"] + roll_res)
@@ -631,8 +631,6 @@ class Board:
             gets command from the current user
         """
         command = self.user_dict[user]["turncb"](self.ListCommands(user))
-        print("")
-        print("-----------------------------------------------------")
         return command
 
     # ends turn

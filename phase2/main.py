@@ -14,13 +14,19 @@ line test application demonstrating all features of your library.
 
 '''
 #-------------------------------------------------------------------------------------
-
-if(len(sys.argv)<1):
-    print("use this program in the form:")
-    print("python3 demo.py {port number}")
-    exit()
-PORT=int(sys.argv[1])
+PORT=3333
 number_of_users=2
+
+
+for i in range(len(sys.argv)):
+    if sys.argv[i]=="--port":
+        PORT=int(sys.argv[i+1])
+        break
+'''for i in range(len(argv)):
+    if argv[i]=="-n":
+        number_of_users=int(argv[i+1])
+        break'''
+
 if(2>number_of_users or number_of_users>4):
     print("number of users should be between 2 and 4")
     exit()
@@ -29,20 +35,20 @@ monopoly=Board(file,number_of_users)
 
 
 
-'''# Server start
+# Server start
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # bind socket to a specific address and port
-server_socket.bind(('', PORT))'''
+server_socket.bind(('', PORT))
 
-#-----------------------------------------------------
+'''#-----------------------------------------------------
 # Server start
 server_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 # bind socket to a specific address and port
 os.remove("/tmp/mysocket")
 server_socket.bind("/tmp/mysocket")
 #-----------------------------------------------------
-
+'''
 
 
 
