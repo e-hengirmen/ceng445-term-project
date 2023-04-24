@@ -34,5 +34,5 @@ class Server:
         with self.monopoly_list_mutex:
             is_user_attached=game.attach(user, user.callback, user.turncb)
         return is_user_attached
-    def close(self): # TODO
-        pass
+    def close(self,game,user): # TODO
+        game.removeUser(user)

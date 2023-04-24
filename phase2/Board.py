@@ -4,6 +4,8 @@ import random
 from enum import Enum
 from queue import Queue
 
+from threading import Lock
+
 
 def roll_a_dice():
     return random.randint(1, 6)
@@ -19,6 +21,8 @@ class Board:
         file = open(filename, "r")
         data = json.loads(file.read())
         self.number_of_users=number_of_users
+
+        self.mutex=Lock()       #will be used before initiaing game
 
         # file variables
         self.cells = data["cells"]  # used as map to play the game
@@ -47,6 +51,7 @@ class Board:
 
         # state variables
         self.unready_count = 0
+        self.ready_count = 0
         self.WaitingState = True
         self.active_user_state = TURN_STATE.turn_start
 
@@ -96,26 +101,35 @@ class Board:
         if user in self.user_dict.keys():
             return True
 
-        if(self.unready_count==self.number_of_users):       # for first attaching then starting readies
-            return False
-
-
-
         if (self.WaitingState == False):
             return False
 
-        self.user_dict[user] = {"user": user,
-                                "money": self.startup,
-                                "position": 0,
-                                "properties": [],
-                                "ready": False,
-                                "guilty": False,
-                                "jailFree": 0,
-                                "callback": callback,
-                                "turncb": turncb}
-        self.unready_count += 1
-        self.order.append(user)
+        with self.mutex:
+            if (len(self.order)==self.number_of_users):
+                return False
+
+            self.user_dict[user] = {"user": user,
+                                    "money": self.startup,
+                                    "position": 0,
+                                    "properties": [],
+                                    "ready": False,
+                                    "guilty": False,
+                                    "jailFree": 0,
+                                    "callback": callback,
+                                    "turncb": turncb}
+
+            # self.unready_count += 1
+            self.order.append(user)
         return True
+    def removeUser(self,user):
+        with self.mutex:
+            if (self.WaitingState == False):
+                return
+
+            if(self.user_dict[user]["ready"]==True):
+                self.ready_count-=1
+            del self.user_dict[user]
+            self.order.remove(user)
     def detach(self, user):  # controlled
         """
             Handles players leaving the game.
@@ -147,9 +161,12 @@ class Board:
             return
         if self.user_dict[user]["ready"] == False:
             self.user_dict[user]["ready"] = True
-            self.unready_count -= 1
-            if (self.unready_count == 0 and len(self.user_dict) >= 2):
-                self.initiate_game(user)
+            # self.unready_count -= 1
+            with self.mutex:
+                self.ready_count += 1
+                # if (self.unready_count == 0 and len(self.user_dict) >= 2):
+                if self.ready_count==self.number_of_users:
+                    self.initiate_game(user)
 
     def initiate_game(self,me):  # since there might be more things we need to add
         """

@@ -98,12 +98,17 @@ def user_thread_func(client_socket, address):
             break
 
     # wait for user to respond with ready
-    user.client_socket.send("write \"ready\" when you are\n".encode('utf-8'))
+    user.client_socket.send("write \"ready\" when you are ready write \"close\" if you want to leave\n".encode('utf-8'))
     ready_msg = user.client_socket.recv(1024).decode('utf-8').strip()
-    while ready_msg!="ready":
-        user.client_socket.send(f"Invalid message {ready_msg}. say \"ready\" when you are ready\n".encode('utf-8'))
+    while ready_msg!="ready" and ready_msg!="close":
+        user.client_socket.send(f"Invalid message {ready_msg}. write \"ready\" when you are ready write \"close\" if you want to leave\n".encode('utf-8'))
         ready_msg = user.client_socket.recv(1024).decode('utf-8').strip()
+    if ready_msg == "close":
+        server.close(monopoly,user)
+        return
     monopoly.ready(user)
+
+
 
     # barrier waiting it will be opened by the last user in board
     if monopoly.WaitingState==True:
