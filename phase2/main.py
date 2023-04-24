@@ -1,8 +1,11 @@
 from Board import Board
 from User import User
+from Server import Server
+
 import sys
 import os
 import socket
+import json
 
 import threading as th
 
@@ -16,7 +19,7 @@ line test application demonstrating all features of your library.
 #-------------------------------------------------------------------------------------
 PORT=3333
 number_of_users=2
-
+filename="../gameBoards/deneme_in"
 
 for i in range(len(sys.argv)):
     if sys.argv[i]=="--port":
@@ -30,12 +33,14 @@ for i in range(len(sys.argv)):
 if(2>number_of_users or number_of_users>4):
     print("number of users should be between 2 and 4")
     exit()
-file=open("../gameBoards/deneme_in","r")
-monopoly=Board(file,number_of_users)
 
 
 
-# Server start
+
+# Creating server
+server=Server()
+
+# Server socket starts
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # bind socket to a specific address and port
@@ -53,18 +58,44 @@ server_socket.bind("/tmp/mysocket")
 
 
 # listen for incoming connections
-server_socket.listen(10)
+server_socket.listen()
 print(f"Server listening on port {PORT}")
 
 
+
+def become_game_thread(monopoly):
+    current_user = monopoly.order[0]
+    while True:
+        current_user = monopoly.turn(current_user)
+        if (current_user == None):
+            break
+
 #-----------------------------user thread function--------------------------------------------
-def user_thread_func(client_socket, address, monopoly):
+def user_thread_func(client_socket, address):
 
     # create new thread to handle client request    # TODO for failed user initiation try except with number of users unchanigng
     user = User(client_socket, address)
-
-    # attaching user
-    monopoly.attach(user, user.callback, user.turncb)
+    # sending game list to the user
+    while True:
+        is_user_attached=False
+        game_list=server.list()
+        user.client_socket.send(("New or join\nto join write Join(game_id)\nto create a game New(number of players)\n\tnumber of players must be between 2-4\n"+str(game_list)+"\n").encode("utf-8"))
+        received_msg = user.client_socket.recv(1024).decode('utf-8').strip()
+        if received_msg.startswith("New(") and received_msg.endswith(")") and received_msg[4:-1].isnumeric():
+            user_count = int(received_msg[4:-1])
+            monopoly=server.new(user_count)
+            if monopoly:
+                server.open(monopoly, user)
+                is_user_attached=True
+        elif received_msg.startswith("Join(") and received_msg.endswith(")") and received_msg[5:-1].isnumeric():
+            game_index=int(received_msg[5:-1])
+            is_user_attached=server.open(game_list[game_index],user)
+            if(is_user_attached):
+                monopoly=game_list[game_index]
+        else:
+            user.client_socket.send(f"Sent wrong commend({received_msg}\n".encode("utf-8"))
+        if(is_user_attached):
+            break
 
     # wait for user to respond with ready
     user.client_socket.send("write \"ready\" when you are\n".encode('utf-8'))
@@ -77,6 +108,8 @@ def user_thread_func(client_socket, address, monopoly):
     # barrier waiting it will be opened by the last user in board
     if monopoly.WaitingState==True:
         user.mutex.acquire()
+    else:
+        become_game_thread(monopoly)
 
 
 
@@ -86,16 +119,14 @@ def user_thread_func(client_socket, address, monopoly):
 
 
 user_threads=[]
-for i in range(number_of_users):
+while True:
     # accept incoming connection
     client_socket, address = server_socket.accept()
     print(f"Accepted connection from {address}")
 
-    user_thread=th.Thread(target=user_thread_func,args=(client_socket, address, monopoly))
+    user_thread=th.Thread(target=user_thread_func,args=(client_socket, address))
     user_threads.append(user_thread)
     user_thread.start()
-# close socket
-server_socket.close()
 
 for user_thread in user_threads:
     user_thread.join()
@@ -103,9 +134,9 @@ for user_thread in user_threads:
 
 
 
-current_user=monopoly.order[0]
+'''current_user=monopoly.order[0]
 while True:
     current_user=monopoly.turn(current_user)
     if(current_user==None):
-        break
+        break'''
 

@@ -15,7 +15,8 @@ def take_chance_card():
 
 class Board:
 
-    def __init__(self, file,number_of_users=4):
+    def __init__(self, filename,number_of_users=4):
+        file = open(filename, "r")
         data = json.loads(file.read())
         self.number_of_users=number_of_users
 
@@ -59,6 +60,8 @@ class Board:
 
         self.callback = {}
 
+    def __repr__(self):
+        return str(len(self.order))+"/"+str(self.number_of_users)
     def get_colors(self):
         """
             Groups properties by their color,
@@ -90,15 +93,17 @@ class Board:
             Manages player participation in the game.
             order of play is depended on the order of connection
         """
+        if user in self.user_dict.keys():
+            return True
+
         if(self.unready_count==self.number_of_users):       # for first attaching then starting readies
-            return
+            return False
 
 
 
         if (self.WaitingState == False):
-            return
-        if user in self.user_dict.keys():
-            return
+            return False
+
         self.user_dict[user] = {"user": user,
                                 "money": self.startup,
                                 "position": 0,
@@ -110,7 +115,7 @@ class Board:
                                 "turncb": turncb}
         self.unready_count += 1
         self.order.append(user)
-
+        return True
     def detach(self, user):  # controlled
         """
             Handles players leaving the game.
