@@ -73,8 +73,19 @@ def become_game_thread(monopoly):
 #-----------------------------user thread function--------------------------------------------
 def user_thread_func(client_socket, address):
 
-    # create new thread to handle client request    # TODO for failed user initiation try except with number of users unchanigng
-    user = User(client_socket, address)
+    # ask sign in or up:
+    while True:
+        client_socket.send("Do u want to login or sign up:write either \"login\" or \"sign up\"\n".encode("utf-8"))
+        received_msg = client_socket.recv(1024).decode('utf-8').strip()
+        if(received_msg=="login"):
+            user = User(client_socket, address, "login")
+            if(user.authh()==False):
+                client_socket.send("Wrong password or Username\n".encode("utf-8"))
+                return
+            break
+        elif(received_msg=="sign up"):
+            user = User(client_socket, address,"sign up")
+
     # sending game list to the user
     while True:
         is_user_attached=False
