@@ -17,12 +17,15 @@ def take_chance_card():
 
 class Board:
 
-    def __init__(self, filename,number_of_users=4):
+    def __init__(self, filename,server,game_index,number_of_users=4):
         file = open(filename, "r")
         data = json.loads(file.read())
         self.number_of_users=number_of_users
 
         self.mutex=Lock()       #will be used before initiaing game
+
+        self.server=server      # to delete the game from server
+        self.game_index=game_index # to delete the game from server
 
         # file variables
         self.cells = data["cells"]  # used as map to play the game
@@ -151,6 +154,7 @@ class Board:
             self.active_user_state = TURN_STATE.turn_start
             if (n == 1):
                 self.CALL_THEM_BACK(f"Game has ended - {self.order[0]} wins!!!")
+                self.server.game_is_over(self.game_index)
 
     def ready(self, user):  # controlled
         """

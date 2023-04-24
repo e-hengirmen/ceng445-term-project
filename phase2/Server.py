@@ -13,7 +13,7 @@ line test application demonstrating all features of your library.
 #-------------------------------------------------------------------------------------
 
 class Server:
-    game_board_filename = "../gameBoards/deneme_in"
+    game_board_filename = "../gameBoards/deneme3_in"
 
     def __init__(self):
         self.monopoly_instances = {}
@@ -23,9 +23,9 @@ class Server:
     def new(self,number_of_users=2):
         if(number_of_users>4 or number_of_users<2):
             return None
-        monopoly=Board(self.game_board_filename,number_of_users)
         with self.monopoly_list_mutex:
             self.new_game_id+=1
+            monopoly = Board(self.game_board_filename, self, self.new_game_id,number_of_users)
             self.monopoly_instances[self.new_game_id]=monopoly
         return monopoly
     def list(self): # TODO control maybe a copy of the list can be send instead(copied in mutex)
@@ -36,3 +36,6 @@ class Server:
         return is_user_attached
     def close(self,game,user): # TODO
         game.removeUser(user)
+
+    def game_is_over(self, game_index):
+        del self.monopoly_instances[game_index]
