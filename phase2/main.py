@@ -100,11 +100,14 @@ def user_thread_func(client_socket, address):
                 is_user_attached=True
         elif received_msg.startswith("Join(") and received_msg.endswith(")") and received_msg[5:-1].isnumeric():
             game_index=int(received_msg[5:-1])
-            is_user_attached=server.open(game_list[game_index],user)
-            if(is_user_attached):
-                monopoly=game_list[game_index]
+            if(game_index in game_list):
+                is_user_attached=server.open(game_list[game_index],user)
+                if(is_user_attached):
+                    monopoly=game_list[game_index]
+            else:
+                user.client_socket.send(f"There is no game ({game_index})\n".encode("utf-8"))
         else:
-            user.client_socket.send(f"Sent wrong commend({received_msg}\n".encode("utf-8"))
+            user.client_socket.send(f"Sent wrong commend({received_msg})\n".encode("utf-8"))
         if(is_user_attached):
             break
 
