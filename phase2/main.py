@@ -75,6 +75,7 @@ def user_thread_func(client_socket, address):
 
     # ask sign in or up:
     while True:
+        wrong_count=0
         client_socket.send("Do u want to login or sign up or exit:write either \"login\" or \"sign up\" or \"exit\"\n".encode("utf-8"))
         received_msg = client_socket.recv(1024).decode('utf-8').strip()
         if(received_msg=="login"):
@@ -88,6 +89,15 @@ def user_thread_func(client_socket, address):
         elif(received_msg == "exit"):
             client_socket.send("Goodbye and have a nice day\n".encode("utf-8"))
             return
+        else:
+            wrong_count+=1
+            if(wrong_count<3):
+                client_socket.send(f"You wrote {received_msg} wrong input count={wrong_count}\n".encode("utf-8"))
+            else:
+                client_socket.send(f"You wrote {received_msg} wrong input count={wrong_count} goodbye\n".encode("utf-8"))
+                return
+
+
 
     # sending game list to the user
     while True:
