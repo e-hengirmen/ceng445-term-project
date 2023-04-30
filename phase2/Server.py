@@ -13,7 +13,7 @@ line test application demonstrating all features of your library.
 #-------------------------------------------------------------------------------------
 
 class Server:
-    game_board_filename = "../gameBoards/deneme_in"
+    game_board_filename = "../gameBoards/input.json"
 
     def __init__(self):
         self.monopoly_instances = {}
