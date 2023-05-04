@@ -30,6 +30,9 @@ class Server:
         return monopoly
     def list(self): # TODO control maybe a copy of the list can be send instead(copied in mutex)
         return self.monopoly_instances
+    def observe(self,game,user): # returns true or false
+        with self.monopoly_list_mutex:
+            game.attach_observer(user, user.callback)
     def open(self,game,user): # returns true or false
         with self.monopoly_list_mutex:
             is_user_attached=game.attach(user, user.callback, user.turncb)

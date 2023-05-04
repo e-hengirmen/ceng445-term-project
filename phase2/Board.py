@@ -23,6 +23,7 @@ class Board:
         self.number_of_users=number_of_users
 
         self.mutex=Lock()       #will be used before initiaing game
+        self.observer_mutex=Lock()       #for observers joining
 
         self.server=server      # to delete the game from server
         self.game_index=game_index # to delete the game from server
@@ -49,6 +50,7 @@ class Board:
         # property user containers
         self.properties = []
         self.user_dict = {}
+        self.observer_dict = {}
         self.color_list = []
         self.get_properties()
 
@@ -95,6 +97,15 @@ class Board:
                 if cell['color'] not in self.color_list:
                     self.color_list.append(cell['color'])
 
+
+    def is_game_full(self):
+        return len(self.order)==self.number_of_users
+    def attach_observer(self, user, callback):
+        with self.observer_mutex:
+            if user in self.observer_dict.keys():
+                return
+            self.observer_dict[user] = {"user": user,
+                                        "callback": callback}
     def attach(self, user, callback, turncb):  # controlled
         """
             creates a user dictionary(accessed by user object also adds user to the current game)
@@ -645,10 +656,13 @@ class Board:
                 str_list.append("\tUpgrade")
         return "\n".join(str_list)
 
-    def CALL_THEM_BACK(self,message,last_played_user=None):  # TODO change comments with uncommented also remove last played user
+    def CALL_THEM_BACK(self,message,last_played_user=None):
          if(last_played_user==None):
              for current_user_dict in self.user_dict.values():
                 current_user_dict["callback"](message)
+             for current_OBSERVER_dict in self.observer_dict.values():
+                 current_OBSERVER_dict["callback"](message)
+
          else:
              self.user_dict[last_played_user]["callback"](message)
 

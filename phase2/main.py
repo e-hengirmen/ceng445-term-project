@@ -103,20 +103,27 @@ def user_thread_func(client_socket, address):
     while True:
         is_user_attached=False
         game_list=server.list()
-        user.client_socket.send(("New or join\nto join write Join(game_id)\nto create a game New(number of players)\n\tnumber of players must be between 2-4\n"+str(game_list)+"\n").encode("utf-8"))
+        user.client_socket.send(("New or join or observe\nto join write Join(game_id)\nto observe write Observe(game_id)\nto create a game New(number of players)\n\tnumber of players must be between 2-4\n"+str(game_list)+"\n").encode("utf-8"))
         received_msg = user.client_socket.recv(1024).decode('utf-8').strip()
         if received_msg.startswith("New(") and received_msg.endswith(")") and received_msg[4:-1].isnumeric():
             user_count = int(received_msg[4:-1])
             monopoly=server.new(user_count)
             if monopoly:
-                server.open(monopoly, user)
-                is_user_attached=True
+                is_user_attached=server.open(monopoly, user)
+                # is_user_attached=True
         elif received_msg.startswith("Join(") and received_msg.endswith(")") and received_msg[5:-1].isnumeric():
             game_index=int(received_msg[5:-1])
             if(game_index in game_list):
                 is_user_attached=server.open(game_list[game_index],user)
                 if(is_user_attached):
                     monopoly=game_list[game_index]
+            else:
+                user.client_socket.send(f"There is no game ({game_index})\n".encode("utf-8"))
+        elif received_msg.startswith("Observe(") and received_msg.endswith(")") and received_msg[8:-1].isnumeric():
+            game_index=int(received_msg[8:-1])
+            if(game_index in game_list):
+                server.observe(game_list[game_index],user)
+                return
             else:
                 user.client_socket.send(f"There is no game ({game_index})\n".encode("utf-8"))
         else:
