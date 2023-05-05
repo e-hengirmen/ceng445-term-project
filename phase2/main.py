@@ -18,21 +18,12 @@ line test application demonstrating all features of your library.
 '''
 #-------------------------------------------------------------------------------------
 PORT=3333
-number_of_users=2
 filename="../gameBoards/deneme_in"
 
 for i in range(len(sys.argv)):
     if sys.argv[i]=="--port":
         PORT=int(sys.argv[i+1])
         break
-'''for i in range(len(argv)):
-    if argv[i]=="-n":
-        number_of_users=int(argv[i+1])
-        break'''
-
-if(2>number_of_users or number_of_users>4):
-    print("number of users should be between 2 and 4")
-    exit()
 
 
 
@@ -130,6 +121,12 @@ def user_thread_func(client_socket, address):
             user.client_socket.send(f"Sent wrong commend({received_msg})\n".encode("utf-8"))
         if(is_user_attached):
             break
+
+
+
+
+
+
 
     # wait for user to respond with ready
     user.client_socket.send("write \"ready\" when you are ready write \"close\" if you want to leave\n".encode('utf-8'))
