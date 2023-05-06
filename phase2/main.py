@@ -59,8 +59,11 @@ def become_playing_thread(monopoly,user):
         if (game_state == None):
             break
 def become_observer_thread(monopoly,user):
-    # TODO
-    x=3
+    while True:
+        message=user.client_socket.recv(1024).decode("Utf-8").strip()
+        game_state = monopoly.observe(user,message)
+        if (game_state == None):
+            break
 def become_game_thread(monopoly):
     current_user = monopoly.order[0]
     while True:
@@ -122,6 +125,7 @@ def user_thread_func(client_socket, address):
                 game_index=int(received_msg[8:-1])
                 if(game_index in game_list):
                     server.observe(game_list[game_index],user)
+                    monopoly = game_list[game_index]
                     this_thread_is_observer_thread=True
                     is_user_attached=True
                 else:

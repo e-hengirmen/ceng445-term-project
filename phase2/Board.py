@@ -108,6 +108,11 @@ class Board:
                 return
             self.observer_dict[user] = {"user": user,
                                         "callback": callback}
+    def detach_observer(self, user):  # controlled
+        with self.observer_mutex:
+            if user not in self.observer_dict.keys():
+                return
+            del self.observer_dict[user]
     def attach(self, user, callback, turncb):  # controlled
         """
             creates a user dictionary(accessed by user object also adds user to the current game)
@@ -199,6 +204,19 @@ class Board:
         self.CALL_THEM_BACK(self.ListCommands(self.order[0]),self.order[0])
 
     # for exception handling real turn function is below called: turn_helper
+
+    def observe(self,user,command):
+        if command == "exit":
+            self.CALL_THEM_BACK("You have left observing the game",user)
+            self.detach_observer(user)
+            return None
+        elif self.WaitingState == True:
+            self.CALL_THEM_BACK("Waiting for players to be ready",user)
+        elif len(self.order)==1:  # game has ended
+            return None
+        elif command == "list":
+            self.CALL_THEM_BACK(self.get_report(self.order[self.active_user_index]),user)
+        return user
     def turn(self, user):
         """
             for exception handling real turn function is below called: turn_helper
@@ -441,6 +459,7 @@ class Board:
 
         # Goes bankrupt if no money is left
         if self.user_dict[user]["money"] < 0:  # controlled
+            self.CALL_THEM_BACK(f"{user.username} has no money left thus lost the game")
             self.detach(user)
             return None
 
@@ -684,15 +703,18 @@ class Board:
         str_list.append("\texit")
         return "\n".join(str_list)
 
-    def CALL_THEM_BACK(self,message,last_played_user=None):
-         if(last_played_user==None):
+    def CALL_THEM_BACK(self,message,calling_user=None):
+         if(calling_user==None):
              for current_user_dict in self.user_dict.values():
                 current_user_dict["callback"](message)
              for current_OBSERVER_dict in self.observer_dict.values():
                  current_OBSERVER_dict["callback"](message)
-
          else:
-             self.user_dict[last_played_user]["callback"](message)
+             if calling_user in self.user_dict:
+                 user_dict=self.user_dict[calling_user]
+             if calling_user in self.observer_dict:
+                 user_dict=self.observer_dict[calling_user]
+             user_dict["callback"](message)
 
     def TURN_TO_USER(self, user):
         """
