@@ -244,8 +244,20 @@ class Board:
 
             Call the user's callback with their updated game report and return the active user's username.
         """
+        if command == "exit":
+            self.CALL_THEM_BACK("You have left the game",user)
+            self.detach(user)
+            self.CALL_THEM_BACK(f"{user.username} has left the game")
+            return None
         if self.WaitingState == True:
             raise WaitingForReadyException("Not everyone is ready")
+        if len(self.order)==1:  # game has ended
+            return None
+        if command == "list":
+            self.CALL_THEM_BACK(self.get_report(user))
+            self.CALL_THEM_BACK(self.ListCommands(user))
+            return user
+            # TODO
         if self.order[self.active_user_index] != user:
             raise NotYourTurnException("It is " + self.order[self.active_user_index].username + "'s turn")
         # jail case
