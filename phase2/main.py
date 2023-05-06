@@ -53,7 +53,14 @@ server_socket.listen()
 print(f"Server listening on port {PORT}")
 
 
-
+def become_playing_thread(monopoly,user):
+    while True:
+        game_state = monopoly.turn(user)
+        if (game_state == None):
+            break
+def become_observer_thread(monopoly,user):
+    # TODO
+    x=3
 def become_game_thread(monopoly):
     current_user = monopoly.order[0]
     while True:
@@ -89,63 +96,71 @@ def user_thread_func(client_socket, address):
                 return
 
 
-
-    # sending game list to the user
     while True:
-        is_user_attached=False
-        game_list=server.list()
-        user.client_socket.send(("New or join or observe\nto join write Join(game_id)\nto observe write Observe(game_id)\nto create a game New(number of players)\n\tnumber of players must be between 2-4\n"+str(game_list)+"\n").encode("utf-8"))
-        received_msg = user.client_socket.recv(1024).decode('utf-8').strip()
-        if received_msg.startswith("New(") and received_msg.endswith(")") and received_msg[4:-1].isnumeric():
-            user_count = int(received_msg[4:-1])
-            monopoly=server.new(user_count)
-            if monopoly:
-                is_user_attached=server.open(monopoly, user)
-                # is_user_attached=True
-        elif received_msg.startswith("Join(") and received_msg.endswith(")") and received_msg[5:-1].isnumeric():
-            game_index=int(received_msg[5:-1])
-            if(game_index in game_list):
-                is_user_attached=server.open(game_list[game_index],user)
-                if(is_user_attached):
-                    monopoly=game_list[game_index]
-            else:
-                user.client_socket.send(f"There is no game ({game_index})\n".encode("utf-8"))
-        elif received_msg.startswith("Observe(") and received_msg.endswith(")") and received_msg[8:-1].isnumeric():
-            game_index=int(received_msg[8:-1])
-            if(game_index in game_list):
-                server.observe(game_list[game_index],user)
+        # sending game list to the user
+        this_thread_is_observer_thread=False
+        while True:
+            is_user_attached=False
+            game_list=server.list()
+            user.client_socket.send(("New or join or observe\nto exit write exit\nto join write Join(game_id)\nto observe write Observe(game_id)\nto create a game New(number of players)\n\tnumber of players must be between 2-4\n"+str(game_list)+"\n").encode("utf-8"))
+            received_msg = user.client_socket.recv(1024).decode('utf-8').strip()
+            if received_msg.startswith("New(") and received_msg.endswith(")") and received_msg[4:-1].isnumeric():
+                user_count = int(received_msg[4:-1])
+                monopoly=server.new(user_count)
+                if monopoly:
+                    is_user_attached=server.open(monopoly, user)
+                    # is_user_attached=True
+            elif received_msg.startswith("Join(") and received_msg.endswith(")") and received_msg[5:-1].isnumeric():
+                game_index=int(received_msg[5:-1])
+                if(game_index in game_list):
+                    is_user_attached=server.open(game_list[game_index],user)
+                    if(is_user_attached):
+                        monopoly=game_list[game_index]
+                else:
+                    user.client_socket.send(f"There is no game ({game_index})\n".encode("utf-8"))
+            elif received_msg.startswith("Observe(") and received_msg.endswith(")") and received_msg[8:-1].isnumeric():
+                game_index=int(received_msg[8:-1])
+                if(game_index in game_list):
+                    server.observe(game_list[game_index],user)
+                    this_thread_is_observer_thread=True
+                    is_user_attached=True
+                else:
+                    user.client_socket.send(f"There is no game ({game_index})\n".encode("utf-8"))
+            elif (received_msg == "exit"):
+                client_socket.send("Goodbye and have a nice day\n".encode("utf-8"))
                 return
             else:
-                user.client_socket.send(f"There is no game ({game_index})\n".encode("utf-8"))
-        else:
-            user.client_socket.send(f"Sent wrong commend({received_msg})\n".encode("utf-8"))
-        if(is_user_attached):
-            break
+                user.client_socket.send(f"Sent wrong commend({received_msg})\n".encode("utf-8"))
+            if(is_user_attached):
+                break
+
+        if(this_thread_is_observer_thread==True):
+            become_observer_thread(monopoly,user)
+            continue
 
 
 
 
 
-
-
-    # wait for user to respond with ready
-    user.client_socket.send("write \"ready\" when you are ready write \"close\" if you want to leave\n".encode('utf-8'))
-    ready_msg = user.client_socket.recv(1024).decode('utf-8').strip()
-    while ready_msg!="ready" and ready_msg!="close":
-        user.client_socket.send(f"Invalid message {ready_msg}. write \"ready\" when you are ready write \"close\" if you want to leave\n".encode('utf-8'))
+        # wait for user to respond with ready
+        user.client_socket.send("write \"ready\" when you are ready write \"exit\" if you want to leave\n".encode('utf-8'))
         ready_msg = user.client_socket.recv(1024).decode('utf-8').strip()
-    if ready_msg == "close":
-        server.close(monopoly,user)
-        return
-    monopoly.ready(user)
+        while ready_msg!="ready" and ready_msg!="exit":
+            user.client_socket.send(f"Invalid message {ready_msg}. write \"ready\" when you are ready write \"exit\" if you want to leave\n".encode('utf-8'))
+            ready_msg = user.client_socket.recv(1024).decode('utf-8').strip()
+        if ready_msg == "exit":
+            server.close(monopoly,user)
+            continue
+        monopoly.ready(user)
 
 
 
-    # barrier waiting it will be opened by the last user in board
-    if monopoly.WaitingState==True:
-        user.mutex.acquire()
-    else:
-        become_game_thread(monopoly)
+        # barrier waiting it will be opened by the last user in board
+        '''if monopoly.WaitingState==True:
+            user.mutex.acquire()
+        else:
+            become_game_thread(monopoly)'''
+        become_playing_thread(monopoly,user)
 
 
 

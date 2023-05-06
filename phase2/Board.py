@@ -70,6 +70,8 @@ class Board:
 
         self.callback = {}
 
+        self.game_has_ended=False
+
     def __repr__(self):
         return str(len(self.order))+"/"+str(self.number_of_users)
     def get_colors(self):
@@ -165,6 +167,7 @@ class Board:
             self.active_user_state = TURN_STATE.turn_start
             if (n == 1):
                 self.CALL_THEM_BACK(f"Game has ended - {self.order[0]} wins!!!")
+                self.game_has_ended=True
                 self.server.game_is_over(self.game_index)
 
     def ready(self, user):  # controlled
@@ -188,10 +191,12 @@ class Board:
             Transitioning from the waiting state to the active game state.
         """
         self.WaitingState = False
+        '''
         for user in self.order:
             if user!=me:
-                user.mutex.release()
+                user.mutex.release()'''
         self.CALL_THEM_BACK(self.get_report(self.order[0]))
+        self.CALL_THEM_BACK(self.ListCommands(self.order[0]),self.order[0])
 
     # for exception handling real turn function is below called: turn_helper
     def turn(self, user):
@@ -246,7 +251,10 @@ class Board:
         """
         if command == "exit":
             self.CALL_THEM_BACK("You have left the game",user)
-            self.detach(user)
+            if self.WaitingState==True:
+                self.removeUser(user)
+            else:
+                self.detach(user)
             self.CALL_THEM_BACK(f"{user.username} has left the game")
             return None
         if self.WaitingState == True:
@@ -254,10 +262,9 @@ class Board:
         if len(self.order)==1:  # game has ended
             return None
         if command == "list":
-            self.CALL_THEM_BACK(self.get_report(user))
-            self.CALL_THEM_BACK(self.ListCommands(user))
+            self.CALL_THEM_BACK(self.get_report(user),user)
+            self.CALL_THEM_BACK(self.ListCommands(user),user)
             return user
-            # TODO
         if self.order[self.active_user_index] != user:
             raise NotYourTurnException("It is " + self.order[self.active_user_index].username + "'s turn")
         # jail case
@@ -438,6 +445,7 @@ class Board:
             return None
 
         self.CALL_THEM_BACK(self.get_report(user))
+        self.CALL_THEM_BACK(self.ListCommands(self.order[self.active_user_index]),self.order[self.active_user_index])
 
         return self.order[self.active_user_index]
 
@@ -643,29 +651,37 @@ class Board:
             Returns avaliable command list for the user
             It returns a string so that whe can use it on turncb function
         """
+        if self.WaitingState==True:
+            return ""
         str_list = [user.username]
-        if self.user_dict[user]["guilty"]:
-            str_list.append("You are at jail")
-            str_list.append("You have " + str(self.user_dict[user]["jailFree"]) + " jailFree cards")
+        if(self.order[self.active_user_index]==user):
+            if self.user_dict[user]["guilty"]:
+                str_list.append("You are at jail")
+                str_list.append("You have " + str(self.user_dict[user]["jailFree"]) + " jailFree cards")
+                str_list.append("Avaliable commands to you are:")
+                str_list.append("\tRoll")
+                str_list.append("\tBail")
+            elif self.active_user_state == TURN_STATE.turn_start:
+                str_list.append("You are at start of the turn")
+                str_list.append("Avaliable commands to you are:")
+                str_list.append("\tRoll")
+            elif self.active_user_state == TURN_STATE.teleport_wait:
+                str_list.append("You are in teleportation state")
+                str_list.append("Avaliable commands to you are:")
+                str_list.append("\tTeleport(index)")
+            elif self.active_user_state == TURN_STATE.buy_wait:
+                str_list.append("You are in last state")
+                str_list.append("Avaliable commands to you are:")
+                str_list.append("\tEndTurn")
+                if (self.cells[self.user_dict[user]["position"]]["property"].owner == None):
+                    str_list.append("\tBuy")
+                else:
+                    str_list.append("\tUpgrade")
+        else:
+            str_list.append(f"It is not your turn. It is currently {self.order[self.active_user_index].username}'s turn")
             str_list.append("Avaliable commands to you are:")
-            str_list.append("\tRoll")
-            str_list.append("\tBail")
-        elif self.active_user_state == TURN_STATE.turn_start:
-            str_list.append("You are at start of the turn")
-            str_list.append("Avaliable commands to you are:")
-            str_list.append("\tRoll")
-        elif self.active_user_state == TURN_STATE.teleport_wait:
-            str_list.append("You are in teleportation state")
-            str_list.append("Avaliable commands to you are:")
-            str_list.append("\tTeleport(index)")
-        elif self.active_user_state == TURN_STATE.buy_wait:
-            str_list.append("You are in last state")
-            str_list.append("Avaliable commands to you are:")
-            str_list.append("\tEndTurn")
-            if (self.cells[self.user_dict[user]["position"]]["property"].owner == None):
-                str_list.append("\tBuy")
-            else:
-                str_list.append("\tUpgrade")
+        str_list.append("\tlist")
+        str_list.append("\texit")
         return "\n".join(str_list)
 
     def CALL_THEM_BACK(self,message,last_played_user=None):
@@ -682,7 +698,7 @@ class Board:
         """
             gets command from the current user
         """
-        command = self.user_dict[user]["turncb"](self.ListCommands(user))
+        command = self.user_dict[user]["turncb"]("")
         return command
 
     # ends turn
