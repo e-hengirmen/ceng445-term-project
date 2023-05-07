@@ -1,8 +1,0 @@
-{ "cells": [{ "type": "start"},
-          { "type": "property", "name": "bostanci", "cell": 2, "color": "red",
-            "price":120, "rents": [50,150,400,600,900]},
-          { "type": "teleport"}, {"type": "tax"}, {"type": "jail"}],
-  "upgrade": 50, "teleport": 100, "jailbail": 100,
-  "tax": 30, "lottery": 200, "startup": 1500,
-  "chances": [{"type": "jump"}]
-}
