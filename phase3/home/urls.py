@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-from server.views import ServerView
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path, include

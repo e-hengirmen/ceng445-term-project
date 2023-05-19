@@ -16,7 +16,10 @@ from server.models import GAME
 from Board import Board
 
 board_dict={}
+user_to_board={}
 
+# Done
+@login_required
 def addgame(request):
     if "choice" in request.POST:
         user_count = request.POST.get('choice')
@@ -32,24 +35,46 @@ def addgame(request):
             board_dict[monopoly_model_object.game_id]=monopoly
 
         # return render(request, 'server/home.html', {"games":GAME.objects.all(),"message":message})
-        return redirect('/server')
-def join(request):
-    if "game_list_join" in request.POST:
-        print(request.POST["game_list_join"],"join")
-        return redirect('/server')
-    if "game_list_observe" in request.POST:
-        print(request.POST["game_list_observe"],"observe")
-        return redirect('/server')
-    return redirect('/')
+    return redirect('/server')
 
-# @method_decorator(login_required, name='dispatch')
-class ServerView(View):
-    def get(self, request):
-        # states=[board_dict[game.game_id].getboardstate() for game in GAME.objects.all()]
-        representation=[board_dict[game.game_id].__repr__() for game in GAME.objects.all()]
-        states=        [not board_dict[game.game_id].WaitingState for game in GAME.objects.all()]
-        return render(request, 'server/home.html', {"id_n_repr":zip(GAME.objects.all(),representation,states)})
+
+
+@login_required
+def join(request):
+    username = request.user.username
+    if username in user_to_board:
+        return HttpResponse(f"already in game {user_to_board[username]}")
+    if "game_list_join" in request.POST:
+        ID=int(request.POST["game_list_join"])
+        monopoly=board_dict[ID]
+
+        if monopoly.attach(username):
+            user_to_board[username]=ID
+            return redirect('play')
+        return redirect('/server')
+
+    if "game_list_observe" in request.POST:
+        # monopoly=board_dict[request.POST["game_list_observe"]]
+        monopoly=board_dict[request.POST["game_list_observe"]]
+        if request.user.is_authenticated:
+            print(username)
+            username = request.user.username
+            monopoly.attach_observer(username)
+            return redirect('play')
+    return redirect('/server')
+
+
+
+@login_required
+def list_server(request):
+    representation=[board_dict[game.game_id].__repr__() for game in GAME.objects.all()]
+    states=        [not board_dict[game.game_id].WaitingState for game in GAME.objects.all()]
+    return render(request, 'server/home.html', {"id_n_repr":zip(GAME.objects.all(),representation,states)})
 
 # def index(request):
 #     return render(request, 'home.html')
 
+@login_required
+def play(request):
+    return render(request, 'server/play.html')
+    
