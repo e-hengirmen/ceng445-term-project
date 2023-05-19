@@ -64,8 +64,6 @@ class Board:
         self.properties_by_color = {}
         self.get_colors()
 
-        self.callback = {}
-
         self.game_has_ended=False
 
     def __repr__(self):
@@ -98,18 +96,17 @@ class Board:
 
     def is_game_full(self):
         return len(self.order)==self.number_of_users
-    def attach_observer(self, user, callback):
+    def attach_observer(self, user):
         with self.observer_mutex:
             if user in self.observer_dict.keys():
                 return
-            self.observer_dict[user] = {"user": user,
-                                        "callback": callback}
+            self.observer_dict[user] = {"user": user}
     def detach_observer(self, user):  # controlled
         with self.observer_mutex:
             if user not in self.observer_dict.keys():
                 return
             del self.observer_dict[user]
-    def attach(self, user, callback, turncb):  # controlled
+    def attach(self, user):  # controlled
         """
             creates a user dictionary(accessed by user object also adds user to the current game)
             Manages player participation in the game.
@@ -131,9 +128,7 @@ class Board:
                                     "properties": [],
                                     "ready": False,
                                     "guilty": False,
-                                    "jailFree": 0,
-                                    "callback": callback,
-                                    "turncb": turncb}
+                                    "jailFree": 0}
 
             # self.unready_count += 1
             self.order.append(user)
@@ -268,7 +263,7 @@ class Board:
                 self.removeUser(user)
             else:
                 self.detach(user)
-            self.CALL_THEM_BACK(f"{user.username} has left the game")
+            self.CALL_THEM_BACK(f"{user} has left the game")
             return None
         if self.WaitingState == True:
             raise WaitingForReadyException("Not everyone is ready")
@@ -288,20 +283,20 @@ class Board:
                 dice1 = roll_a_dice()
                 dice2 = roll_a_dice()
                 # show_dice_roll(dice1,dice2)
-                self.CALL_THEM_BACK(f"{user.username} rolled {dice1} {dice2}")
+                self.CALL_THEM_BACK(f"{user} rolled {dice1} {dice2}")
                 if (dice1 == dice2):
                     self.user_dict[user]["guilty"] = False
-                    self.CALL_THEM_BACK(f"{user.username} is now out of jail")
+                    self.CALL_THEM_BACK(f"{user} is now out of jail")
 
             # Below 2 cases were only added for testing TODO delete later
             elif command == "DoubleDice":
                 # show_dice_roll(dice1,dice2)
-                self.CALL_THEM_BACK(f"{user.username} rolled 6 6")
+                self.CALL_THEM_BACK(f"{user} rolled 6 6")
                 self.user_dict[user]["guilty"] = False
-                self.CALL_THEM_BACK(f"{user.username} is now out of jail")
+                self.CALL_THEM_BACK(f"{user} is now out of jail")
             elif command == "NotDoubleDice":
                 # show_dice_roll(dice1,dice2)
-                self.CALL_THEM_BACK(user, f"{user.username} rolled 3 5")
+                self.CALL_THEM_BACK(user, f"{user} rolled 3 5")
 
             elif command == "Bail":
                 if self.user_dict[user]["jailFree"] > 0:
@@ -310,7 +305,7 @@ class Board:
                 else:
                     self.user_dict[user]["money"] -= self.jailbail
                 self.user_dict[user]["guilty"] = False
-                self.CALL_THEM_BACK(f"{user.username} is now out of jail")
+                self.CALL_THEM_BACK(f"{user} is now out of jail")
             else:
                 raise WrongCommandException(
                     f"you're in jail, your command was \"{command}\" it should either be Roll or Bail")
@@ -454,7 +449,7 @@ class Board:
 
         # Goes bankrupt if no money is left
         if self.user_dict[user]["money"] < 0:  # controlled
-            self.CALL_THEM_BACK(f"{user.username} has no money left thus lost the game")
+            self.CALL_THEM_BACK(f"{user} has no money left thus lost the game")
             self.detach(user)
             return None
 
@@ -643,7 +638,7 @@ class Board:
         us = self.getuserstate(user)
 
         lp = ("LAST PLAY:\t{:<{uL}} position: {:<{pL}} cell: {}".format(
-            user.username,
+            user,
             self.user_dict[user]["position"] + 1,
             self.cells[self.user_dict[user]["position"]],
             uL=20,
@@ -667,7 +662,7 @@ class Board:
         """
         if self.WaitingState==True:
             return ""
-        str_list = [user.username]
+        str_list = [user]
         if(self.order[self.active_user_index]==user):
             if self.user_dict[user]["guilty"]:
                 str_list.append("You are at jail")
@@ -853,190 +848,4 @@ class TURN_STATE(Enum):
 
 
 
-
-
-
-import uuid
-import hashlib
-from threading import Lock
-
-class User:
-    Command_list= None
-    username_list = []
-    email_list = []
-    fullname = []
-    passwd = []
-    session_dict = {}
-    salt = '456'
-
-    # def __init__(self, username, email, fullname, passwd):
-    def __init__(self, client_socket, address,init_type):
-        """
-        Initializes a new user object.
-        Checks if the provided username and email are unique, and if not, raises a UserExistsException.
-        Stores the hashed password (created by combining the provided password with the salt) in the user object.
-        """
-        #super().__init__(self)
-
-        self.mutex=Lock()
-        self.mutex.acquire()
-
-        self.address=address
-        self.client_socket=client_socket
-        #self.monopoly=monopoly
-
-        # get username from client
-        if(init_type=="sign up"):
-            self.client_socket.send("enter your username, email, fullname, passwd in this order with space between them\n".encode('utf-8'))
-            username, email, fullname, passwd = self.client_socket.recv(1024).decode('utf-8').split()
-        elif(init_type=="login"):
-            self.client_socket.send("enter your username, passwd in this order with space between them\n".encode('utf-8'))
-            username, passwd = self.client_socket.recv(1024).decode('utf-8').split()
-        if (init_type == "sign up"):
-            if username in User.username_list:
-                raise UserExistsException('Username exists')
-            if email in User.email_list:
-                raise UserExistsException('Email exists')
-        self.username = username
-        self.passwd = hashlib.sha256((passwd + User.salt).encode()).hexdigest()
-        if(init_type=="sign up"):
-            self.email = email
-            self.fullname = fullname
-            User.username_list.append(username)
-            User.email_list.append(email)
-            User.fullname.append(fullname)
-            User.passwd.append(self.passwd)
-    def __str__(self):
-        """
-        Returns a string representation of the user object,
-        which includes the username, email, fullname, and hashed password in a dictionary format.
-        """
-        return str({
-            "username": self.username
-        })
-    def get(self):
-        """
-        Calls the __str__() method and returns its result,
-        which is the string representation of the user object.
-        """
-        return self.__str__()
-    def update_helper(self, username=None, email=None, fullname=None, passwd=None):
-        """
-        A helper function to update user information.
-        Updates the user's username, email, fullname, and password based on the provided arguments.
-        If a new username or email already exists in the respective lists, raises a UserExistsException.
-        """
-        if username!=None:
-            if username in User.username_list:
-                raise UserExistsException('Username exists')
-            self.username = username
-        if email!=None:
-            if email in User.email_list:
-                raise UserExistsException('Email exists')
-            self.email = email
-        if fullname != None:
-            self.fullname = fullname
-        if username != None:
-            self.passwd = passwd
-
-    def update(self, username=None, email=None, fullname=None, passwd=None):
-        """
-        Calls the update_helper() function to update the user's information.
-        If a UserExistsException is raised, catches it and prints an error message.
-        """
-        try:
-            self.update_helper(username, email, fullname, passwd)
-        except UserExistsException as e:
-            print(f'Error: {e}')
-
-    def delete(self):
-        """
-        A placeholder method for deleting a user
-        """
-        pass    #TODO
-
-    def auth(self, plainpass):
-        """
-        Compares the hash of the provided plain password (combined with the salt) with the stored hashed password.
-        If they match, returns True and prints "Matched", otherwise returns False and prints "Not matched".
-        """
-        if self.passwd == hashlib.sha256((plainpass + User.salt).encode()).hexdigest():
-            print("Matched")
-            return True
-        else:
-            print("Not matched")
-            return False
-
-    def authh(self):
-        """
-        Compares the hash of the provided plain password (combined with the salt) with the stored hashed password.
-        If they match, returns True and prints "Matched", otherwise returns False and prints "Not matched".
-        """
-        index = User.username_list.index(self.username)
-        print(self.username,self.passwd)
-        print(User.username_list)
-        print(User.passwd)
-        #if User.passwd[index] == hashlib.sha256((plainpass + User.salt).encode()).hexdigest():
-        if User.passwd[index] == self.passwd:
-            print("Matched")
-            return True
-        else:
-            print("Not matched")
-            return False
-
-    def login(self):
-        """
-        Generates a random session token for the user using the uuid library and
-        stores it in the dict with the user's username as the key.
-        """
-        random_token = str(uuid.uuid4())
-        User.session_dict[self.username] = random_token
-        return random_token
-
-    def checksession(token):
-        """
-        Checks if the provided session token is valid
-        """
-        for value in User.session_dict.values():
-            if value == token:
-                print("Valid")
-                return True
-        print("Invalid")
-        return False
-
-    def logout(self):
-        """
-        Removes the user's session token from the session
-        """
-        del User.session_dict[self.username]
-
-    def callback(self, message):
-        """
-        Prints the provided message.
-        """
-        self.client_socket.send((message+"\n").encode('utf-8'))
-
-    def turncb(self, message):
-        """
-        Prints the provided message and returns the user input obtained using the input() function.
-        """
-        self.client_socket.send((message+"\n").encode('utf-8'))
-        return self.client_socket.recv(1024).decode('utf-8').strip()
-
-
-    # Below 2 functions are only for testing phase 1 rolls and actions are predetermined for deneme_in
-    def setCommandList(self,rl):
-        self.Command_list=rl
-    def turncb2(self, message):
-        """
-        Prints the provided message and returns the user input obtained using the input() function.
-        """
-        print(message)
-        if self.Command_list:
-            return self.Command_list.pop(0)
-        else:
-            return input()
-
-class UserExistsException(BaseException):
-    pass
 
