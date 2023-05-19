@@ -8,8 +8,8 @@
 <form action="{% url 'join' %}" method="post">
     {% csrf_token %}
     <ul>
-        {% for game in games %}
-            <li>{{ game }}</li>
+        {% for id, representation, state in id_n_repr %}
+            <li>Game ID:{{ id }} users: {{ representation }} started: {{state}}</li>
             <button type="submit" value="{{game.game_id}}" name="game_list_join">Join</button>
             <button type="submit" value="{{game.game_id}}" name="game_list_observe">Observe</button>
         {% endfor %}
@@ -17,12 +17,6 @@
 </form>
 
 
-
-<ul>
-    {% for state in states %}
-        <li>{{ state }}</li>
-    {% endfor %}
-</ul>
 
 
 
