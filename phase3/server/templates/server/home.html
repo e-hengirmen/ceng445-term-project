@@ -18,6 +18,15 @@
 
 
 
+<ul>
+    {% for state in states %}
+        <li>{{ state }}</li>
+    {% endfor %}
+</ul>
+
+
+
+
     <form action="{% url 'addgame' %}" method="POST">
         {% csrf_token %}
         <label for="choice">Player Count:</label>
