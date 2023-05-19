@@ -1,9 +1,20 @@
 {% extends "base.html" %}
 {% block 'main' %}
+    {% if user.is_authenticated %}
+        <!-- Display content for authenticated users -->
+        <h1>Welcome, {{ user.username }}!</h1>
+        <p>Authenticated user content...</p>
+    {% else %}
+        <!-- Display content for anonymous users -->
+        <h1>Welcome, Guest!</h1>
+        <p>Anonymous user content...</p>
+    {% endif %}
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Login</button>
-        <button type="submit">Sign Up</button>
+        <!-- <button type="submit">Login</button> -->
+        <a href="login"><button type="button">Login</button></a>
+        <a href="register"><button type="button">Sign Up</button></a>
+        <!-- <button type="submit">Sign Up</button> -->
     </form>
 {% endblock %}
