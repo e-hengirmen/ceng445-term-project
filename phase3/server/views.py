@@ -90,6 +90,19 @@ def play(request):
     if username in user_to_board_ID:
         context["game_id"]=user_to_board_ID[username]
         monopoly=board_dict[context["game_id"]]
+
+        context["states"] = board_dict[context["game_id"]].cells
+        context["user_states"] = board_dict[context["game_id"]].user_dict
+        context["colors"] = colors = {
+        "red": "#FF0000",
+        "blue": "#0000FF",
+        }
+
+        for i, cell in enumerate(context["states"]):
+            cell['x_position'] = i * 100
+
+
+
         context["waitingState"]=monopoly.WaitingState
         if context["waitingState"]:
             context["userReadyState"]=monopoly.user_dict[username]["ready"]
