@@ -15,8 +15,11 @@ from django.utils.decorators import method_decorator
 from server.models import GAME
 from Board import Board
 
+#---------------globals--------------------
 board_dict={}
 user_to_board_ID={}
+user_svg_dict={}
+#------------------------------------------
 
 # Done
 @login_required
@@ -31,7 +34,7 @@ def addgame(request):
             monopoly_model_object.user_count=int(user_count)
             monopoly_model_object.save()
 
-            monopoly=Board("gameBoards/deneme_in",number_of_users=int(user_count))
+            monopoly=Board("gameBoards/deneme2_in",number_of_users=int(user_count))
             board_dict[monopoly_model_object.game_id]=monopoly
 
         # return render(request, 'server/home.html', {"games":GAME.objects.all(),"message":message})
@@ -105,6 +108,28 @@ def play(request):
 
 
 
+
+        # user_svg
+        user_svg = {}
+        user_svg['user'] = username
+        order = monopoly.order.index(username)
+        user_svg['x_position'] = 100*context["user_states"][username]['position'] + order*30  + 20
+        user_svg_dict[username] = user_svg
+        context['user_svg_dict']=user_svg_dict
+
+        # property svg
+        for cell in board_dict[context["game_id"]].cells:
+            if cell['type'] == 'property':
+                cell['owner'] = cell['property'].owner
+                cell['level'] = cell['property'].level
+
+
+
+
+
+
+
+
         context["waitingState"]=monopoly.WaitingState
         if context["waitingState"]:
             context["userReadyState"]=monopoly.user_dict[username]["ready"]
@@ -139,6 +164,8 @@ def game_action(request):
                 del user_to_board_ID[username]
                 return redirect('/server')
             else:
+                if(command.startswith("card ")):
+                    command="Pick"
                 monopoly.turn(username,command)
                 
                 game_id=user_to_board_ID[username]
@@ -147,7 +174,7 @@ def game_action(request):
                     GAME.objects.get(game_id=game_id).delete()
                 return redirect('/server')
         else:
-            if(command=="Teleport"):
+            if(command=="Teleport" or command=="Pick"):
                 if "text_submission" in request.POST:
                     command=command+f"({request.POST['text_submission']})"
             monopoly.turn(username,command)

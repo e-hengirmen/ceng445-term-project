@@ -86,6 +86,9 @@ class Board:
                     return ["Buy","EndTurn","exit"]
                 else:
                     return ["Upgrade","EndTurn","exit"]
+            elif self.active_user_state == TURN_STATE.pick_wait:
+                return ["card "+self.pick_type,"exit"]
+            
         return ["exit"]
     #--------------------------------------------------------------
 
@@ -464,6 +467,44 @@ class Board:
             elif current_property.owner != user:
                 current_property.pay_current_rent(self.user_dict[user], self.user_dict[current_property.owner])
                 self.next_user()
+        elif (command.startswith("Pick(") and
+                command.endswith(")")):
+            if(self.active_user_state!=TURN_STATE.pick_wait):
+                raise(WrongStateException(f"Not chosen an upgrade/downgrade card"))
+            if(self.pick_type in ['upgrade','downgrade']):
+                if(not command[5:-1].isnumeric()):
+                    raise NotNumericException()
+                
+                cell_index=int(command[5:-1])-1
+                if self.cells[cell_index]["type"] != "property":
+                    raise NotOwnedException()
+                
+                current_property = self.cells[cell_index]["property"]
+                if current_property.owner != user:
+                    raise NotOwnedException()
+                if self.pick_type == 'upgrade':
+                        current_property.upgrade()
+                elif self.pick_type == 'downgrade':
+                    current_property.downgrade()
+            elif(self.pick_type in ['color_upgrade','color_downgrade']):
+                selected_color=command[5:-1]
+                if selected_color not in self.color_list:
+                    raise WrongColorException()
+                flag = False
+                for prop in self.properties_by_color[selected_color]:
+                        if prop.owner == user:
+                            flag = True
+                            break
+                if flag == False:
+                    raise WrongColorException()
+                for prop in self.properties_by_color[selected_color]:
+                    if self.pick_type == 'color_upgrade':
+                        prop.upgrade()
+                    if self.pick_type == 'color_downgrade':
+                        prop.downgrade()
+            self.next_user()
+            
+                
         elif command == "EndTurn":  # controlled
             # end turn if rolled
             if self.active_user_state != TURN_STATE.buy_wait:
@@ -546,55 +587,15 @@ class Board:
             # informing users of the card
             self.CALL_THEM_BACK(f"{current_user_dict['user']} landed on a chance card {card}")
 
-            if card == 'upgrade' or card == 'downgrade':  # controlled
+            if card in ['upgrade','downgrade','color_upgrade','color_downgrade']:  # controlled
                 """selected_cell = int(input('select a cell to upgrade'))
                 self.turn(current_user_dict['user'], f'Pick{selected_cell}-{card_number}')"""
-                owns_property = len(current_user_dict["properties"])
                 # Can only be used when user has properties
-                while owns_property:
-                    response_string = current_user_dict["turncb"]('select a cell you own to' + card + '(in the form Pick(cell number)):')
-                    if not (response_string.startswith("Pick(") and
-                            response_string.endswith(")") and
-                            response_string[5:-1].isnumeric()):
-                        continue
-                    cell_index = int(response_string[5:-1])
-                    cell_index -= 1
-                    if self.cells[cell_index]["type"] != "property":
-                        continue
-
-                    # upgrading or downgrading the propert if the user owns it
-                    current_property = self.cells[cell_index]["property"]
-                    if current_property.owner != current_user_dict["user"]:
-                        continue
-                    if card == 'upgrade':
-                        current_property.upgrade()
-                    elif card == 'downgrade':
-                        current_property.downgrade()
-                    break
-
-            elif card == 'color_upgrade' or card == 'color_downgrade':  # controlled
                 owns_property = len(current_user_dict["properties"])
-                # Can only be used when user has properties
-                while owns_property:
-                    selected_color = current_user_dict["turncb"]('select a color to ' + card[6:] + ' that you have at least one property:')
-                    # looking if the user has that color type property
-                    if selected_color not in self.color_list:
-                        continue
-                    flag = False
-                    for prop in self.properties_by_color[selected_color]:
-                        if prop.owner == current_user_dict["user"]:
-                            flag = True
-                            break
-                    if flag == False:
-                        continue
-
-                    # doing the upgrade or downgrade
-                    for prop in self.properties_by_color[selected_color]:
-                        if card == 'color_upgrade':
-                            prop.upgrade()
-                        if card == 'color_downgrade':
-                            prop.downgrade()
-                    break
+                if owns_property:
+                    self.active_user_state=TURN_STATE.pick_wait
+                    self.pick_type=card
+                    NEXT_USER_FLAG=False
 
             elif card == 'gotojail':  # controlled
                 self.CALL_THEM_BACK(f"{current_user_dict['user']} was sent to prison")
@@ -731,13 +732,6 @@ class Board:
                  user_dict=self.observer_dict[calling_user]
              user_dict["callback"](message)
 
-    def TURN_TO_USER(self, user):
-        """
-            gets command from the current user
-        """
-        command = self.user_dict[user]["turncb"]("")
-        return command
-
     # ends turn
     def next_user(self):  # controlled
         """
@@ -857,11 +851,15 @@ class WrongCommandException(MonopolyException):
 class OutOfRangeException(MonopolyException):
     pass
 
+class NotNumericException(MonopolyException):
+    pass
+
 
 class TURN_STATE(Enum):
     turn_start = 1
     teleport_wait = 2
     buy_wait = 3
+    pick_wait = 4
 
 # raise UPoorException()
 
