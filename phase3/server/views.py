@@ -49,6 +49,9 @@ def join(request):
         return HttpResponse(f"already in game {user_to_board_ID[username]}")
     if "game_list_join" in request.POST:
         ID=int(request.POST["game_list_join"])
+
+        user_svg_dict[ID]={}
+
         monopoly=board_dict[ID]
 
         if monopoly.attach(username):
@@ -109,7 +112,7 @@ def play(request):
         for i, cell in enumerate(context["states"]):
             cell['x_position'] = i * 100
 
-
+        game_id=context["game_id"]
 
         # user_svg
         user_svg = {}
@@ -117,14 +120,17 @@ def play(request):
         if username in monopoly.order:
             order = monopoly.order.index(username)
             user_svg['x_position'] = 100*context["user_states"][username]['position'] + order*30  + 20
-            user_svg_dict[username] = user_svg
-        context['user_svg_dict']=user_svg_dict
+            user_svg_dict[game_id][username] = user_svg
+        context['user_svg_dict']=user_svg_dict[game_id]
 
         # property svg
+        i=0
         for cell in board_dict[context["game_id"]].cells:
             if cell['type'] == 'property':
                 cell['owner'] = cell['property'].owner
                 cell['level'] = cell['property'].level
+                cell['y_position'] = i*50
+                i+=1
 
 
 
