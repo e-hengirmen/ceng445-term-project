@@ -476,6 +476,8 @@ class Board:
                     raise NotNumericException()
                 
                 cell_index=int(command[5:-1])-1
+                if len(self.cells) <= cell_index or cell_index < 0:
+                    raise OutOfRangeException()
                 if self.cells[cell_index]["type"] != "property":
                     raise NotOwnedException()
                 

@@ -146,13 +146,12 @@ def play(request):
 def game_action(request):
     username = request.user.username
     context={"username":username}
-    if "text_submission" in request.POST:
-        print(request.POST["text_submission"])
     if username in user_to_board_ID:
         game_id=user_to_board_ID[username]
         monopoly=board_dict[game_id]
 
         command=request.POST["command"]
+        print(command)
         if(command=="ready"):
             monopoly.ready(username)
         elif(command=="exit"):
@@ -164,8 +163,6 @@ def game_action(request):
                 del user_to_board_ID[username]
                 return redirect('/server')
             else:
-                if(command.startswith("card ")):
-                    command="Pick"
                 monopoly.turn(username,command)
                 
                 game_id=user_to_board_ID[username]
@@ -174,9 +171,12 @@ def game_action(request):
                     GAME.objects.get(game_id=game_id).delete()
                 return redirect('/server')
         else:
+            if(command.startswith("card ")):
+                command="Pick"
             if(command=="Teleport" or command=="Pick"):
                 if "text_submission" in request.POST:
                     command=command+f"({request.POST['text_submission']})"
+                    print(command)
             monopoly.turn(username,command)
 
     return redirect('/server/play')
