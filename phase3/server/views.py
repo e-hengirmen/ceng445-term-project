@@ -143,6 +143,7 @@ def play(request):
                 print(context["avaliable_commands"])
         if context["waitingState"]==False:
             context["current_user"]=monopoly.whose_turn_is_it()
+            context["notifications"]=monopoly.display_related_messages()
     else:
         context["game_id"]="None"
     return render(request, 'server/play.html',context)

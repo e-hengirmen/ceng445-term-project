@@ -8,18 +8,10 @@
         {% if winner != None %}
             <p>Game has ended - {{winner}} wins!!!</p>
         {% else %}
-            <ul>
-                {% for state in states %}
-                    <li>{{ state }}</li>
-                    {% if state.type == 'start' %}
-                    asdasdasdsadsadas {{ state }}{{ state }}
-                    {% endif %}
-                {% endfor %}
-            </ul>
-            
-            {% for key, value in user_states.items %}
-                <p>{{ key }}: {{ value }}</p>
-            {% endfor %}
+        
+        {% for key, value in user_states.items %}
+            <p>{{ key }}: {{ value }}</p>
+        {% endfor %}
             
             
             
@@ -65,9 +57,10 @@
 
 
 
-
-
-
+    {% for notification in notifications %}
+        <p>{{notification}}</p>
+    {% endfor %}
+    
 
     
     <form method="POST" action="{% url 'game_action' %}">

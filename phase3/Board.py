@@ -65,8 +65,14 @@ class Board:
         self.get_colors()
 
         self.game_has_ended=False
-    
+
+        self.messages=[]
+
+
+
     #-------------------------NEWLY ADDED--------------------------
+    def display_related_messages(self):
+        return self.messages
     def whose_turn_is_it(self):
         return self.order[self.active_user_index]
     def getCommands(self, user):
@@ -283,6 +289,8 @@ class Board:
 
             Call the user's callback with their updated game report and return the active user's username.
         """
+        self.messages=[]
+
         if command == "exit":
             self.CALL_THEM_BACK("You have left the game",user)
             if self.game_has_ended:
@@ -291,7 +299,7 @@ class Board:
                 self.removeUser(user)
             else:
                 self.detach(user)
-            self.CALL_THEM_BACK(f"{user} has left the game")
+            self.messages.append(f"{user} has left the game")
             return None
         if self.WaitingState == True:
             raise WaitingForReadyException("Not everyone is ready")
@@ -311,10 +319,10 @@ class Board:
                 dice1 = roll_a_dice()
                 dice2 = roll_a_dice()
                 # show_dice_roll(dice1,dice2)
-                self.CALL_THEM_BACK(f"{user} rolled {dice1} {dice2}")
+                self.messages.append(f"{user} rolled {dice1} {dice2}")
                 if (dice1 == dice2):
                     self.user_dict[user]["guilty"] = False
-                    self.CALL_THEM_BACK(f"{user} is now out of jail")
+                    self.messages.append(f"{user} is now out of jail")
 
             # Below 2 cases were only added for testing TODO delete later
             elif command == "DoubleDice":
@@ -333,7 +341,7 @@ class Board:
                 else:
                     self.user_dict[user]["money"] -= self.jailbail
                 self.user_dict[user]["guilty"] = False
-                self.CALL_THEM_BACK(f"{user} is now out of jail")
+                self.messages.append(f"{user} bailed and is now out of jail")
             else:
                 raise WrongCommandException(
                     f"you're in jail, your command was \"{command}\" it should either be Roll or Bail")
@@ -351,7 +359,7 @@ class Board:
             dice2 = roll_a_dice()
             # show_dice_roll(dice1,dice2)
             roll_res = dice1 + dice2
-            self.CALL_THEM_BACK(f"rolled {dice1} {dice2}")
+            self.messages.append(f"{user} rolled {dice1} {dice2}")
 
             # below 3 lines calculate your new position after roll and adds lapping salary if u have passed the starting line
             self.user_dict[user]["position"] = (self.user_dict[user]["position"] + roll_res)
@@ -517,7 +525,7 @@ class Board:
 
         # Goes bankrupt if no money is left
         if self.user_dict[user]["money"] < 0:  # controlled
-            self.CALL_THEM_BACK(f"{user} has no money left thus lost the game")
+            self.messages.append(f"{user} has no money left thus lost the game")
             self.detach(user)
             return None
 
@@ -547,7 +555,8 @@ class Board:
             current_user_dict["money"] -= self.tax * len(current_user_dict["properties"])
             self.next_user()
         elif cell["type"] == "gotojail":  # controlled
-            self.CALL_THEM_BACK(f"{current_user_dict['user']} was sent to prison")
+            self.messages.append(f"{current_user_dict['user']} was sent to prison")
+
             # find nearest jail cell then go(it goes on your record ) )
             mypos = current_user_dict["position"]
 
@@ -587,7 +596,7 @@ class Board:
             PUT_CARD_BACK_FLAG = True
 
             # informing users of the card
-            self.CALL_THEM_BACK(f"{current_user_dict['user']} landed on a chance card {card}")
+            self.messages.append(f"{current_user_dict['user']} landed on a chance card {card}")
 
             if card in ['upgrade','downgrade','color_upgrade','color_downgrade']:  # controlled
                 """selected_cell = int(input('select a cell to upgrade'))
@@ -600,7 +609,7 @@ class Board:
                     NEXT_USER_FLAG=False
 
             elif card == 'gotojail':  # controlled
-                self.CALL_THEM_BACK(f"{current_user_dict['user']} was sent to prison")
+                self.messages.append(f"{current_user_dict['user']} was sent to prison")
                 mypos = current_user_dict["position"]
 
                 # Finding the nearest jail cell by comparing left nearest and right nearest
