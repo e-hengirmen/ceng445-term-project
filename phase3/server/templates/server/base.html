@@ -3,5 +3,18 @@
         <h1>In Server</h1>
         {% block 'main'%}
         {% endblock%}
+
+        <script>
+            function reloadPage() {
+                location.reload(); // Reload the page
+            }
+
+            function startTimer() {
+                setTimeout(reloadPage, 3000); // Set the timer to reload every 3 seconds
+            }
+
+            startTimer(); // Start the timer when the page loads
+        </script>
+
     </body>
 </html>

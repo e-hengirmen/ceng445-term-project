@@ -69,6 +69,22 @@ class Board:
     #-------------------------NEWLY ADDED--------------------------
     def whose_turn_is_it(self):
         return self.order[self.active_user_index]
+    def getCommands(self, user):
+        if self.WaitingState==True:
+            return ["exit"]
+        if(self.order[self.active_user_index]==user):
+            if self.user_dict[user]["guilty"]:
+                return ["Roll","Bail","exit"]
+            elif self.active_user_state == TURN_STATE.turn_start:
+                return ["Roll","exit"]
+            elif self.active_user_state == TURN_STATE.teleport_wait:
+                return ["Teleport","exit"]
+            elif self.active_user_state == TURN_STATE.buy_wait:
+                if (self.cells[self.user_dict[user]["position"]]["property"].owner == None):
+                    return ["Buy","exit"]
+                else:
+                    return ["Upgrade","EndTurn","exit"]
+        return ["exit"]
     #--------------------------------------------------------------
 
     def __repr__(self):

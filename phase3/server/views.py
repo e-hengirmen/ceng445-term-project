@@ -107,6 +107,8 @@ def play(request):
         if context["waitingState"]:
             context["userReadyState"]=monopoly.user_dict[username]["ready"]
         else:
+            context["avaliable_commands"]=monopoly.getCommands(username)
+            print(context["avaliable_commands"])
             context["current_user"]=monopoly.whose_turn_is_it()
     else:
         context["game_id"]="None"
@@ -117,6 +119,8 @@ def play(request):
 def game_action(request):
     username = request.user.username
     context={"username":username}
+    if "text_submission" in request.POST:
+        print(request.POST["text_submission"])
     if username in user_to_board_ID:
         game_id=user_to_board_ID[username]
         monopoly=board_dict[game_id]
@@ -132,8 +136,12 @@ def game_action(request):
             else:
                 monopoly.turn(username,command)
                 del user_to_board_ID[username]
+                # TODO
                 redirect('/server')
         else:
+            if(command=="Teleport"):
+                if "text_submission" in request.POST:
+                    command=command+f"({request.POST['text_submission']})"
             monopoly.turn(username,command)
 
     return redirect('/server/play')
