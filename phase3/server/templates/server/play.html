@@ -1,5 +1,33 @@
 <html>
     <body>
-        <h1>In Game</h1>
+        {% if game_id != "None" %}
+            {% if waitingState %}
+                <p>Game will start when every player is ready!</p>
+            {% else %}
+                <p>GAME DATA MAP and OTHERS To Be Filled Later</p>
+            {% endif %}
+
+            <form method="POST" action="{% url 'game_action' %}">
+                {% csrf_token %}
+                {% if waitingState %}
+                    {% if userReadyState == False %}
+                    <button type="submit" name="command" value="ready">Ready</button>
+                    {% endif %}
+                {% else %}
+                    <div>{{current_user}}'s turn</div>
+                    {% if current_user == username %}
+                        <button type="submit" name="command" value="roll">Roll</button>
+                        <button type="submit" name="command" value="buy">Buy</button>
+                        <button type="submit" name="command" value="upgrade">Upgrade</button>
+                        <button type="submit" name="command" value="teleport">Teleport</button>
+                        <button type="submit" name="command" value="bail">Bail</button>
+                        <button type="submit" name="command" value="endturn">EndTurn</button>
+                    {% endif %}
+                {% endif %}
+                <button type="submit" name="command" value="exit">Exit and Go back</button>
+            </form>
+        {% else %}
+            <p>You have not chosen to join or observe any game</p>
+        {% endif %}
     </body>
 </html>

@@ -65,6 +65,11 @@ class Board:
         self.get_colors()
 
         self.game_has_ended=False
+    
+    #-------------------------NEWLY ADDED--------------------------
+    def whose_turn_is_it():
+        return self.order[self.active_user_index]
+    #--------------------------------------------------------------
 
     def __repr__(self):
         return str(len(self.order))+"/"+str(self.number_of_users)
@@ -207,11 +212,10 @@ class Board:
         elif command == "list":
             self.CALL_THEM_BACK(self.get_report(self.order[self.active_user_index]),user)
         return user
-    def turn(self, user):
+    def turn(self, user, command):
         """
             for exception handling real turn function is below called: turn_helper
         """
-        command = self.TURN_TO_USER(user)
         try:
             return self.turn_helper(user, command)
         except MonopolyException as e:
