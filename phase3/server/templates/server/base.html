@@ -1,6 +1,9 @@
 <html>
     <body>
-        <h1>In Server</h1>
+        {% if user.is_authenticated %}
+        <!-- Display content for authenticated users -->
+            <h1>Welcome, {{ user.username }}!</h1>
+        {% endif %}
         {% block 'main'%}
         {% endblock%}
 

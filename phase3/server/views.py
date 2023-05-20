@@ -57,10 +57,13 @@ def join(request):
         return redirect('/server')
 
     if "game_list_observe" in request.POST:
-        # monopoly=board_dict[request.POST["game_list_observe"]]
-        monopoly=board_dict[request.POST["game_list_observe"]]
-        print(username)
-        username = request.user.username
+        if username in user_to_board_ID:
+            return HttpResponse(f"already in game {user_to_board_ID[username]}")
+        ID=int(request.POST["game_list_observe"])
+        
+        user_to_board_ID[username]=ID
+        
+        monopoly=board_dict[ID]
         monopoly.attach_observer(username)
         return redirect('play')
     return redirect('/server')
@@ -108,13 +111,13 @@ def play(request):
 
 
 
-
         # user_svg
         user_svg = {}
         user_svg['user'] = username
-        order = monopoly.order.index(username)
-        user_svg['x_position'] = 100*context["user_states"][username]['position'] + order*30  + 20
-        user_svg_dict[username] = user_svg
+        if username in monopoly.order:
+            order = monopoly.order.index(username)
+            user_svg['x_position'] = 100*context["user_states"][username]['position'] + order*30  + 20
+            user_svg_dict[username] = user_svg
         context['user_svg_dict']=user_svg_dict
 
         # property svg
@@ -131,11 +134,14 @@ def play(request):
 
 
         context["waitingState"]=monopoly.WaitingState
-        if context["waitingState"]:
-            context["userReadyState"]=monopoly.user_dict[username]["ready"]
-        else:
-            context["avaliable_commands"]=monopoly.getCommands(username)
-            print(context["avaliable_commands"])
+
+        if username in monopoly.order:
+            if context["waitingState"]:
+                context["userReadyState"]=monopoly.user_dict[username]["ready"]
+            else:
+                context["avaliable_commands"]=monopoly.getCommands(username)
+                print(context["avaliable_commands"])
+        if context["waitingState"]==False:
             context["current_user"]=monopoly.whose_turn_is_it()
     else:
         context["game_id"]="None"

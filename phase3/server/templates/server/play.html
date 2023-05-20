@@ -75,7 +75,6 @@
         {% if waitingState %}
             {% if userReadyState == False %}
             <button type="submit" name="command" value="ready">Ready</button>
-            <button type="submit" name="command" value="exit">Exit</button>
             {% endif %}
         {% else %}
             <div>{{current_user}}'s turn</div>
@@ -84,6 +83,7 @@
             {% endfor %}
             <input type="text" name="text_submission">
         {% endif %}
+        <button type="submit" name="command" value="exit">Exit</button>
     </form>
 {% else %}
     <p>You have not chosen to join or observe any game</p>

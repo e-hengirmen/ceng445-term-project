@@ -71,25 +71,25 @@ class Board:
         return self.order[self.active_user_index]
     def getCommands(self, user):
         if self.game_has_ended:
-            return ["exit"]
+            return []
         if self.WaitingState==True:
-            return ["exit"]
+            return []
         if(self.order[self.active_user_index]==user):
             if self.user_dict[user]["guilty"]:
-                return ["Roll","Bail","exit"]
+                return ["Roll","Bail"]
             elif self.active_user_state == TURN_STATE.turn_start:
-                return ["Roll","exit"]
+                return ["Roll"]
             elif self.active_user_state == TURN_STATE.teleport_wait:
-                return ["Teleport","exit"]
+                return ["Teleport"]
             elif self.active_user_state == TURN_STATE.buy_wait:
                 if (self.cells[self.user_dict[user]["position"]]["property"].owner == None):
-                    return ["Buy","EndTurn","exit"]
+                    return ["Buy","EndTurn"]
                 else:
-                    return ["Upgrade","EndTurn","exit"]
+                    return ["Upgrade","EndTurn"]
             elif self.active_user_state == TURN_STATE.pick_wait:
-                return ["card "+self.pick_type,"exit"]
+                return ["card "+self.pick_type]
             
-        return ["exit"]
+        return []
     #--------------------------------------------------------------
 
     def __repr__(self):
