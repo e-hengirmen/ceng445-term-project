@@ -34,7 +34,7 @@ def addgame(request):
             monopoly_model_object.user_count=int(user_count)
             monopoly_model_object.save()
 
-            monopoly=Board("gameBoards/deneme2_in",number_of_users=int(user_count))
+            monopoly=Board("gameBoards/deneme_in",number_of_users=int(user_count))
             board_dict[monopoly_model_object.game_id]=monopoly
 
         # return render(request, 'server/home.html', {"games":GAME.objects.all(),"message":message})
