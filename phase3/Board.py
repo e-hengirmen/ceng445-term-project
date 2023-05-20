@@ -67,7 +67,7 @@ class Board:
         self.game_has_ended=False
     
     #-------------------------NEWLY ADDED--------------------------
-    def whose_turn_is_it():
+    def whose_turn_is_it(self):
         return self.order[self.active_user_index]
     #--------------------------------------------------------------
 
@@ -278,7 +278,7 @@ class Board:
             self.CALL_THEM_BACK(self.ListCommands(user),user)
             return user
         if self.order[self.active_user_index] != user:
-            raise NotYourTurnException("It is " + self.order[self.active_user_index].username + "'s turn")
+            raise NotYourTurnException("It is " + self.order[self.active_user_index] + "'s turn")
         # jail case
         # The user will either roll or bail
         # when bailing the get out of jail free card will always be used if user has any
@@ -372,7 +372,7 @@ class Board:
             current_property = self.cells[position]["property"]
 
             if current_property.owner != None:
-                raise AlreadyOwnedException("property owned by " + current_property.owner.username)
+                raise AlreadyOwnedException("property owned by " + current_property.owner)
             if current_property.price > current_user_dict["money"]:
                 raise UPoorException("Not enough money")
 
@@ -483,7 +483,7 @@ class Board:
             current_user_dict["money"] -= self.tax * len(current_user_dict["properties"])
             self.next_user()
         elif cell["type"] == "gotojail":  # controlled
-            self.CALL_THEM_BACK(f"{current_user_dict['user'].username} was sent to prison")
+            self.CALL_THEM_BACK(f"{current_user_dict['user']} was sent to prison")
             # find nearest jail cell then go(it goes on your record ) )
             mypos = current_user_dict["position"]
 
@@ -524,7 +524,7 @@ class Board:
             PUT_CARD_BACK_FLAG = True
 
             # informing users of the card
-            self.CALL_THEM_BACK(f"{current_user_dict['user'].username} landed on a chance card {card}")
+            self.CALL_THEM_BACK(f"{current_user_dict['user']} landed on a chance card {card}")
 
             if card == 'upgrade' or card == 'downgrade':  # controlled
                 """selected_cell = int(input('select a cell to upgrade'))
@@ -577,7 +577,7 @@ class Board:
                     break
 
             elif card == 'gotojail':  # controlled
-                self.CALL_THEM_BACK(f"{current_user_dict['user'].username} was sent to prison")
+                self.CALL_THEM_BACK(f"{current_user_dict['user']} was sent to prison")
                 mypos = current_user_dict["position"]
 
                 # Finding the nearest jail cell by comparing left nearest and right nearest
@@ -620,10 +620,10 @@ class Board:
                 self.chance_card_list.put(card)
 
     def getuserstate(self, user):  # controlled
-        # print({k.username: {'money': v['money'], 'properties': [str(prop) for prop in v['properties']]} for k, v in self.user_dict.items()})
+        # print({k: {'money': v['money'], 'properties': [str(prop) for prop in v['properties']]} for k, v in self.user_dict.items()})
         str_list = []
         for k, v in self.user_dict.items():
-            str_list.append(str({k.username: {'money': v['money'], "position": 1 + v["position"]}}))
+            str_list.append(str({k: {'money': v['money'], "position": 1 + v["position"]}}))
             for prop in v['properties']:
                 str_list.append("\t" + prop.user_visualization())
         return "\n".join(str_list)
@@ -649,7 +649,7 @@ class Board:
             pL=3
         ))
         to = ("TURN ON:\t{:<{uL}} position: {:<{pL}} cell: {:<{cL}}".format(
-            self.order[self.active_user_index].username,
+            self.order[self.active_user_index],
             self.user_dict[self.order[self.active_user_index]]["position"] + 1,
             str(self.cells[self.user_dict[self.order[self.active_user_index]]["position"]]),
             uL=20,
@@ -691,13 +691,14 @@ class Board:
                 else:
                     str_list.append("\tUpgrade")
         else:
-            str_list.append(f"It is not your turn. It is currently {self.order[self.active_user_index].username}'s turn")
+            str_list.append(f"It is not your turn. It is currently {self.order[self.active_user_index]}'s turn")
             str_list.append("Avaliable commands to you are:")
         str_list.append("\tlist")
         str_list.append("\texit")
         return "\n".join(str_list)
 
     def CALL_THEM_BACK(self,message,calling_user=None):
+         return
          if(calling_user==None):
              for current_user_dict in self.user_dict.values():
                 current_user_dict["callback"](message)
@@ -747,7 +748,7 @@ class Property:
             "color": self.color,
             "price": self.price,
             "rents": self.rents,
-            "owner": self.owner.username if self.owner != None else None,
+            "owner": self.owner if self.owner != None else None,
             "level": self.level,
         })
 
