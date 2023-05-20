@@ -91,6 +91,8 @@ def play(request):
         context["game_id"]=user_to_board_ID[username]
         monopoly=board_dict[context["game_id"]]
 
+        if monopoly.game_has_ended:
+            context["winner"]=monopoly.winner
         context["states"] = board_dict[context["game_id"]].cells
         context["user_states"] = board_dict[context["game_id"]].user_dict
         context["colors"] = colors = {
@@ -129,15 +131,21 @@ def game_action(request):
         if(command=="ready"):
             monopoly.ready(username)
         elif(command=="exit"):
-            if(monopoly.WaitingState):
+            if(monopoly.game_has_ended):
+                del user_to_board_ID[username]
+                return redirect('/server')
+            elif(monopoly.WaitingState):
                 monopoly.removeUser(username)
                 del user_to_board_ID[username]
-                redirect('/server')
+                return redirect('/server')
             else:
                 monopoly.turn(username,command)
+                
+                game_id=user_to_board_ID[username]
                 del user_to_board_ID[username]
-                # TODO
-                redirect('/server')
+                if monopoly.game_has_ended:
+                    GAME.objects.get(game_id=game_id).delete()
+                return redirect('/server')
         else:
             if(command=="Teleport"):
                 if "text_submission" in request.POST:

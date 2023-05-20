@@ -70,6 +70,8 @@ class Board:
     def whose_turn_is_it(self):
         return self.order[self.active_user_index]
     def getCommands(self, user):
+        if self.game_has_ended:
+            return ["exit"]
         if self.WaitingState==True:
             return ["exit"]
         if(self.order[self.active_user_index]==user):
@@ -81,7 +83,7 @@ class Board:
                 return ["Teleport","exit"]
             elif self.active_user_state == TURN_STATE.buy_wait:
                 if (self.cells[self.user_dict[user]["position"]]["property"].owner == None):
-                    return ["Buy","exit"]
+                    return ["Buy","EndTurn","exit"]
                 else:
                     return ["Upgrade","EndTurn","exit"]
         return ["exit"]
@@ -185,6 +187,7 @@ class Board:
             if (n == 1):
                 self.CALL_THEM_BACK(f"Game has ended - {self.order[0]} wins!!!")
                 self.game_has_ended=True
+                self.winner=self.order[0]
 
     def ready(self, user):  # controlled
         """
@@ -279,6 +282,8 @@ class Board:
         """
         if command == "exit":
             self.CALL_THEM_BACK("You have left the game",user)
+            if self.game_has_ended:
+                return None
             if self.WaitingState==True:
                 self.removeUser(user)
             else:
@@ -522,7 +527,6 @@ class Board:
         elif cell["type"] == "teleport":  # controlled
             # implementation at turn
             current_user_dict["money"] -= self.teleport
-
             self.active_user_state = TURN_STATE.teleport_wait
         elif cell["type"] == "property":  # controlled
             current_property = cell["property"]
