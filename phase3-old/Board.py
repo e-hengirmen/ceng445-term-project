@@ -68,7 +68,7 @@ class Board:
 
         self.messages=[]
 
-        self.winner=None
+
 
     #-------------------------NEWLY ADDED--------------------------
     def display_related_messages(self):

@@ -1,0 +1,23 @@
+<html>
+    <body>
+        {% if user.is_authenticated %}
+        <!-- Display content for authenticated users -->
+            <h1>Welcome, {{ user.username }}!</h1>
+        {% endif %}
+        {% block 'main'%}
+        {% endblock%}
+
+        <script>
+            function reloadPage() {
+                location.reload(); // Reload the page
+            }
+
+            function startTimer() {
+                setTimeout(reloadPage, 3000); // Set the timer to reload every 3 seconds
+            }
+
+            startTimer(); // Start the timer when the page loads
+        </script>
+
+    </body>
+</html>

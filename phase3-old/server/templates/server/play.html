@@ -1,0 +1,97 @@
+{% extends "server/base.html" %}
+{% block 'main' %}
+
+{% if game_id != "None" %}
+    {% if waitingState %}
+        <p>Game will start when every player is ready!</p>
+    {% else %}
+        {% if winner != None %}
+            <p>Game has ended - {{winner}} wins!!!</p>
+        {% else %}
+        
+            {% for key, value in user_states.items %}
+                <p>{{ key }}: {{ value }}</p>
+            {% endfor %}
+            
+            
+            <svg width="1000" height="300" xmlns="http://www.w3.org/2000/svg">
+                {% for cell in states %}
+                    {% if cell.type == 'property' %}
+                        <rect x="0" y="{{ cell.y_position }}" width="600" height="50" fill="{{cell.color }}" stroke="black" stroke-width="1.5"/>
+                        <text x="40" y="{{ cell.y_position|add:'25' }}" text-anchor="middle" fill="black">{{ cell.name }}</text>
+                        <text x="150" y="{{ cell.y_position|add:'25' }}" text-anchor="middle" fill="black">Price: {{ cell.price }}</text>
+                        <text x="400" y="{{ cell.y_position|add:'25' }}" text-anchor="middle" fill="black">Rents: {{ cell.rents }}</text>
+                    {% endif %}
+                {% endfor %}
+            </svg>
+
+            
+            <svg width="3000" height="150" xmlns="http://www.w3.org/2000/svg">
+                {% for cell in states %}
+                    {% if cell.type == 'start' %}
+                        <rect x="0" y="0" width="200" height="100" fill="lime" stroke="black" stroke-width="1.5" />
+                        <text x="50" y="50" text-anchor="middle" fill="black">Start</text>
+                    {% elif cell.type == 'property' %}
+                        <rect x="{{ cell.x_position }}" y="0" width="100" height="100" fill="{{cell.color }}" stroke="black" stroke-width="1.5" />
+                        <text x="{{ cell.x_position|add:'50' }}" y="30" text-anchor="middle" fill="black">{{ cell.name }}</text>
+                        <text x="{{ cell.x_position|add:'50'}}" y="45" text-anchor="middle" fill="black">Price: {{ cell.price }}</text>
+                        <text x="{{ cell.x_position|add:'50'}}" y="60" text-anchor="middle" fill="black">O: {{ cell.owner }}</text>
+                        <text x="{{ cell.x_position|add:'50'}}" y="75" text-anchor="middle" fill="black">Level: {{ cell.level }}</text>
+                    {% elif cell.type == 'jail' %}
+                        <rect x="{{ cell.x_position }}" y="0" width="100" height="100" fill="gray" stroke="black" stroke-width="1.5" />
+                        <text x="{{ cell.x_position|add:'50' }}" y="50" text-anchor="middle" fill="black">Jail</text>
+                    {% elif cell.type == 'gotojail' %}
+                        <rect x="{{ cell.x_position }}" y="0" width="100" height="100" fill="orange" stroke="black" stroke-width="1.5"/>
+                        <text x="{{ cell.x_position|add:'50' }}" y="50" text-anchor="middle" fill="black">Go to Jail</text>
+                    {% elif cell.type == 'tax' %}
+                        <rect x="{{ cell.x_position }}" y="0" width="100" height="100" fill="purple" stroke="black" stroke-width="1.5" />
+                        <text x="{{ cell.x_position|add:'50' }}" y="50" text-anchor="middle" fill="black">Tax</text>
+                    {% elif cell.type == 'teleport' %}
+                        <rect x="{{ cell.x_position }}" y="0" width="100" height="100" fill="cyan" stroke="black" stroke-width="1.5"/>
+                        <text x="{{ cell.x_position|add:'50' }}" y="50" text-anchor="middle" fill="black">Teleport</text>
+                    {% elif cell.type == 'chance' %}
+                        <rect x="{{ cell.x_position }}" y="0" width="100" height="100" fill="yellow" stroke="black" stroke-width="1.5"/>
+                        <text x="{{ cell.x_position|add:'50' }}" y="50" text-anchor="middle" fill="black">Chance</text>
+                    {% endif %}
+                {% endfor %}
+                {% for key, value in user_svg_dict.items %}
+                    <circle cx="{{ value.x_position }}" cy="90" r="10" fill="black" />
+                    <text x="{{ value.x_position}}" y="110" text-anchor="middle" fill="black">{{ value.user }}</text>
+                {% endfor %}
+            </svg>
+
+
+        {% endif %}
+        
+    {% endif %}
+
+
+
+
+
+    {% for notification in notifications %}
+        <p>{{notification}}</p>
+    {% endfor %}
+    
+
+    
+    <form method="POST" action="{% url 'game_action' %}">
+        {% csrf_token %}
+        {% if waitingState %}
+            {% if userReadyState == False %}
+            <button type="submit" name="command" value="ready">Ready</button>
+            {% endif %}
+        {% else %}
+            <div>{{current_user}}'s turn</div>
+            {% for command in avaliable_commands %}
+                <button type="submit" name="command" value="{{command}}">{{command}}</button>
+            {% endfor %}
+            <input type="text" name="text_submission">
+        {% endif %}
+        <button type="submit" name="command" value="exit">Exit</button>
+    </form>
+{% else %}
+    <p>You have not chosen to join or observe any game</p>
+{% endif %}
+
+{% endblock %}

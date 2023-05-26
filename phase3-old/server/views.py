@@ -12,15 +12,13 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 
+from server.models import GAME
 from Board import Board
-from Server import Server
 
 #---------------globals--------------------
+board_dict={}
 user_to_board_ID={}
 user_svg_dict={}
-
-server=Server()
-
 #------------------------------------------
 
 # Done
@@ -32,7 +30,12 @@ def addgame(request):
         if user_count!="None":
             message=f"Game added with {user_count}"
             
-            server.new(int(user_count))
+            monopoly_model_object=GAME()
+            monopoly_model_object.user_count=int(user_count)
+            monopoly_model_object.save()
+
+            monopoly=Board("gameBoards/deneme_in",number_of_users=int(user_count))
+            board_dict[monopoly_model_object.game_id]=monopoly
 
         # return render(request, 'server/home.html', {"games":GAME.objects.all(),"message":message})
     return redirect('/server')
@@ -49,8 +52,9 @@ def join(request):
 
         user_svg_dict[ID]={}
 
-        # if monopoly.attach(username):
-        if server.open_with_ID(ID,username):
+        monopoly=board_dict[ID]
+
+        if monopoly.attach(username):
             user_to_board_ID[username]=ID
             return redirect('play')
         return redirect('/server')
@@ -60,32 +64,30 @@ def join(request):
             return HttpResponse(f"already in game {user_to_board_ID[username]}")
         ID=int(request.POST["game_list_observe"])
         
-        # monopoly=server.game_dict[ID]
-        # monopoly.attach_observer(username)
-        if server.observe_with_ID(ID,username):
-            user_to_board_ID[username]=ID
-            return redirect('play')
-        return redirect('/server')
+        user_to_board_ID[username]=ID
+        
+        monopoly=board_dict[ID]
+        monopoly.attach_observer(username)
+        return redirect('play')
     return redirect('/server')
 
 
 
 @login_required
 def list_server(request):
-    game_dict1=server.list()
+    
+    to_be_deleted=[]
+    for game in GAME.objects.all():
+        if game.game_id not in board_dict:
+            to_be_deleted.append(game.game_id)
+    for id in to_be_deleted:
+        GAME.objects.get(game_id=id).delete()
 
-    game_dict={}
-    for key,value in game_dict1.items():
-        if None==value.winner:
-            game_dict[key]=value
-        else:
-            print(value.winner,"---------")
 
 
-    game_id_list=list(game_dict.keys())
-    representation=[game_dict[game_id].__repr__() for game_id in game_id_list]
-    states=        [not game_dict[game_id].WaitingState for game_id in game_id_list]
-    return render(request, 'server/home.html', {"id_n_repr":zip(game_id_list,representation,states)})
+    representation=[board_dict[game.game_id].__repr__() for game in GAME.objects.all()]
+    states=        [not board_dict[game.game_id].WaitingState for game in GAME.objects.all()]
+    return render(request, 'server/home.html', {"id_n_repr":zip(GAME.objects.all(),representation,states)})
 
 # def index(request):
 #     return render(request, 'home.html')
@@ -96,13 +98,12 @@ def play(request):
     context={"username":username}
     if username in user_to_board_ID:
         context["game_id"]=user_to_board_ID[username]
-        game_id=context["game_id"]
-        monopoly=server.list()[context["game_id"]]
+        monopoly=board_dict[context["game_id"]]
 
         if monopoly.game_has_ended:
             context["winner"]=monopoly.winner
-        context["states"] = monopoly.cells
-        context["user_states"] = monopoly.user_dict
+        context["states"] = board_dict[context["game_id"]].cells
+        context["user_states"] = board_dict[context["game_id"]].user_dict
         context["colors"] = colors = {
         "red": "#FF0000",
         "blue": "#0000FF",
@@ -111,6 +112,7 @@ def play(request):
         for i, cell in enumerate(context["states"]):
             cell['x_position'] = i * 100
 
+        game_id=context["game_id"]
 
         # user_svg
         user_svg = {}
@@ -123,7 +125,7 @@ def play(request):
 
         # property svg
         i=0
-        for cell in context["states"]:
+        for cell in board_dict[context["game_id"]].cells:
             if cell['type'] == 'property':
                 cell['owner'] = cell['property'].owner
                 cell['level'] = cell['property'].level
@@ -159,7 +161,7 @@ def game_action(request):
     context={"username":username}
     if username in user_to_board_ID:
         game_id=user_to_board_ID[username]
-        monopoly=server.list()[game_id]
+        monopoly=board_dict[game_id]
 
         command=request.POST["command"]
         print(command)
@@ -178,8 +180,8 @@ def game_action(request):
                 
                 game_id=user_to_board_ID[username]
                 del user_to_board_ID[username]
-                # if monopoly.game_has_ended:
-                    # server.game_is_over(game_id)
+                if monopoly.game_has_ended:
+                    GAME.objects.get(game_id=game_id).delete()
                 return redirect('/server')
         else:
             if(command.startswith("card ")):
