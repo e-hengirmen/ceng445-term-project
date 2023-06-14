@@ -1,0 +1,96 @@
+<html>
+    <head>
+        <script>
+            // Establish a WebSocket connection
+            socket = new WebSocket('ws://localhost:4444');
+      
+            // Event handler for successful connection
+            socket.onopen = function (event) {
+              console.log('WebSocket connection established.');
+              document.getElementById('control_check1').innerText = "opened";
+              // Send a request to the server
+              socket.send("{{username}}");
+            };
+      
+            // Event handler for receiving data from the server
+            socket.onmessage = function (event) {
+              console.log('Received data:', event.data);
+              // Update the HTML element with the received data
+              document.getElementById('control_check2').innerText = event.data;
+            };
+      
+            // Event handler for WebSocket connection close
+            socket.onclose = function (event) {
+              console.log('WebSocket connection closed.');
+              document.getElementById('control_check3').innerText = "closed";
+            };
+      
+            // Event handler for WebSocket connection errors
+            socket.onerror = function (error) {
+              console.error('WebSocket error:', error);
+              document.getElementById('control_check').innerText = "error";
+            };
+        </script>
+
+
+
+
+
+
+        <script>
+            function handleNewGame() {
+                const choice = document.getElementById('choice').value;
+
+                if (choice !== 'None') {
+                    const message = "New(" + choice + ")";
+                    console.log(message);
+                    socket.send(message);
+                    document.getElementById('control_check4').innerText = message;
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+        <div id="control_check1">nothin for now</div>
+        <div id="control_check2">nothin for now</div>
+        <div id="control_check3">nothin for now</div>
+        <div id="control_check4">nothin for now</div>
+
+
+
+
+
+        <label for="choice">Player Count:</label>
+        <select name="choice" id="choice">
+            <option value="None">Choose</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+        <button type="button" id="newGameButton" onclick="handleNewGame()">New</button>        
+        
+        
+        
+        
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+    </body>
+</html>

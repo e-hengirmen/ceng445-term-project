@@ -1,0 +1,55 @@
+<html>
+    <body>
+        {% if user.is_authenticated %}
+        <!-- Display content for authenticated users -->
+            <h1>Welcome, {{ user.username }}!</h1>
+            <h1>Counter: <span id="counter">0</span></h1>
+  
+            <form>
+                <ul>
+                        <input type="checkbox" value=1 id="id1">1</input>
+                        <input type="checkbox" value=2 id="id2">2</input>
+                        <input type="checkbox" value=4 id="id3">4</input>
+                        <button onclick="sumem()" id="summer">-1</button>
+                    </ul>
+            </form>
+        {% endif %}
+        {% block 'main'%}
+        {% endblock%}
+
+
+
+        <script>
+            function sumem(){
+                var f1=document.getElementById("id1");
+                var f2=document.getElementById("id2");
+                var f3=document.getElementById("id3");
+                var resss=document.getElementById("summer");
+                var res=0;
+                if(f1.checked){
+                    res+=parseInt(f1.innerText);
+                }
+                if(f2.checked){
+                    res+=parseInt(f2.innerText);
+                }
+                if(f3.checked){
+                    res+=parseInt(f3.innerText);
+                }
+                resss.innerText=res;
+            }
+        </script>
+        <script>
+            // Define the custom counter function
+            function incrementCounter() {
+              // Get the current counter value
+              var counterElement = document.getElementById("counter");
+              var counterValue = parseInt(counterElement.innerText);
+              
+              // Increment the counter value
+              counterValue++;
+              
+              // Update the counter value on the page
+              counterElement.innerText = counterValue;
+            }
+        </script>
+</html>
