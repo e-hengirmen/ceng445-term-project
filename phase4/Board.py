@@ -73,29 +73,34 @@ class Board:
     #-------------------------NEWLY ADDED--------------------------
     def display_related_messages(self):
         return self.messages
-    def whose_turn_is_it(self):
+    def whose_turn_is_it(self):     #anyway :)
         return self.order[self.active_user_index]
     def getCommands(self, user):
+        base=['"exit"']
         if self.game_has_ended:
-            return []
-        if self.WaitingState==True:
-            return []
-        if(self.order[self.active_user_index]==user):
-            if self.user_dict[user]["guilty"]:
-                return ["Roll","Bail"]
+            pass
+        elif self.WaitingState==True:
+            if not self.user_dict[user]['ready']:
+                base.append('"ready"')
+        elif(self.order[self.active_user_index]==user):
+            if self.user_dict[user]['guilty']:
+                base.append('"Roll"')
+                base.append('"Bail"')
             elif self.active_user_state == TURN_STATE.turn_start:
-                return ["Roll"]
+                base.append('"Roll"')
             elif self.active_user_state == TURN_STATE.teleport_wait:
-                return ["Teleport"]
+                base.append('"Teleport"')
             elif self.active_user_state == TURN_STATE.buy_wait:
-                if (self.cells[self.user_dict[user]["position"]]["property"].owner == None):
-                    return ["Buy","EndTurn"]
+                if (self.cells[self.user_dict[user]['position']]['property'].owner == None):
+                    base.append('"Buy"')
+                    base.append('"EndTurn"')
                 else:
-                    return ["Upgrade","EndTurn"]
+                    base.append('"Upgrade"')
+                    base.append('"EndTurn"')
             elif self.active_user_state == TURN_STATE.pick_wait:
-                return ["card "+self.pick_type]
+                    base.append('"card" '+self.pick_type)
             
-        return []
+        return base
     #--------------------------------------------------------------
 
     def __repr__(self):
@@ -132,13 +137,14 @@ class Board:
         with self.observer_mutex:
             if user in self.observer_dict.keys():
                 return
-            self.observer_dict[user] = {"user": user}
+            self.observer_dict[user] = {"user": user,
+                                        "callback":websocket}
     def detach_observer(self, user):  # controlled
         with self.observer_mutex:
             if user not in self.observer_dict.keys():
                 return
             del self.observer_dict[user]
-    def attach(self, user):  # controlled
+    def attach(self, user,websocket):  # controlled
         """
             creates a user dictionary(accessed by user object also adds user to the current game)
             Manages player participation in the game.
@@ -160,7 +166,8 @@ class Board:
                                     "properties": [],
                                     "ready": False,
                                     "guilty": False,
-                                    "jailFree": 0}
+                                    "jailFree": 0,
+                                    "callback":websocket}
 
             # self.unready_count += 1
             self.order.append(user)

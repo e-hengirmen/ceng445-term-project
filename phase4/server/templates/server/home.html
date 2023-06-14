@@ -1,36 +1,6 @@
 <html>
     <head>
-        <script>
-            // Establish a WebSocket connection
-            socket = new WebSocket('ws://localhost:4444');
-      
-            // Event handler for successful connection
-            socket.onopen = function (event) {
-              console.log('WebSocket connection established.');
-              document.getElementById('control_check1').innerText = "opened";
-              // Send a request to the server
-              socket.send("{{username}}");
-            };
-      
-            // Event handler for receiving data from the server
-            socket.onmessage = function (event) {
-              console.log('Received data:', event.data);
-              // Update the HTML element with the received data
-              document.getElementById('control_check2').innerText = event.data;
-            };
-      
-            // Event handler for WebSocket connection close
-            socket.onclose = function (event) {
-              console.log('WebSocket connection closed.');
-              document.getElementById('control_check3').innerText = "closed";
-            };
-      
-            // Event handler for WebSocket connection errors
-            socket.onerror = function (error) {
-              console.error('WebSocket error:', error);
-              document.getElementById('control_check').innerText = "error";
-            };
-        </script>
+        
 
 
 
@@ -56,25 +26,26 @@
         <div id="control_check2">nothin for now</div>
         <div id="control_check3">nothin for now</div>
         <div id="control_check4">nothin for now</div>
+        <div id="mainContainer">game</div>
 
 
 
 
-
-        <label for="choice">Player Count:</label>
-        <select name="choice" id="choice">
-            <option value="None">Choose</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-        </select>
-        <button type="button" id="newGameButton" onclick="handleNewGame()">New</button>        
+        <div id="MEW">
+            <label for="choice">Player Count:</label>
+            <select name="choice" id="choice">
+                <option value="None">Choose</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+            <button type="button" id="newGameButton" onclick="handleNewGame()">New</button>        
+        </div>
         
         
         
         
         
-        
 
 
 
@@ -92,5 +63,108 @@
 
         
 
+
+
+
+
+
+
+
+
+
+        <div id="commands">
+            <input type="text" name="text_submission">
+        </div>
+
+
+
+
+
+
+        <script>
+            // Establish a WebSocket connection
+            socket = new WebSocket('ws://localhost:4444');
+
+            // Event handler for successful connection
+            socket.onopen = function (event) {
+                console.log('WebSocket connection established.');
+                document.getElementById('control_check1').innerText = "opened";
+                // Send a request to the server
+                socket.send("{{username}}");
+            };
+      
+            // Event handler for receiving data from the server
+            socket.onmessage = function (event) {
+                console.log('Received data:', event.data);
+                // Update the HTML element with the received data
+                document.getElementById('control_check2').innerText = event.data;
+
+                var receivedData = JSON.parse(event.data);
+
+                // Get the container element where the buttons will be added
+                var container = document.getElementById('mainContainer');
+                container.innerHTML=""
+
+
+
+
+
+
+
+
+
+                if(receivedData.state=="server"){
+                    document.getElementById('commands').innerHTML="";
+                    for (var gameId in receivedData.game_list) {
+                        var user_dist = receivedData.game_list[gameId];
+
+                        var divHTML =   '<div>' +
+                                            gameId + ': ' + user_dist +
+                                            '<button onclick="socket.send(\'Join('+   gameId+')\')">Join</button>' +
+                                            '<button onclick="socket.send(\'Observe('+gameId+')\')">Observe</button>' +
+                                        '</div>';
+
+                        container.innerHTML += divHTML;
+
+                    }
+                }
+                else{
+                    document.getElementById('MEW').innerHTML="";
+                    command_list=document.getElementById('commands');
+                    var divHTML =   '<div>'
+                    for (var gameId in receivedData.possible_commands) {
+                        var COMMAND = receivedData.possible_commands[gameId];
+
+                        
+                            divHTML+='<button onclick="socket.send(\''+COMMAND+'\')">'+COMMAND+'</button>'
+
+                        command_list.innerHTML = divHTML+'</div>';
+
+                    }
+                    if(receivedData.state=="readywait"){
+                        
+                    }
+                }
+
+
+
+
+
+
+                
+            };
+      
+            // Event handler for WebSocket connection close
+            socket.onclose = function (event) {
+                console.log('WebSocket connection closed.');
+                document.getElementById('control_check3').innerText = "closed";
+            };
+      
+            // Event handler for WebSocket connection errors
+            socket.onerror = function (error) {
+                console.error('WebSocket error:', error);
+                document.getElementById('control_check').innerText = "error";
+            };
+        </script>
     </body>
 </html>

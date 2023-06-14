@@ -31,9 +31,9 @@ class Server:
         return monopoly
     def list(self): # TODO control maybe a copy of the list can be send instead(copied in mutex)
         return self.monopoly_instances
-    def observe(self,game,user): # returns true or false
+    def observe(self,game,user,websocket): # returns true or false
         with self.monopoly_list_mutex:
-            game.attach_observer(user)
+            game.attach_observer(user,websocket)
             game.observer_connection[user]=game
     def observe_with_ID(self,ID,user): # returns true or false
         with self.monopoly_list_mutex:
@@ -43,10 +43,10 @@ class Server:
             else:
                 return False
             game.attach_observer(user)
-    def open(self,game,user): # returns true or false
+    def open(self,game,user,websocket): # returns true or false
         with self.monopoly_list_mutex:
-            if user not in user_connection:
-                is_user_attached=game.attach(user)
+            if user not in self.user_connection:
+                is_user_attached=game.attach(user,websocket)
                 if(is_user_attached):
                     self.user_connection[user]=game
                     return True
@@ -64,7 +64,7 @@ class Server:
             game.removeUser(user)
         else:
             game.detach(user)
-
+        del self.user_connection[user]
 
 
 
