@@ -65,9 +65,10 @@
 
 
 
+        <svg id="properties" width="1000" height="300" xmlns="http://www.w3.org/2000/svg"></svg>
 
 
-
+        <svg id="game_map" width="3000" height="150" xmlns="http://www.w3.org/2000/svg"></svg>
 
 
 
@@ -99,7 +100,18 @@
                 // Update the HTML element with the received data
                 document.getElementById('control_check2').innerText = event.data;
 
-                var receivedData = JSON.parse(event.data);
+                var receivedData = event.data.replace(/"property":\s*<Board\.Property[^>]+>/g, '"property": null');
+                receivedData = receivedData.replace(/<websockets\.legacy\.server\.WebSocketServerProtocol object at 0x[^>]+>/g, 'null');
+                receivedData = receivedData.replace(/True/g, 'true');
+                receivedData = receivedData.replace(/False/g, 'false');
+                console.log(receivedData)
+                try {
+                var parsedData = JSON.parse(receivedData);
+                console.log(parsedData);
+                } catch (error) {
+                console.error('Error parsing JSON:', error);
+                }
+                receivedData = JSON.parse(receivedData);
 
                 // Get the container element where the buttons will be added
                 var container = document.getElementById('mainContainer');
@@ -141,7 +153,70 @@
                         command_list.innerHTML = divHTML+'</div>';
 
                     }
-                    if(receivedData.state=="readywait"){
+                    // if(receivedData.state=="readywait"){
+                        
+                    // }
+
+                    if(receivedData.state=="ingame"){
+                        property_container=document.getElementById('properties');
+                        prop_cards="";
+                        for (var cell in receivedData.board_state) {
+                            cell=receivedData.board_state[cell]
+                            if (cell.type=="property"){
+                                prop_cards+='<rect x="0" y="'+cell.y_position+'" width="600" height="50" fill="'+cell.color+'" stroke="black" stroke-width="1.5"/>'
+                                prop_cards+='<text x="40" y="'+ (parseInt(cell.y_position)+25) +'" text-anchor="middle" fill="black">'+ cell.name +'</text>'
+                                prop_cards+='<text x="150" y="'+ (parseInt(cell.y_position)+25) +'" text-anchor="middle" fill="black">Price: '+ cell.price +'</text>'
+                                prop_cards+='<text x="400" y="'+ (parseInt(cell.y_position)+25) +'" text-anchor="middle" fill="black">Rents: '+ cell.rents +'</text>'
+                            }
+                            console.log(cell)
+                        }
+                        property_container.innerHTML=prop_cards
+
+
+
+
+                        game_map_container=document.getElementById('game_map');
+                        map_cell = "";
+
+                        for (var cell of receivedData.board_state) {
+                            if (cell.type == 'start') {
+                                map_cell += '<rect x="0" y="0" width="200" height="100" fill="lime" stroke="black" stroke-width="1.5" />';
+                                map_cell += '<text x="100" y="50" text-anchor="middle" fill="black">Start</text>';
+                            } else if (cell.type == 'property') {
+                                map_cell += '<rect x="' + cell.x_position + '" y="0" width="100" height="100" fill="' + cell.color + '" stroke="black" stroke-width="1.5" />';
+                                map_cell += '<text x="' + (parseInt(cell.x_position) + 50) + '" y="30" text-anchor="middle" fill="black">' + cell.name + '</text>';
+                                map_cell += '<text x="' + (parseInt(cell.x_position) + 50) + '" y="45" text-anchor="middle" fill="black">Price: ' + cell.price + '</text>';
+                                map_cell += '<text x="' + (parseInt(cell.x_position) + 50) + '" y="60" text-anchor="middle" fill="black">O: ' + cell.owner + '</text>';
+                                map_cell += '<text x="' + (parseInt(cell.x_position) + 50) + '" y="75" text-anchor="middle" fill="black">Level: ' + cell.level + '</text>';
+                            } else if (cell.type == 'jail') {
+                                map_cell += '<rect x="' + cell.x_position + '" y="0" width="100" height="100" fill="gray" stroke="black" stroke-width="1.5" />';
+                                map_cell += '<text x="' + (parseInt(cell.x_position) + 50) + '" y="50" text-anchor="middle" fill="black">Jail</text>';
+                            } else if (cell.type == 'gotojail') {
+                                map_cell += '<rect x="' + cell.x_position + '" y="0" width="100" height="100" fill="orange" stroke="black" stroke-width="1.5" />';
+                                map_cell += '<text x="' + (parseInt(cell.x_position) + 50) + '" y="50" text-anchor="middle" fill="black">Go to Jail</text>';
+                            } else if (cell.type == 'tax') {
+                                map_cell += '<rect x="' + cell.x_position + '" y="0" width="100" height="100" fill="purple" stroke="black" stroke-width="1.5" />';
+                                map_cell += '<text x="' + (parseInt(cell.x_position) + 50) + '" y="50" text-anchor="middle" fill="black">Tax</text>';
+                            } else if (cell.type == 'teleport') {
+                                map_cell += '<rect x="' + cell.x_position + '" y="0" width="100" height="100" fill="cyan" stroke="black" stroke-width="1.5" />';
+                                map_cell += '<text x="' + (parseInt(cell.x_position) + 50) + '" y="50" text-anchor="middle" fill="black">Teleport</text>';
+                            } else if (cell.type == 'chance') {
+                                map_cell += '<rect x="' + cell.x_position + '" y="0" width="100" height="100" fill="yellow" stroke="black" stroke-width="1.5" />';
+                                map_cell += '<text x="' + (parseInt(cell.x_position) + 50) + '" y="50" text-anchor="middle" fill="black">Chance</text>';
+                            }
+                        }
+                        for (var key in receivedData.user_svg_dict) {
+                            var value = receivedData.user_svg_dict[key];
+                            map_cell += '<circle cx="' + value.x_position + '" cy="90" r="10" fill="black" />';
+                            map_cell += '<text x="' + value.x_position + '" y="110" text-anchor="middle" fill="black">' + value.user + '</text>';
+                        }
+
+
+                        game_map_container.innerHTML = map_cell;
+
+
+
+
                         
                     }
                 }

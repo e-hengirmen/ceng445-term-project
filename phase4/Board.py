@@ -76,29 +76,29 @@ class Board:
     def whose_turn_is_it(self):     #anyway :)
         return self.order[self.active_user_index]
     def getCommands(self, user):
-        base=['"exit"']
+        base=["exit"]
         if self.game_has_ended:
             pass
         elif self.WaitingState==True:
-            if not self.user_dict[user]['ready']:
-                base.append('"ready"')
+            if not self.user_dict[user]["ready"]:
+                base.append("ready")
         elif(self.order[self.active_user_index]==user):
-            if self.user_dict[user]['guilty']:
-                base.append('"Roll"')
-                base.append('"Bail"')
+            if self.user_dict[user]["guilty"]:
+                base.append("Roll")
+                base.append("Bail")
             elif self.active_user_state == TURN_STATE.turn_start:
-                base.append('"Roll"')
+                base.append("Roll")
             elif self.active_user_state == TURN_STATE.teleport_wait:
-                base.append('"Teleport"')
+                base.append("Teleport")
             elif self.active_user_state == TURN_STATE.buy_wait:
-                if (self.cells[self.user_dict[user]['position']]['property'].owner == None):
-                    base.append('"Buy"')
-                    base.append('"EndTurn"')
+                if (self.cells[self.user_dict[user]["position"]]["property"].owner == None):
+                    base.append("Buy")
+                    base.append("EndTurn")
                 else:
-                    base.append('"Upgrade"')
-                    base.append('"EndTurn"')
+                    base.append("Upgrade")
+                    base.append("EndTurn")
             elif self.active_user_state == TURN_STATE.pick_wait:
-                    base.append('"card" '+self.pick_type)
+                    base.append("card "+self.pick_type)
             
         return base
     #--------------------------------------------------------------

@@ -2,6 +2,8 @@ import asyncio
 import json
 import websockets
 
+import copy
+
 from Board import Board
 from User import User
 from Server import Server
@@ -13,6 +15,7 @@ server = Server()
 
 
 async def become_user_thread(game,user,websocket):
+    print(user)
     if game.WaitingState==True:
         print(game.user_dict)
         if not game.user_dict[user]["ready"]:
@@ -35,17 +38,40 @@ async def become_user_thread(game,user,websocket):
         # await websocket.send(game.text_game_state(user))
         if(game.WaitingState):
             await websocket.send(f'{{"state":"readywait","possible_commands":["exit"]}}')
-        for user in game.user_dict:
-            WEBSOCKET=game.user_dict[user]["callback"]
+        for USER in game.user_dict:
+            WEBSOCKET=game.user_dict[USER]["callback"]
             if (game.game_has_ended):
-                await WEBSOCKET.send(f'{{"state":"ended","winner":game.winner,"possible_commands":["exit"]}}')
+                await WEBSOCKET.send(f'{{"state":"ended","winner":{game.winner},"possible_commands":["exit"]}}')
             elif(game.WaitingState==False):
-                await WEBSOCKET.send(f'{{"state":"ingame","possible_commands":{game.getCommands(user)}}}')
+                copied_cells=copy.copy(game.cells)
+
+                for i,(cell,cell2) in enumerate(zip(copied_cells,game.cells)):
+                    if cell['type'] == 'property':
+                        cell['owner'] = cell2['property'].owner
+                        if(cell['owner']==None):
+                            cell['owner']=""
+                        cell['level'] = str(cell2['property'].level)
+                    cell['y_position'] = str(i*50)
+                    cell['x_position'] = str(i*100)
+
+                user_svg_dict={}
+                for USERR in game.order:
+                    user_svg = {}
+                    user_svg['user'] = USERR
+
+                    order = game.order.index(USERR)
+                    user_svg['x_position'] = 100*game.user_dict[USERR]['position'] + order*30  + 20
+                    user_svg_dict[USERR] = user_svg
+                
+                # context_str=f'{{"state":"ingame","possible_commands":{game.getCommands(user)},"user_state":{game.user_dict},"board_state":{copied_cells},"related_messages":{game.display_related_messages()}}}'.replace("'",'"')
+                context_str=f'{{"state":"ingame","possible_commands":{game.getCommands(USER)},"user_state":{game.user_dict},"board_state":{copied_cells},"related_messages":{game.display_related_messages()},"user_svg_dict":{user_svg_dict}}}'.replace("'",'"')
+                # context_str=f'{{"state":"ingame","possible_commands":{game.getCommands(user)},"user_state":{game.user_dict},"board_state":{copied_cells},"related_messages":{game.display_related_messages()}}}'.replace("'",'"')
+                await WEBSOCKET.send(context_str)
 
         command=await websocket.recv()
         game.turn(user,command)
         if (game.game_has_ended):
-            await websocket.send(f'{{"state":"ended","winner":game.winner,"possible_commands":["exit"]}}')
+            await websocket.send(f'{{"state":"ended","winner":{game.winner},"possible_commands":["exit"]}}')
         if command=="exit":
             del server.user_connection[user]
             break
@@ -65,7 +91,7 @@ async def list_server(websocket,user):
             # Send game list to the user
             game_list = server.list()
             str_game_list= {str(i):str(game_list[i]) for i in game_list}
-            str_game_list=str(str_game_list).replace("'", '"' )
+            str_game_list=str(str_game_list).replace("'",'"')
             await websocket.send(f'{{"state":"server","game_list":{str_game_list}}}')
 
             received_msg = await websocket.recv()
