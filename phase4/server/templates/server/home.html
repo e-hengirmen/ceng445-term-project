@@ -6,7 +6,7 @@
 
 
 
-
+        
         <script>
             function handleNewGame() {
                 const choice = document.getElementById('choice').value;
@@ -81,7 +81,25 @@
 
 
 
+        
 
+
+
+
+
+
+        <script>
+            function teleport(){
+                num=document.getElementById('text_submission').value;
+                socket.send('Teleport('+num+')');
+            }
+        </script>
+        <script>
+            function updown(){
+                num=document.getElementById('text_submission').value;
+                socket.send('Pick('+num+')');
+            }
+        </script>
         <script>
             // Establish a WebSocket connection
             socket = new WebSocket('ws://localhost:4444');
@@ -100,7 +118,7 @@
                 // Update the HTML element with the received data
                 document.getElementById('control_check2').innerText = event.data;
 
-                var receivedData = event.data.replace(/"property":\s*<Board\.Property[^>]+>/g, '"property": null');
+                var receivedData = event.data.replace(/\s*<Board\.Property[^>]+>/g, ' null');
                 receivedData = receivedData.replace(/<websockets\.legacy\.server\.WebSocketServerProtocol object at 0x[^>]+>/g, 'null');
                 receivedData = receivedData.replace(/True/g, 'true');
                 receivedData = receivedData.replace(/False/g, 'false');
@@ -143,12 +161,19 @@
                 else{
                     document.getElementById('MEW').innerHTML="";
                     command_list=document.getElementById('commands');
-                    var divHTML =   '<div>'
+                    var divHTML =   '<div> <input type="text" id="text_submission">'
                     for (var gameId in receivedData.possible_commands) {
                         var COMMAND = receivedData.possible_commands[gameId];
 
-                        
-                            divHTML+='<button onclick="socket.send(\''+COMMAND+'\')">'+COMMAND+'</button>'
+                            if (COMMAND=="Teleport"){
+                                divHTML+='<button onclick="teleport()">'+COMMAND+'</button>'
+                            }
+                            else if (COMMAND.startsWith("card")){
+                                divHTML+='<button onclick="updown()">'+COMMAND+'</button>'
+                            }
+                            else{
+                                divHTML+='<button onclick="socket.send(\''+COMMAND+'\')">'+COMMAND+'</button>'
+                            }
 
                         command_list.innerHTML = divHTML+'</div>';
 

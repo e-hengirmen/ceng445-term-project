@@ -15,9 +15,7 @@ server = Server()
 
 
 async def become_user_thread(game,user,websocket):
-    print(user)
     if game.WaitingState==True:
-        print(game.user_dict)
         if not game.user_dict[user]["ready"]:
             await websocket.send(f'{{"state":"readywait","possible_commands":["ready","exit"]}}')
 
@@ -69,6 +67,7 @@ async def become_user_thread(game,user,websocket):
                 await WEBSOCKET.send(context_str)
 
         command=await websocket.recv()
+        print(user,command)
         game.turn(user,command)
         if (game.game_has_ended):
             await websocket.send(f'{{"state":"ended","winner":{game.winner},"possible_commands":["exit"]}}')
@@ -96,7 +95,6 @@ async def list_server(websocket,user):
 
             received_msg = await websocket.recv()
             received_msg = received_msg.strip()
-            print(received_msg)
             if received_msg.startswith("New(") and received_msg.endswith(")") and received_msg[4:-1].isnumeric():
                 user_count = int(received_msg[4:-1])
                 monopoly = server.new(user_count)
